@@ -1,0 +1,23 @@
+
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Learner.Android", "Learner.Android\Learner.Android.csproj", "{FFE360D2-3561-46D8-A773-E698ED3014F8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Learner", "Learner\Learner.csproj", "{7AE0998D-F496-4D1E-9E56-8118EC5498E1}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FFE360D2-3561-46D8-A773-E698ED3014F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FFE360D2-3561-46D8-A773-E698ED3014F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FFE360D2-3561-46D8-A773-E698ED3014F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FFE360D2-3561-46D8-A773-E698ED3014F8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7AE0998D-F496-4D1E-9E56-8118EC5498E1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7AE0998D-F496-4D1E-9E56-8118EC5498E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7AE0998D-F496-4D1E-9E56-8118EC5498E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7AE0998D-F496-4D1E-9E56-8118EC5498E1}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
