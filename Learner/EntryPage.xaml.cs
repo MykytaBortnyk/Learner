@@ -27,7 +27,7 @@ namespace Learner
             isEditing = true;
             var item = new ToolbarItem { Text = "🗑" };
             item.Clicked += OnDeleteClicked;
-            this.ToolbarItems.Add(item);
+            ToolbarItems.Add(item);
         }
 
         async void OnSaveButtonClicked(object sender, EventArgs e)

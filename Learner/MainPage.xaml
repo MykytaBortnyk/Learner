@@ -11,6 +11,10 @@
     </ContentPage.Resources>
 
     <ContentPage.ToolbarItems>
+        <ToolbarItem Text="🔤"
+                     Clicked="OnSortClicked"/>
+        <ToolbarItem Text="⚡️"
+                     Clicked="ToolbarItemClicked"/>
         <ToolbarItem Text="+"
                      Clicked="OnWordAddClicked" />
     </ContentPage.ToolbarItems>

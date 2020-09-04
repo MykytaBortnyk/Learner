@@ -1,7 +1,11 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Learner.EntryPage">
+             x:Class="Learner.QuizPage">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="❔"
+                     Clicked="OnHelpClicked"/>
+    </ContentPage.ToolbarItems>
     <ContentPage.Resources>
         <!-- Implicit styles -->
         <Style TargetType="{x:Type Editor}">
@@ -20,24 +24,19 @@
     </ContentPage.Resources>
     <ContentPage.Content>
         <StackLayout Margin="15">
-            <Label Text="Word" />
-            <Entry IsSpellCheckEnabled="true"
-                   IsTextPredictionEnabled="true"
-                   x:Name="wordText"/>
-            <Label Text="Transcription" />
-            <Entry x:Name="transcription" />
-            <Label Text="Translation" />
-            <Entry IsSpellCheckEnabled="true"
-                   IsTextPredictionEnabled="true"
-                   x:Name="translation"/>
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-                <Button Text="Save" Clicked="OnSaveButtonClicked"/>
-                <Button Grid.Column="1" Text="Cancel" Clicked="OnCancelButtonClicked"/>
-            </Grid>
+            <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
+                <Label Text="Score:"/>
+                <Label x:Name="answersLabel"/>
+            </StackLayout>
+            <Label VerticalOptions="CenterAndExpand"
+                   HorizontalOptions="Center"
+                   Text="SomeText"
+                   Scale="3"
+                   x:Name="label1"/>
+            <Button x:Name="button1"/>
+            <Button x:Name="button2"/>
+            <Button x:Name="button3"/>
+            <Button x:Name="button4"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
