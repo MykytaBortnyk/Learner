@@ -25,7 +25,7 @@
     <ContentPage.Content>
         <StackLayout Margin="15">
             <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
-                <Label Text="Score:"/>
+                <Label Text="Points:"/>
                 <Label x:Name="answersLabel"/>
             </StackLayout>
             <Label VerticalOptions="CenterAndExpand"

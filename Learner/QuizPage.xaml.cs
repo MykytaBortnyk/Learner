@@ -11,7 +11,7 @@ namespace Learner
     {
         Guid rightButtonId;
 
-        int scores = 0;
+        int scores = 10;
 
         String hint;
 
@@ -70,17 +70,17 @@ namespace Learner
 
         async void OnHelpClicked(object sender, EventArgs e)
         {
-            var answer = await DisplayAlert("", "Use 10 scores to show hint?", "Use", "Cancel");
+            var answer = await DisplayAlert("", "Use 10 points to show hint?", "Use", "Cancel");
             if (answer)
             {
-                if (scores > 10)
+                if (scores >= 10)
                 {
                     scores -= 10;
                     await DisplayAlert("", hint, "Close");
                     answersLabel.Text = scores.ToString();
                 }
                 else
-                    await DisplayAlert("", "Not enough scores!", "Close");
+                    await DisplayAlert("", "Not enough points!", "Close");
             }
         }
     }
