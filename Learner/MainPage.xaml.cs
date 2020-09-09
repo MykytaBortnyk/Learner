@@ -79,14 +79,21 @@ namespace Learner
 
         async void OnSearchClicked(object sender, EventArgs e)
         {
-            /*TODO:
-            * 1) Add some anim to show finded item
-            * 2) Extend search be adding more options to search
-            * 3) I'm not sure about search, it wasn't tested
-            */
+            /*
+             * TODO:
+             * 1) Add some anim to show finded item
+             * 2) Extend search be adding more options to search
+             * 3) I'm not sure about search, it wasn't tested
+             */
+
             var result = await DisplayPromptAsync("Search", "Type the word to search", "Find", "Cancel", keyboard: Keyboard.Default);
 
-            if (string.IsNullOrWhiteSpace(result))
+            if (result == null)
+            {
+                return;
+            }
+
+            if (result == string.Empty)
             {
                 await DisplayAlert("Alert!", "Word may not be empty!", "Ok");
                 return;
