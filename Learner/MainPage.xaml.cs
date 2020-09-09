@@ -19,7 +19,7 @@ namespace Learner
         {
             InitializeComponent();
 #if DEBUG
-            ToolbarItem item = new ToolbarItem { Text = "❌" };
+            ToolbarItem item = new ToolbarItem { Text = "Remove Db", Order = ToolbarItemOrder.Secondary};
             this.ToolbarItems.Add(item);
             item.Clicked += OnRemoveDbClicked;
 #endif
@@ -75,6 +75,28 @@ namespace Learner
             base.OnAppearing();
             collectionView.ItemsSource = App._words;
             collectionView.SelectedItem = null;
+        }
+
+        async void OnSearchClicked(object sender, EventArgs e)
+        {
+            //string result = await DisplayPromptAsync("Question 2", "What's 5 + 5?", initialValue: "10", maxLength: 2, keyboard: Keyboard.Numeric);
+            var result = await DisplayPromptAsync("Search", "Type the word to search", "Find", "Cancel", keyboard: Keyboard.Default);
+
+            if (string.IsNullOrWhiteSpace(result))
+            {
+                await DisplayAlert("Alert!", "Word may not be empty!", "Ok");
+                return;
+            }
+
+            var word = App._words.FirstOrDefault(x => x.Text == result);
+
+            if (word == null)
+            {
+                await DisplayAlert("Alert!", "Word not found!", "Ok");
+                return;
+            }
+
+            collectionView.ScrollTo(word);
         }
     }
 }

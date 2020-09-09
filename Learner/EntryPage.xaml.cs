@@ -34,7 +34,7 @@ namespace Learner
         {
             if (wordText.Text == null || translation.Text == null)
             {
-                await DisplayAlert("Alert", "Word may not be empty!", "Ok");
+                await DisplayAlert("Alert!", "Word may not be empty!", "Ok");
                 return;
             }
 
@@ -76,6 +76,12 @@ namespace Learner
             await db.SaveChangesAsync();
 
             await Navigation.PopAsync();
+        }
+
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+            wordText.Focus();
         }
     }
 }

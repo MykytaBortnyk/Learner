@@ -9,14 +9,19 @@
                     Value="{StaticResource AppBackgroundColor}" />
         </Style>
     </ContentPage.Resources>
-
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="🔤"
-                     Clicked="OnSortClicked"/>
-        <ToolbarItem Text="⚡️"
-                     Clicked="ToolbarItemClicked"/>
-        <ToolbarItem Text="+"
-                     Clicked="OnWordAddClicked" />
+        <ToolbarItem Text="Add new word"
+                     Clicked="OnWordAddClicked"
+                     Order="Secondary"/>
+        <ToolbarItem Text="Quiz"
+                     Clicked="ToolbarItemClicked"
+                     Order="Secondary"/>
+        <ToolbarItem Text="Search"
+                     Clicked="OnSearchClicked"
+                     Order="Secondary"/>
+        <ToolbarItem Text="Sort By"
+                     Clicked="OnSortClicked"
+                     Order="Secondary"/>
     </ContentPage.ToolbarItems>
     <StackLayout Margin="15">
         <CollectionView x:Name="collectionView"
