@@ -1,14 +1,22 @@
 # Learner
 
-Приложение на Xamarin.Forms, должно помогать в расширении словарного запаса путём записи новых слов вручную. Изначально, было расчитано под англ., но в процессе тестирования, выяснилось, что колонка транскрипции не нужна. 
-<br/>Отсутствие спецсимволов для точной записи транскрипции делают колонку бесполезной, но в случае с японским какое-то применение всё же есть. 
+Приложение на Xamarin.Forms, должно помогать в расширении словарного запаса путём записи новых слов вручную. Можно записывать слова с переводом и транскрипцией.
+<br/> Для более эфективного изучения есть мини-игра. Пока подбор слов для квиза идёт из общего списка слов, но в будущем хочу сделать выбор набора слов для повторения. 
 
 <h3>Роадмап</h3>
-В первую очередь квиз. Хочу сделать мини-игру для повторения слов, что-то вроде "КХСМ" с четырьмя вариантами ответов.
-Когда-нибудь сделаю вкладки для разных языков, чтобы они не мешались как на скрине ниже.
+• Коллекции (предложение от тестера)
+<br/>
+• Поддержка нескольких языков
 
 
 <p>
-  <img src="https://github.com/NikitaBortnik/Learner/blob/master/Screenshot_2020-09-03-09-03-02-639_com.petprojects.learner.jpg" widht="270" height="585"/>
+    <img src="https://github.com/NikitaBortnik/Learner/blob/master/MainPage.jpg" widht="270" height="585"/>
   <hr/>
+    <img src="https://github.com/NikitaBortnik/Learner/blob/master/EditPage.jpg" widht="270" height="585"/>
+  <hr/>
+    <img src="https://github.com/NikitaBortnik/Learner/blob/master/NewWordPage.jpg" widht="270" height="585"/>
+  <hr/>
+    <img src="https://github.com/NikitaBortnik/Learner/blob/master/QuizPage.jpg" widht="270" height="585"/>
+  <hr/>
+    <img src="https://github.com/NikitaBortnik/Learner/blob/master/QuizHint.jpg" widht="270" height="585"/>
 </p>
