@@ -1,11 +1,6 @@
 ﻿using System;
 using System.IO;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Learner.Infrastruction;
 using Learner.Models;
 using Xamarin.Forms;
 
@@ -30,6 +25,7 @@ namespace Learner
             await Navigation.PushAsync(new EntryPage());
         }
 
+        //rework this tomorrow 
         void OnSortClicked(object sender, EventArgs e)
         {
             if (SortByText)

@@ -28,13 +28,14 @@ namespace Learner
             var item = new ToolbarItem { Text = "🗑" };
             item.Clicked += OnDeleteClicked;
             ToolbarItems.Add(item);
+            picker1.SelectedItem = picker1.Items.FirstOrDefault(x => x == word.Language);
         }
 
         async void OnSaveButtonClicked(object sender, EventArgs e)
         {
-            if (wordText.Text == null || translation.Text == null)
+            if (wordText.Text == null || translation.Text == null || picker1.SelectedIndex != -1)
             {
-                await DisplayAlert("Alert!", "Word may not be empty!", "Ok");
+                await DisplayAlert("Alert!", "Fill all the fields!", "Ok");
                 return;
             }
 
@@ -43,7 +44,8 @@ namespace Learner
                 Id = isEditing == false ? Guid.NewGuid() : _word.Id,
                 Text = wordText.Text,
                 Transcription = transcription.Text,
-                Translation = translation.Text
+                Translation = translation.Text,
+                Language = picker1.SelectedItem.ToString()
             };
 
             using var db = new Infrastruction.ApplicationContext(App._dbPath);

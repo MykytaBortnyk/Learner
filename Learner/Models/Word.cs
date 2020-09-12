@@ -11,5 +11,7 @@ namespace Learner.Models
         public String Transcription { get; set; }
 
         public String Translation { get; set; }
+
+        public String Language { get; set; }
     }
 }

@@ -55,32 +55,32 @@ namespace Learner
         {
             var list = new List<Word>();
 
-            list.Add(new Word() { Id = Guid.NewGuid(), Text = "ありがとう", Transcription = "arigato", Translation = "Thank you" });
-            list.Add(new Word() { Id = Guid.NewGuid(), Text = "こんにちは", Transcription = "konnichiwa", Translation = "Hello" });
-            list.Add(new Word() { Id = Guid.NewGuid(), Text = "おはよう", Transcription = "ohayou", Translation = "Good morning" });
-            list.Add(new Word() { Id = Guid.NewGuid(), Text = "おやすみなさい", Transcription = "oyasuminasai", Translation = "Good night" });
-            list.Add(new Word() { Id = Guid.NewGuid(), Text = "水", Transcription = "みず", Translation = "Water" });
-            list.Add(new Word() { Id = Guid.NewGuid(), Text = "犬", Transcription = "いぬ", Translation = "Dog" });
-            list.Add(new Word() { Id = Guid.NewGuid(), Text = "よろしく", Transcription = "yoroshku", Translation = "Nice to meet you" });
-            list.Add(new Word() { Id = Guid.NewGuid(), Text = "雲", Transcription = "くも", Translation = "Cloud" });
-            list.Add(new Word() { Id = Guid.NewGuid(), Text = "風", Transcription = "かぜ", Translation = "Wind" });
+            list.Add(new Word() { Id = Guid.NewGuid(), Text = "ありがとう", Transcription = "arigato", Translation = "Thank you", Language="Japanese"});
+            list.Add(new Word() { Id = Guid.NewGuid(), Text = "こんにちは", Transcription = "konnichiwa", Translation = "Hello", Language = "Japanese" });
+            list.Add(new Word() { Id = Guid.NewGuid(), Text = "おはよう", Transcription = "ohayou", Translation = "Good morning", Language = "Japanese" });
+            list.Add(new Word() { Id = Guid.NewGuid(), Text = "おやすみなさい", Transcription = "oyasuminasai", Translation = "Good night", Language = "Japanese" });
+            list.Add(new Word() { Id = Guid.NewGuid(), Text = "水", Transcription = "みず", Translation = "Water", Language = "Japanese" });
+            list.Add(new Word() { Id = Guid.NewGuid(), Text = "犬", Transcription = "いぬ", Translation = "Dog", Language = "Japanese" });
+            list.Add(new Word() { Id = Guid.NewGuid(), Text = "よろしく", Transcription = "yoroshku", Translation = "Nice to meet you", Language = "Japanese" });
+            list.Add(new Word() { Id = Guid.NewGuid(), Text = "雲", Transcription = "くも", Translation = "Cloud", Language = "Japanese" });
+            list.Add(new Word() { Id = Guid.NewGuid(), Text = "風", Transcription = "かぜ", Translation = "Wind", Language = "Japanese" });
 
-            list.Add(new Word() { Id = Guid.NewGuid(), Text = "一", Transcription = "いち", Translation = "One" });
-            list.Add(new Word() { Id = Guid.NewGuid(), Text = "二", Transcription = "に", Translation = "Two" });
-            list.Add(new Word() { Id = Guid.NewGuid(), Text = "三", Transcription = "さん", Translation = "Three" });
-            list.Add(new Word() { Id = Guid.NewGuid(), Text = "四", Transcription = "よん", Translation = "Four" });
-            list.Add(new Word() { Id = Guid.NewGuid(), Text = "五", Transcription = "ご", Translation = "Five" });
-            list.Add(new Word() { Id = Guid.NewGuid(), Text = "六", Transcription = "ろく", Translation = "Six" });
-            list.Add(new Word() { Id = Guid.NewGuid(), Text = "七", Transcription = "なな", Translation = "Seven" });
-            list.Add(new Word() { Id = Guid.NewGuid(), Text = "八", Transcription = "はち", Translation = "Eight" });
-            list.Add(new Word() { Id = Guid.NewGuid(), Text = "九", Transcription = "きゅう", Translation = "Nine" });
-            list.Add(new Word() { Id = Guid.NewGuid(), Text = "十", Transcription = "じゅう", Translation = "Ten" });
+            list.Add(new Word() { Id = Guid.NewGuid(), Text = "一", Transcription = "いち", Translation = "One", Language = "Japanese" });
+            list.Add(new Word() { Id = Guid.NewGuid(), Text = "二", Transcription = "に", Translation = "Two", Language = "Japanese" });
+            list.Add(new Word() { Id = Guid.NewGuid(), Text = "三", Transcription = "さん", Translation = "Three", Language = "Japanese" });
+            list.Add(new Word() { Id = Guid.NewGuid(), Text = "四", Transcription = "よん", Translation = "Four", Language = "Japanese" });
+            list.Add(new Word() { Id = Guid.NewGuid(), Text = "五", Transcription = "ご", Translation = "Five", Language = "Japanese" });
+            list.Add(new Word() { Id = Guid.NewGuid(), Text = "六", Transcription = "ろく", Translation = "Six", Language = "Japanese" });
+            list.Add(new Word() { Id = Guid.NewGuid(), Text = "七", Transcription = "なな", Translation = "Seven", Language = "Japanese" });
+            list.Add(new Word() { Id = Guid.NewGuid(), Text = "八", Transcription = "はち", Translation = "Eight", Language = "Japanese" });
+            list.Add(new Word() { Id = Guid.NewGuid(), Text = "九", Transcription = "きゅう", Translation = "Nine", Language = "Japanese" });
+            list.Add(new Word() { Id = Guid.NewGuid(), Text = "十", Transcription = "じゅう", Translation = "Ten", Language = "Japanese" });
 
-            list.Add(new Word() { Id = Guid.NewGuid(), Text = "人", Transcription = "じん", Translation = "Man" });
-            list.Add(new Word() { Id = Guid.NewGuid(), Text = "口", Transcription = "くち", Translation = "Mouth" });
-            list.Add(new Word() { Id = Guid.NewGuid(), Text = "語", Transcription = "ご", Translation = "Word" });
-            list.Add(new Word() { Id = Guid.NewGuid(), Text = "体", Transcription = "からだ", Translation = "Body" });
-            list.Add(new Word() { Id = Guid.NewGuid(), Text = "心", Transcription = "こころ", Translation = "Heart" });
+            list.Add(new Word() { Id = Guid.NewGuid(), Text = "人", Transcription = "じん", Translation = "Man", Language = "Japanese" });
+            list.Add(new Word() { Id = Guid.NewGuid(), Text = "口", Transcription = "くち", Translation = "Mouth", Language = "Japanese" });
+            list.Add(new Word() { Id = Guid.NewGuid(), Text = "語", Transcription = "ご", Translation = "Word", Language = "Japanese" });
+            list.Add(new Word() { Id = Guid.NewGuid(), Text = "体", Transcription = "からだ", Translation = "Body", Language = "Japanese" });
+            list.Add(new Word() { Id = Guid.NewGuid(), Text = "心", Transcription = "こころ", Translation = "Heart", Language = "Japanese" });
             //list.Add(new Word() { Id = Guid.NewGuid(), Text = "", Transcription = "", Translation = "" });
 
             return list;

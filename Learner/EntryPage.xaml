@@ -20,16 +20,25 @@
     </ContentPage.Resources>
     <ContentPage.Content>
         <StackLayout Margin="15">
-            <Label Text="Word" />
             <Entry IsSpellCheckEnabled="true"
                    IsTextPredictionEnabled="true"
-                   x:Name="wordText"/>
-            <Label Text="Transcription" />
-            <Entry x:Name="transcription" />
-            <Label Text="Translation" />
+                   x:Name="wordText"
+                   Placeholder="Word"/>
+            <Entry x:Name="transcription"
+                   Placeholder="Transcription"/>
             <Entry IsSpellCheckEnabled="true"
                    IsTextPredictionEnabled="true"
-                   x:Name="translation"/>
+                   x:Name="translation"
+                   Placeholder="Translation"/>
+            <Picker Title="Language"
+                    x:Name="picker1">
+                <Picker.ItemsSource>
+                    <x:Array Type="{x:Type x:String}">
+                        <x:String>English</x:String>
+                        <x:String>Japanese</x:String>
+                    </x:Array>
+                </Picker.ItemsSource>
+            </Picker>
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
