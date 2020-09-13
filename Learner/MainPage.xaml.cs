@@ -14,7 +14,7 @@ namespace Learner
         {
             InitializeComponent();
 #if DEBUG
-            ToolbarItem item = new ToolbarItem { Text = "Remove Db", Order = ToolbarItemOrder.Secondary};
+            ToolbarItem item = new ToolbarItem { Text = "Remove Db", Order = ToolbarItemOrder.Secondary };
             this.ToolbarItems.Add(item);
             item.Clicked += OnRemoveDbClicked;
 #endif
@@ -26,17 +26,48 @@ namespace Learner
         }
 
         //rework this tomorrow 
-        void OnSortClicked(object sender, EventArgs e)
+        async void OnSortClicked(object sender, EventArgs e)
         {
-            if (SortByText)
+            var result = await DisplayActionSheet(
+                "Sort by:", "Cancel", null,
+                "Word (A-Z)", "Word (Z-A)",
+                "Transcription (A-Z)", "Transcription (Z-A)",
+                "Translation (A-Z)", "Translation (Z-A)",
+                "Language (A-Z)", "Language (Z-A)");
+
+            switch (result)
             {
-                SortByText = !SortByText;
-                collectionView.ItemsSource = App._words.OrderBy(x => x.Translation);
-            }
-            else
-            {
-                SortByText = !SortByText;
-                collectionView.ItemsSource = App._words.OrderBy(x => x.Text);
+                default:
+                    collectionView.ItemsSource = App._words.OrderBy(x => x.Text);
+                    break;
+
+                case "Word (Z-A)":
+                    collectionView.ItemsSource = App._words.OrderByDescending(x => x.Text);
+                    break;
+
+                case "Transcription (A-Z)":
+                    collectionView.ItemsSource = App._words.OrderBy(x => x.Transcription).ThenBy(x => x.Text);
+                    break;
+
+                case "Transcription (Z-A)":
+                    collectionView.ItemsSource = App._words.OrderByDescending(x => x.Transcription).ThenBy(x => x.Text);
+                    break;
+
+                case "Translation (A-Z)":
+                    collectionView.ItemsSource = App._words.OrderBy(x => x.Translation).ThenBy(x => x.Text);
+                    break;
+
+                case "Translation (Z-A)":
+                    collectionView.ItemsSource = App._words.OrderByDescending(x => x.Translation).ThenBy(x => x.Text);
+                    break;
+
+                case "Language (A-Z)":
+                    collectionView.ItemsSource = App._words.OrderBy(x => x.Language).ThenBy(x => x.Text);
+                    break;
+
+                case "Language (Z-A)":
+                    collectionView.ItemsSource = App._words.OrderByDescending(x => x.Language).ThenBy(x => x.Text);
+                    break;
             }
         }
 
