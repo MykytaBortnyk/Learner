@@ -47,7 +47,8 @@ namespace Learner
 //#endif
             _words = db.Words.OrderBy(x => x.Text).ToList();
 
-            MainPage = new NavigationPage(new MainPage());
+            //MainPage = new NavigationPage(new MainPage());
+            MainPage = new MDPage();
         }
 
 

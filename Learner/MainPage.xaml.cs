@@ -91,6 +91,7 @@ namespace Learner
         async void OnRemoveDbClicked(object sender, EventArgs e)
         {
             var result = await DisplayAlert("", "Remove Db?", "Yes", "No");
+
             if (result && File.Exists(App._dbPath))
             {
                 File.Delete(App._dbPath);

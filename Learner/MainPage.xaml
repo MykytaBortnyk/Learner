@@ -13,9 +13,9 @@
         <ToolbarItem Text="Add new word"
                      Clicked="OnWordAddClicked"
                      Order="Secondary"/>
-        <ToolbarItem Text="Quiz"
+        <!--ToolbarItem Text="Quiz"
                      Clicked="ToolbarItemClicked"
-                     Order="Secondary"/>
+                     Order="Secondary"/-->
         <ToolbarItem Text="Search"
                      Clicked="OnSearchClicked"
                      Order="Secondary"/>
