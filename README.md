@@ -28,6 +28,14 @@ Profit!
 <p>
     <img src="https://github.com/NikitaBortnik/Learner/blob/master/MainPage.jpg" widht="270" height="585"/>
   <hr/>
+      <img src="https://github.com/NikitaBortnik/Learner/blob/master/MainPageMenu.jpg" widht="270" height="585"/>
+  <hr/>
+      <img src="https://github.com/NikitaBortnik/Learner/blob/master/MasterPage.jpg" widht="270" height="585"/>
+  <hr/>
+      <img src="https://github.com/NikitaBortnik/Learner/blob/master/SearchDialog.jpg" widht="270" height="585"/>
+  <hr/>
+      <img src="https://github.com/NikitaBortnik/Learner/blob/master/SortByDialog.jpg" widht="270" height="585"/>
+  <hr/>
     <img src="https://github.com/NikitaBortnik/Learner/blob/master/EditPage.jpg" widht="270" height="585"/>
   <hr/>
     <img src="https://github.com/NikitaBortnik/Learner/blob/master/NewWordPage.jpg" widht="270" height="585"/>
