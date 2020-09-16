@@ -13,6 +13,7 @@ namespace Learner
         public MainPage()
         {
             InitializeComponent();
+            Title = "Main page";
 #if DEBUG
             ToolbarItem item = new ToolbarItem { Text = "Remove Db", Order = ToolbarItemOrder.Secondary };
             this.ToolbarItems.Add(item);
@@ -77,7 +78,7 @@ namespace Learner
             if (collectionView.SelectedItem != null) await Navigation.PushAsync(new EntryPage(selectedItem));
         }
 
-        async void ToolbarItemClicked(object sender, EventArgs e)
+        /*async void ToolbarItemClicked(object sender, EventArgs e)
         {
             if (App._words.Count < 1)
             {
@@ -85,7 +86,7 @@ namespace Learner
                 return;
             }
             await Navigation.PushAsync(new QuizPage());
-        }
+        }*/
 
 #if DEBUG
         async void OnRemoveDbClicked(object sender, EventArgs e)
@@ -102,6 +103,10 @@ namespace Learner
         {
             base.OnAppearing();
             collectionView.ItemsSource = App._words;
+            if (App._words.Count == 0)
+                stackLayout.Children.Insert(0,
+                    new Label { Text = "The word list is empty!", HorizontalOptions = LayoutOptions.Center });
+
             collectionView.SelectedItem = null;
         }
 

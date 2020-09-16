@@ -1,7 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Learner.MainPage">
+             x:Class="Learner.MainPage"
+             Title="Main page">
     <ContentPage.Resources>
         <!-- Implicit styles -->
         <Style TargetType="{x:Type ListView}">
@@ -24,7 +25,8 @@
                      Order="Secondary"/>
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
-        <StackLayout Margin="15, 0, 0, 0">
+        <StackLayout Margin="15, 0, 0, 0"
+                     x:Name="stackLayout">
             <CollectionView x:Name="collectionView"
                         SelectionMode="Single"
                         SelectionChanged="OnCollectionViewSelectionChanged">
