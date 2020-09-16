@@ -23,30 +23,32 @@
                      Clicked="OnSortClicked"
                      Order="Secondary"/>
     </ContentPage.ToolbarItems>
-    <StackLayout Margin="15">
-        <CollectionView x:Name="collectionView"
+    <ContentPage.Content>
+        <StackLayout Margin="15, 0, 0, 0">
+            <CollectionView x:Name="collectionView"
                         SelectionMode="Single"
                         SelectionChanged="OnCollectionViewSelectionChanged">
-            <CollectionView.ItemsLayout>
-                <GridItemsLayout Orientation="Vertical"/>
-            </CollectionView.ItemsLayout>
-            <CollectionView.ItemTemplate>
-                <DataTemplate>
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="0.33*"/>
-                            <ColumnDefinition Width="0.33*"/>
-                            <ColumnDefinition Width="0.33*"/>
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="35"/>
-                        </Grid.RowDefinitions>
-                        <Label Text="{Binding Text}"/>
-                        <Label Grid.Column="1" Text="{Binding Transcription}"/>
-                        <Label Grid.Column="2"  Text="{Binding Translation}"/>
-                    </Grid>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
-    </StackLayout>
+                <CollectionView.ItemsLayout>
+                    <GridItemsLayout Orientation="Vertical"/>
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="0.33*"/>
+                                <ColumnDefinition Width="0.33*"/>
+                                <ColumnDefinition Width="0.33*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="35"/>
+                            </Grid.RowDefinitions>
+                            <Label Text="{Binding Text}"/>
+                            <Label Grid.Column="1" Text="{Binding Transcription}"/>
+                            <Label Grid.Column="2"  Text="{Binding Translation}"/>
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </StackLayout>
+    </ContentPage.Content>
 </ContentPage>

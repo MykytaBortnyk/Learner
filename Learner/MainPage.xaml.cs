@@ -116,18 +116,17 @@ namespace Learner
 
             var result = await DisplayPromptAsync("Search", "Type the word to search", "Find", "Cancel", keyboard: Keyboard.Default);
 
-            if (result == null)
-            {
-                return;
-            }
-
-            if (result == string.Empty)
+            if (result == null || result == string.Empty)
             {
                 await DisplayAlert("Alert!", "Word may not be empty!", "Ok");
                 return;
             }
 
-            var word = App._words.FirstOrDefault(x => x.Text == result);
+            var word = App._words.FirstOrDefault(x => x.Text.Contains(result));
+
+            //not sure about this
+            word ??= App._words.FirstOrDefault(x => x.Transcription.Contains(result));
+            word ??= App._words.FirstOrDefault(x => x.Translation.Contains(result));
 
             if (word == null)
             {
@@ -135,6 +134,12 @@ namespace Learner
                 return;
             }
 
+            /*
+            There should be animation here
+            Alert is temporary solution
+            */
+
+            await DisplayAlert("", "Found!", "Ok");
             collectionView.ScrollTo(word);
         }
     }
