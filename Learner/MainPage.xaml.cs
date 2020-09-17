@@ -13,7 +13,6 @@ namespace Learner
         public MainPage()
         {
             InitializeComponent();
-            Title = "Main page";
 #if DEBUG
             ToolbarItem item = new ToolbarItem { Text = "Remove Db", Order = ToolbarItemOrder.Secondary };
             this.ToolbarItems.Add(item);
@@ -103,9 +102,18 @@ namespace Learner
         {
             base.OnAppearing();
             collectionView.ItemsSource = App._words;
+
+            var label = new Label { Text = "The word list is empty!", HorizontalOptions = LayoutOptions.Center, ClassId = "zeroWordsLabel"};
+
             if (App._words.Count == 0)
-                stackLayout.Children.Insert(0,
-                    new Label { Text = "The word list is empty!", HorizontalOptions = LayoutOptions.Center });
+                stackLayout.Children.Insert(0, label);
+            else
+            {
+                if (stackLayout.Children[0].ClassId == label.ClassId)
+                {
+                    stackLayout.Children.RemoveAt(0);
+                }
+            }
 
             collectionView.SelectedItem = null;
         }
