@@ -129,6 +129,9 @@ namespace Learner
 
             var result = await DisplayPromptAsync("Search", "Type the word to search", "Find", "Cancel", keyboard: Keyboard.Default);
 
+            if (result == "Cancel")
+                return;
+
             if (result == null || result == string.Empty)
             {
                 await DisplayAlert("Alert!", "Word may not be empty!", "Ok");

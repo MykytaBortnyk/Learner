@@ -21,7 +21,7 @@
                      Order="Secondary"/>
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
-        <StackLayout Padding="15, 0, 0, 0"
+        <StackLayout
                      x:Name="stackLayout">
             <CollectionView x:Name="collectionView"
                         SelectionMode="Single"
@@ -39,8 +39,10 @@
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="35"/>
                             </Grid.RowDefinitions>
-                            <Label Text="{Binding Name}"/>
-                            <Label Grid.Column="1" Text="{Binding Language}"/>
+                            <Label Text="{Binding Name}"
+                                   HorizontalTextAlignment="Center"/>
+                            <Label Grid.Column="1" Text="{Binding Language}"
+                                   HorizontalTextAlignment="Center"/>
                         </Grid>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
