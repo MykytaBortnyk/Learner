@@ -16,6 +16,8 @@ namespace Learner
 
         public static List<Word> _words;
 
+        public static List<Collection> _collections;
+
         public App() //shit code bellow, it's should be in some fabric, hard IO in ctor is bad practice, but i'll fix this later 
         {
             InitializeComponent();
@@ -32,7 +34,7 @@ namespace Learner
 #endif
             // Ensure database is created
             db.Database.EnsureCreated();
-//#if DEBUG
+#if DEBUG
 
             if (!db.Words.Any())
             {
@@ -43,11 +45,9 @@ namespace Learner
 
                 db.SaveChanges();
             }
-            // Retreive Data
-//#endif
+#endif
             _words = db.Words.OrderBy(x => x.Text).ToList();
 
-            //MainPage = new NavigationPage(new MainPage());
             MainPage = new MDPage();
         }
 

@@ -13,6 +13,8 @@ namespace Learner.Infrastruction
 
         public DbSet<Word> Words { get; set; }
 
+        public DbSet<Collection> Collections { get; set; }
+
         public ApplicationContext(string databasePath)
         {
             _databasePath = databasePath;
@@ -27,6 +29,7 @@ namespace Learner.Infrastruction
         {
             var result = await base.SaveChangesAsync(cancellationToken); //writing new data to the DbSet<Word> Words property
             App._words = await Words.ToListAsync(); //updating words list
+            App._collections = await Collections.ToListAsync();
             return result; //returning SaveChanges() result
         }
     }
