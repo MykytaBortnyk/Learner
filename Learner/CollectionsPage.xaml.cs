@@ -4,7 +4,7 @@ using Xamarin.Forms;
 
 namespace Learner
 {
-    public partial class CollectionsPage
+    public partial class CollectionsPage : ContentPage
     {
         public CollectionsPage()
         {
@@ -18,7 +18,7 @@ namespace Learner
 
             var label = new Label { Text = "The word list is empty!", HorizontalOptions = LayoutOptions.Center, ClassId = "zeroWordsLabel" };
 
-            if (App._words.Count == 0)
+            if (App._collections == null || App._collections.Count == 0)
                 stackLayout.Children.Insert(0, label);
             else
             {

@@ -46,6 +46,8 @@ namespace Learner
                 db.SaveChanges();
             }
 #endif
+
+            _collections ??= new List<Collection>();
             _words = db.Words.OrderBy(x => x.Text).ToList();
 
             MainPage = new MDPage();

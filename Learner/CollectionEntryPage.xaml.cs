@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Learner.Models;
 using Xamarin.Forms;
 
@@ -19,6 +20,14 @@ namespace Learner
         public CollectionEntryPage(Collection collection)
         {
             InitializeComponent();
+
+            _collection = collection;
+
+            isEditing = true;
+            var item = new ToolbarItem { Text = "🗑" };
+            item.Clicked += OnDeleteClicked;
+            ToolbarItems.Add(item);
+            picker1.SelectedItem = picker1.Items.FirstOrDefault(x => x == collection.Language);
         }
         
         protected override void OnAppearing()
