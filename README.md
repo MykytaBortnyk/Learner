@@ -26,21 +26,21 @@ Profit!
 Не всегда актуальны, но стараюсь их обновлять после серьёзных обновлений UI'я.
 
 <p>
-    <img src="https://github.com/NikitaBortnik/Learner/blob/master/MainPage.jpg" widht="270" height="585"/>
+    <img src="https://github.com/NikitaBortnik/Learner/blob/master/Screenshots/MainPage.jpg" widht="270" height="585"/>
   <hr/>
-      <img src="https://github.com/NikitaBortnik/Learner/blob/master/MainPageMenu.jpg" widht="270" height="585"/>
+      <img src="https://github.com/NikitaBortnik/Learner/blob/master/Screenshots/MainPageMenu.jpg" widht="270" height="585"/>
   <hr/>
-      <img src="https://github.com/NikitaBortnik/Learner/blob/master/MasterPage.jpg" widht="270" height="585"/>
+      <img src="https://github.com/NikitaBortnik/Learner/blob/master/Screenshots/MasterPage.jpg" widht="270" height="585"/>
   <hr/>
-      <img src="https://github.com/NikitaBortnik/Learner/blob/master/SearchDialog.jpg" widht="270" height="585"/>
+      <img src="https://github.com/NikitaBortnik/Learner/blob/master/Screenshots/SearchDialog.jpg" widht="270" height="585"/>
   <hr/>
-      <img src="https://github.com/NikitaBortnik/Learner/blob/master/SortByDialog.jpg" widht="270" height="585"/>
+      <img src="https://github.com/NikitaBortnik/Learner/blob/master/Screenshots/SortByDialog.jpg" widht="270" height="585"/>
   <hr/>
-    <img src="https://github.com/NikitaBortnik/Learner/blob/master/EditPage.jpg" widht="270" height="585"/>
+    <img src="https://github.com/NikitaBortnik/Learner/blob/master/Screenshots/EditPage.jpg" widht="270" height="585"/>
   <hr/>
-    <img src="https://github.com/NikitaBortnik/Learner/blob/master/NewWordPage.jpg" widht="270" height="585"/>
+    <img src="https://github.com/NikitaBortnik/Learner/blob/master/Screenshots/NewWordPage.jpg" widht="270" height="585"/>
   <hr/>
-    <img src="https://github.com/NikitaBortnik/Learner/blob/master/QuizPage.jpg" widht="270" height="585"/>
+    <img src="https://github.com/NikitaBortnik/Learner/blob/master/Screenshots/QuizPage.jpg" widht="270" height="585"/>
   <hr/>
-    <img src="https://github.com/NikitaBortnik/Learner/blob/master/QuizHint.jpg" widht="270" height="585"/>
+    <img src="https://github.com/NikitaBortnik/Learner/blob/master/Screenshots/QuizHint.jpg" widht="270" height="585"/>
 </p>
