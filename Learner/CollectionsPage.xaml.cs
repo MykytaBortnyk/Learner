@@ -16,17 +16,10 @@ namespace Learner
             base.OnAppearing();
             collectionView.ItemsSource = App._collections;
 
-            var label = new Label { Text = "The word list is empty!", HorizontalOptions = LayoutOptions.Center, ClassId = "zeroWordsLabel" };
-
-            if (App._collections == null || App._collections.Count == 0)
-                stackLayout.Children.Insert(0, label);
+            if (App._collections.Count == 0)
+                label.IsVisible = true;
             else
-            {
-                if (stackLayout.Children[0].ClassId == label.ClassId)
-                {
-                    stackLayout.Children.RemoveAt(0);
-                }
-            }
+                label.IsVisible = false;
 
             collectionView.SelectedItem = null;
         }

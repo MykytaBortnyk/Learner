@@ -21,8 +21,10 @@
                      Order="Secondary"/>
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
-        <StackLayout
-                     x:Name="stackLayout">
+        <StackLayout x:Name="stackLayout">
+            <Label x:Name="label"
+                   Text="The word list is empty!"
+                   HorizontalOptions="Center"/>
             <CollectionView x:Name="collectionView"
                         SelectionMode="Single"
                         SelectionChanged="OnCollectionViewSelectionChanged">

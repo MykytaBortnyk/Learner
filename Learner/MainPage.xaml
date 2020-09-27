@@ -27,6 +27,9 @@
     <ContentPage.Content>
         <StackLayout Margin="15, 0, 0, 0"
                      x:Name="stackLayout">
+            <Label x:Name="label"
+                   Text="The word list is empty!"
+                   HorizontalOptions="Center"/>
             <CollectionView x:Name="collectionView"
                         SelectionMode="Single"
                         SelectionChanged="OnCollectionViewSelectionChanged">

@@ -18,43 +18,49 @@ namespace Learner
 
         public static List<Collection> _collections;
 
+        public static readonly ApplicationContext Context;
+
+        static App()
+        {
+            _dbPath = Path.Combine(Environment.GetFolderPath(
+                Environment.SpecialFolder.LocalApplicationData), "Words.db3");
+
+            Context = new ApplicationContext(_dbPath);
+        }
+
         public App() //shit code bellow, it's should be in some fabric, hard IO in ctor is bad practice, but i'll fix this later 
         {
             InitializeComponent();
 
-            _dbPath = Path.Combine(Environment.GetFolderPath(
-                        Environment.SpecialFolder.LocalApplicationData), "Words.db3");
+            
+            //using var db = new ApplicationContext(_dbPath);
 
-            using var db = new ApplicationContext(_dbPath);
-
-#if DEBUG
+//#if DEBUG
             File.Delete(_dbPath);
-
+            Context.Database.EnsureDeleted();
             Console.WriteLine(File.Exists(_dbPath));
-#endif
+//#endif
             // Ensure database is created
-            db.Database.EnsureCreated();
-#if DEBUG
+            Context.Database.EnsureCreated();
+//#if DEBUG
 
-            if (!db.Words.Any())
+            if (!Context.Words.Any())
             {
                 // Insert Data
-                db.AddRange(addWords());
+                Context.AddRange(addWords());
 
-                db.Words.OrderBy(x => x.Text);
+                Context.Words.OrderBy(x => x.Text);
 
-                db.SaveChanges();
+                Context.SaveChanges();
             }
-#endif
-
+//#endif
             _collections ??= new List<Collection>();
-            _words = db.Words.OrderBy(x => x.Text).ToList();
+            _words = Context.Words.OrderBy(x => x.Text).ToList();
 
             MainPage = new MDPage();
         }
 
-
-        List<Word> addWords()
+        public static List<Word> addWords()
         {
             var list = new List<Word>();
 

@@ -17,13 +17,17 @@
         </Style>
     </ContentPage.Resources>
     <ContentPage.Content>
-        <StackLayout Margin="15">
+        <Grid Margin="15" RowDefinitions="auto,auto,*,auto">
+
             <Entry IsSpellCheckEnabled="true"
                    IsTextPredictionEnabled="true"
                    x:Name="collectionName"
-                   Placeholder="Collection name"/>
+                   Placeholder="Collection name"
+                   Grid.ColumnSpan="2"/>
             <Picker Title="Language"
-                    x:Name="picker1">
+                    x:Name="picker1"
+                    Grid.ColumnSpan="2"
+                    Grid.Row="1">
                 <Picker.ItemsSource>
                     <x:Array Type="{x:Type x:String}">
                         <x:String>English</x:String>
@@ -31,14 +35,34 @@
                     </x:Array>
                 </Picker.ItemsSource>
             </Picker>
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-                <Button Text="Save" Clicked="OnSaveButtonClicked"/>
-                <Button Grid.Column="1" Text="Cancel" Clicked="OnCancelButtonClicked"/>
-            </Grid>
-        </StackLayout>
+            <CollectionView x:Name="colView"
+                            Grid.ColumnSpan="2"
+                            Grid.Row="2"
+                            SelectionMode="Multiple"
+                            SelectionChanged="colView_SelectionChanged">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="10*"/>
+                                <ColumnDefinition Width="90*"/>
+                            </Grid.ColumnDefinitions>
+                            <CheckBox Color="#1976D2"
+                                      CheckedChanged="LabelCheckBox_CheckedChanged"
+                                      IsChecked="{Binding IsSelected}"/>
+                            <Label Grid.Column="1"
+                                   VerticalOptions="Center"
+                                   Text="{Binding Item.Text}"/>
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+            <Button Text="Save"
+                        Grid.Row="3"
+                        Clicked="OnSaveButtonClicked"/>
+            <Button Grid.Column="1"
+                        Grid.Row="3" Text="Cancel"
+                        Clicked="OnCancelButtonClicked" />
+        </Grid>
     </ContentPage.Content>
 </ContentPage>

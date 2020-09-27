@@ -77,16 +77,6 @@ namespace Learner
             if (collectionView.SelectedItem != null) await Navigation.PushAsync(new EntryPage(selectedItem));
         }
 
-        /*async void ToolbarItemClicked(object sender, EventArgs e)
-        {
-            if (App._words.Count < 1)
-            {
-                await DisplayAlert("", "Add more than 10 words to activate the quiz!", "Ok"); //who stole the toast?
-                return;
-            }
-            await Navigation.PushAsync(new QuizPage());
-        }*/
-
 #if DEBUG
         async void OnRemoveDbClicked(object sender, EventArgs e)
         {
@@ -103,17 +93,10 @@ namespace Learner
             base.OnAppearing();
             collectionView.ItemsSource = App._words;
 
-            var label = new Label { Text = "The word list is empty!", HorizontalOptions = LayoutOptions.Center, ClassId = "zeroWordsLabel"};
-
             if (App._words.Count == 0)
-                stackLayout.Children.Insert(0, label);
+                label.IsVisible = true;
             else
-            {
-                if (stackLayout.Children[0].ClassId == label.ClassId)
-                {
-                    stackLayout.Children.RemoveAt(0);
-                }
-            }
+                label.IsVisible = false;
 
             collectionView.SelectedItem = null;
         }

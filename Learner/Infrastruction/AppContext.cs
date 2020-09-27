@@ -15,6 +15,8 @@ namespace Learner.Infrastruction
 
         public DbSet<Collection> Collections { get; set; }
 
+        //public DbSet<ManyToMany> CollectionsWords { get; set; }
+
         public ApplicationContext(string databasePath)
         {
             _databasePath = databasePath;

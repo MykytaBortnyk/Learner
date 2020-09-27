@@ -15,6 +15,8 @@ namespace Learner
         {
             InitializeComponent();
 
+            Title = "Word adding";
+
             if (App._collections != null && App._collections.Count > 0)
             {
                 var control = new Picker
@@ -30,6 +32,8 @@ namespace Learner
         public EntryPage(Word word)
         {
             InitializeComponent();
+
+            Title = "Word editing";
 
             _word = word;
             wordText.Text = word.Text;
@@ -61,33 +65,27 @@ namespace Learner
                 Language = picker1.SelectedItem.ToString()
             };
 
-            /*if (!isEditing)
-            {
-
-            }*/
-
-            using var db = new Infrastruction.ApplicationContext(App._dbPath);
-
             var picker = stackLayout.Children.FirstOrDefault(x => x.ClassId == "picker2") as Picker;
+
             if (picker.SelectedIndex != -1)
             {
                 var col = App._collections.FirstOrDefault(x =>
                     x.Name == picker.ItemsSource[picker.SelectedIndex].ToString());
 
                 col.Words.Add(word);
-                var result = db.Collections.Update(col);
+                var result = App.Context.Collections.Update(col);
             }
 
             if (isEditing)
             {
-                db.Words.Update(word);
+                App.Context.Words.Update(word);
             }
             else
             {
-                db.Add(word);
+                App.Context.Add(word);
             }
 
-            await db.SaveChangesAsync();
+            await App.Context.SaveChangesAsync();
 
             await Navigation.PopAsync();
         }
@@ -101,9 +99,14 @@ namespace Learner
         {
             using var db = new Infrastruction.ApplicationContext(App._dbPath);
 
-            db.Words.Remove(_word);
+            var result = await DisplayAlert("Delete this item?", "This is permanent and cannot be undome.", "Delete", "Cancel");
 
-            await db.SaveChangesAsync();
+            if (!result)
+                return;
+
+            App.Context.Words.Remove(_word);
+
+            await App.Context.SaveChangesAsync();
 
             await Navigation.PopAsync();
         }
