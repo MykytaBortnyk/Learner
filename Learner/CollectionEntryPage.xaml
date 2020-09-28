@@ -18,7 +18,6 @@
     </ContentPage.Resources>
     <ContentPage.Content>
         <Grid Margin="15" RowDefinitions="auto,auto,*,auto">
-
             <Entry IsSpellCheckEnabled="true"
                    IsTextPredictionEnabled="true"
                    x:Name="collectionName"
@@ -38,24 +37,24 @@
             <CollectionView x:Name="colView"
                             Grid.ColumnSpan="2"
                             Grid.Row="2"
-                            SelectionMode="Multiple"
-                            SelectionChanged="colView_SelectionChanged">
-                <CollectionView.ItemTemplate>
+                            SelectionMode="Multiple">
+                <!--<CollectionView.ItemTemplate>
                     <DataTemplate>
-                        <Grid>
+                        <Grid x:FieldModifier="Public"
+                              x:Name="grid">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="10*"/>
                                 <ColumnDefinition Width="90*"/>
                             </Grid.ColumnDefinitions>
                             <CheckBox Color="#1976D2"
-                                      CheckedChanged="LabelCheckBox_CheckedChanged"
-                                      IsChecked="{Binding IsSelected}"/>
+                                      IsChecked="{Binding IsSelected}"
+                                      CheckedChanged="CheckBox_CheckedChanged"/>
                             <Label Grid.Column="1"
                                    VerticalOptions="Center"
                                    Text="{Binding Item.Text}"/>
                         </Grid>
                     </DataTemplate>
-                </CollectionView.ItemTemplate>
+                </CollectionView.ItemTemplate>-->
             </CollectionView>
             <Button Text="Save"
                         Grid.Row="3"

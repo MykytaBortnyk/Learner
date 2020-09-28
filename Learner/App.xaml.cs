@@ -32,9 +32,6 @@ namespace Learner
         {
             InitializeComponent();
 
-            
-            //using var db = new ApplicationContext(_dbPath);
-
 //#if DEBUG
             File.Delete(_dbPath);
             Context.Database.EnsureDeleted();
@@ -49,13 +46,11 @@ namespace Learner
                 // Insert Data
                 Context.AddRange(addWords());
 
-                Context.Words.OrderBy(x => x.Text);
-
                 Context.SaveChanges();
             }
 //#endif
             _collections ??= new List<Collection>();
-            _words = Context.Words.OrderBy(x => x.Text).ToList();
+            _words = Context.Words.ToList();
 
             MainPage = new MDPage();
         }

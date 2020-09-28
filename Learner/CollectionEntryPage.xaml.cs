@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using Learner.Models;
 using Learner.ViewModels;
 using Xamarin.Forms;
@@ -23,12 +26,23 @@ namespace Learner
 
             Title = "Collection adding";
 
-            _words = CastCollection(App._words);
+            _words = CollectionWordViewModel.CastCollection(App._words.OrderBy(t => t.Text));
 
             _words[0].IsSelected = true;
 
             colView.ItemsSource = _words;
+
+            InitializeCheckboxes();
         }
+
+        /*
+         * Короче, Меченый, я тебя спас и в благородство играть не буду: выполнишь для меня пару заданий — и мы в расчете. 
+         * Заодно посмотрим, как быстро у тебя башка после амнезии прояснится. А по твоей теме постараюсь разузнать. 
+         * Хрен его знает, на кой ляд тебе этот Чеклист сдался, но я в чужие дела не лезу, хочешь сделать, значит есть зачем...
+         * 
+         * Чекбоксы вместе с лейблами и биндами генерить циклом
+         * Потом можно по ClassId брать индекс и не ебать мозг
+         */
 
         public CollectionEntryPage(Collection collection)
         {
@@ -36,14 +50,14 @@ namespace Learner
 
             Title = "Collection editing";
 
-            _collection = App.Context.Collections.FirstOrDefault(x => x.Id == collection.Id); //look at param source
+            //works slow!
+            _collection = App.Context.Collections.FirstOrDefault(x => x.Id == collection.Id); //look at param source 
 
             isEditing = true;
 
             var item = new ToolbarItem { Text = "🗑" };
 
             item.Clicked += OnDeleteClicked;
-
 
             ToolbarItems.Add(item);
 
@@ -57,15 +71,32 @@ namespace Learner
                 _words.Add(new CollectionWordViewModel { IsSelected = true, Item = i });
             }
 
-            _words.AddRange(CastCollection(App._words.Except(collection.Words).ToList()));
+            _words.AddRange(CollectionWordViewModel.CastCollection(App._words.Except(collection.Words)));
 
-            colView.ItemsSource = _words;
+            colView.ItemsSource = _words.OrderBy(t => t.Item.Text);
+
+            InitializeCheckboxes();
         }
 
-        protected override void OnAppearing()
+        void InitializeCheckboxes()
         {
-            base.OnAppearing();
-            //collectionName.Focus();
+            colView.ItemTemplate = new DataTemplate(() =>
+            {
+                Grid grid = new Grid();
+                grid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Star });
+                grid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Star });
+
+                var c = new CheckBox { ClassId = "", Color = Color.FromHex("#1976D2") };
+                c.CheckedChanged += CheckBox_CheckedChanged;
+                c.SetBinding(CheckBox.IsCheckedProperty, "IsSelected");
+                c.SetBinding(CheckBox.ClassIdProperty, "Item.Id");
+                grid.Children.Add(c);
+                var l = new Label();
+                l.SetBinding(Label.TextProperty, "Item.Text");
+                grid.Children.Add(l, 1, 0);
+
+                return grid;
+            });
         }
 
         async void OnSaveButtonClicked(object sender, EventArgs e)
@@ -86,7 +117,7 @@ namespace Learner
                 };
             }
 
-            _collection.Words = CastCollection(_words.Where(x => x.IsSelected).ToList());
+            _collection.Words = CollectionWordViewModel.CastCollection(_words.Where(x => x.IsSelected));
 
 
             if (isEditing)
@@ -105,11 +136,14 @@ namespace Learner
 
         async void OnDeleteClicked(object sender, EventArgs e)
         {
-            using var db = new Infrastruction.ApplicationContext(App._dbPath);
+            var result = await DisplayAlert("Delete this item?", "This is permanent and cannot be undome.", "Delete", "Cancel");
 
-            db.Collections.Remove(_collection);
+            if (!result)
+                return;
 
-            await db.SaveChangesAsync();
+            App.Context.Collections.Remove(_collection);
+
+            await App.Context.SaveChangesAsync();
 
             await Navigation.PopAsync();
         }
@@ -119,54 +153,14 @@ namespace Learner
             await Navigation.PopAsync();
         }
 
-        void LabelCheckBox_CheckedChanged(System.Object sender, Xamarin.Forms.CheckedChangedEventArgs e)
+        void CheckBox_CheckedChanged(System.Object sender, Xamarin.Forms.CheckedChangedEventArgs e)
         {
-            var checkBox = sender as CheckBox;
+            var id = (sender as CheckBox).ClassId;
 
-            /*var item = App._words.FirstOrDefault(x => x.Text == checkBox.Text);
-            colView.SelectedItem = 
-            if (checkBox.IsChecked && item != null && _collection.Words.Any(x => x.Text == checkBox.Text))
-            */
+            var result = _words.FirstOrDefault(x => x.Item.Id.ToString() == id);
+
+            if (result != null)
+                result.IsSelected = (sender as CheckBox).IsChecked;
         }
-
-        void colView_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            var item = sender as CheckBox;
-        }
-
-        List<CollectionWordViewModel> CastCollection(List<Word> words)
-        {
-            var list = new List<CollectionWordViewModel>();
-
-            foreach (var word in words)
-            {
-                list.Add(
-                    new CollectionWordViewModel { Item = word });
-            }
-
-            return list;
-        }
-
-        List<Word> CastCollection(List<CollectionWordViewModel> words)
-        {
-            var list = new List<Word>();
-
-            foreach (var word in words)
-            {
-                list.Add(word.Item);
-            }
-
-            return list;
-        }
-    }
-
-
-    public class CollectionWordViewModel : INotifyPropertyChanged
-    {
-        public Word Item { get; set; }
-
-        public bool IsSelected { get; set; }
-
-        public event PropertyChangedEventHandler PropertyChanged;
     }
 }

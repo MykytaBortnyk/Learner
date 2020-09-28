@@ -13,6 +13,8 @@ namespace Learner
         public MainPage()
         {
             InitializeComponent();
+
+            collectionView.ItemsSource = App._words.OrderBy(c => c.Text);
 #if DEBUG
             ToolbarItem item = new ToolbarItem { Text = "Remove Db", Order = ToolbarItemOrder.Secondary };
             this.ToolbarItems.Add(item);
@@ -33,7 +35,12 @@ namespace Learner
                 "Word (A-Z)", "Word (Z-A)",
                 "Transcription (A-Z)", "Transcription (Z-A)",
                 "Translation (A-Z)", "Translation (Z-A)",
-                "Language (A-Z)", "Language (Z-A)");
+#if DEBUG
+                "Id (A-Z)", "Id (Z-A)"
+#endif
+                "Language (A-Z)", "Language (Z-A)"
+
+);
 
             switch (result)
             {
@@ -46,19 +53,19 @@ namespace Learner
                     break;
 
                 case "Transcription (A-Z)":
-                    collectionView.ItemsSource = App._words.OrderBy(x => x.Transcription).ThenBy(x => x.Text);
+                    collectionView.ItemsSource = App._words.OrderBy(x => x.Transcription);
                     break;
 
                 case "Transcription (Z-A)":
-                    collectionView.ItemsSource = App._words.OrderByDescending(x => x.Transcription).ThenBy(x => x.Text);
+                    collectionView.ItemsSource = App._words.OrderByDescending(x => x.Transcription);
                     break;
 
                 case "Translation (A-Z)":
-                    collectionView.ItemsSource = App._words.OrderBy(x => x.Translation).ThenBy(x => x.Text);
+                    collectionView.ItemsSource = App._words.OrderBy(x => x.Translation);
                     break;
 
                 case "Translation (Z-A)":
-                    collectionView.ItemsSource = App._words.OrderByDescending(x => x.Translation).ThenBy(x => x.Text);
+                    collectionView.ItemsSource = App._words.OrderByDescending(x => x.Translation);
                     break;
 
                 case "Language (A-Z)":
@@ -68,6 +75,15 @@ namespace Learner
                 case "Language (Z-A)":
                     collectionView.ItemsSource = App._words.OrderByDescending(x => x.Language).ThenBy(x => x.Text);
                     break;
+#if DEBUG
+                case "Id (A-Z)":
+                    collectionView.ItemsSource = App._words.OrderBy(x => x.Id);
+                    break;
+
+                case "Id (Z-A)":
+                    collectionView.ItemsSource = App._words.OrderByDescending(x => x.Id).ThenBy(x => x.Text);
+                    break;
+#endif
             }
         }
 
@@ -91,7 +107,6 @@ namespace Learner
         protected override void OnAppearing()
         {
             base.OnAppearing();
-            collectionView.ItemsSource = App._words;
 
             if (App._words.Count == 0)
                 label.IsVisible = true;

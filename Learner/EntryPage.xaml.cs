@@ -72,7 +72,9 @@ namespace Learner
                 var col = App._collections.FirstOrDefault(x =>
                     x.Name == picker.ItemsSource[picker.SelectedIndex].ToString());
 
-                col.Words.Add(word);
+                col.Words.ToList()
+                         .Add(word);
+
                 var result = App.Context.Collections.Update(col);
             }
 
@@ -97,8 +99,6 @@ namespace Learner
 
         async void OnDeleteClicked(object sender, EventArgs e)
         {
-            using var db = new Infrastruction.ApplicationContext(App._dbPath);
-
             var result = await DisplayAlert("Delete this item?", "This is permanent and cannot be undome.", "Delete", "Cancel");
 
             if (!result)

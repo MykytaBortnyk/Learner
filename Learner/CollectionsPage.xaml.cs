@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Learner.Models;
 using Xamarin.Forms;
 
@@ -37,10 +38,77 @@ namespace Learner
 
         async void OnSortClicked(object sender, EventArgs e)
         {
+            var result = await DisplayActionSheet(
+                "Sort by:", "Cancel", null,
+                "Word (A-Z)", "Word (Z-A)",
+                "Transcription (A-Z)", "Transcription (Z-A)",
+                "Translation (A-Z)", "Translation (Z-A)",
+#if DEBUG
+                "Id (A-Z)", "Id (Z-A)"
+#endif
+                "Language (A-Z)", "Language (Z-A)"
+);
+
+            switch (result)
+            {
+                default:
+                    collectionView.ItemsSource = App._collections.OrderBy(x => x.Name);
+                    break;
+
+                case "Word (Z-A)":
+                    collectionView.ItemsSource = App._collections.OrderByDescending(x => x.Name);
+                    break;
+
+                case "Language (A-Z)":
+                    collectionView.ItemsSource = App._collections.OrderBy(x => x.Language).ThenBy(x => x.Name);
+                    break;
+
+                case "Language (Z-A)":
+                    collectionView.ItemsSource = App._collections.OrderByDescending(x => x.Language).ThenBy(x => x.Name);
+                    break;
+#if DEBUG
+                case "Id (A-Z)":
+                    collectionView.ItemsSource = App._collections.OrderBy(x => x.Id);
+                    break;
+
+                case "Id (Z-A)":
+                    collectionView.ItemsSource = App._collections.OrderByDescending(x => x.Id);
+                    break;
+#endif
+            }
         }
 
         async void OnSearchClicked(object sender, EventArgs e)
         {
+            var result = await DisplayPromptAsync("Search", "Type the word to search", "Find", "Cancel", keyboard: Keyboard.Default);
+
+            if (result == "Cancel")
+                return;
+
+            if (result == null || result == string.Empty)
+            {
+                await DisplayAlert("Alert!", "Word may not be empty!", "Ok");
+                return;
+            }
+
+            var collection = App._collections.FirstOrDefault(x => x.Name.Contains(result));
+
+            //not sure about this
+            collection ??= App._collections.FirstOrDefault(x => x.Language.Contains(result));
+
+            if (collection == null)
+            {
+                await DisplayAlert("Alert!", "Word not found!", "Ok");
+                return;
+            }
+
+            /*
+            There should be animation here
+            Alert is temporary solution
+            */
+
+            await DisplayAlert("", "Found!", "Ok");
+            collectionView.ScrollTo(collection);
         }
     }
 }
