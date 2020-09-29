@@ -32,11 +32,11 @@ namespace Learner
         {
             InitializeComponent();
 
-//#if DEBUG
+#if DEBUG
             File.Delete(_dbPath);
             Context.Database.EnsureDeleted();
             Console.WriteLine(File.Exists(_dbPath));
-//#endif
+#endif
             // Ensure database is created
             Context.Database.EnsureCreated();
 //#if DEBUG

@@ -14,12 +14,25 @@ namespace Learner
         {
             InitializeComponent();
 
-            collectionView.ItemsSource = App._words.OrderBy(c => c.Text);
 #if DEBUG
             ToolbarItem item = new ToolbarItem { Text = "Remove Db", Order = ToolbarItemOrder.Secondary };
             this.ToolbarItems.Add(item);
             item.Clicked += OnRemoveDbClicked;
 #endif
+        }
+
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+
+            if (App._words.Count == 0)
+                label.IsVisible = true;
+            else
+                label.IsVisible = false;
+
+            collectionView.ItemsSource = App._words.OrderBy(c => c.Text);
+
+            collectionView.SelectedItem = null;
         }
 
         async void OnWordAddClicked(object sender, EventArgs e)
@@ -36,7 +49,7 @@ namespace Learner
                 "Transcription (A-Z)", "Transcription (Z-A)",
                 "Translation (A-Z)", "Translation (Z-A)",
 #if DEBUG
-                "Id (A-Z)", "Id (Z-A)"
+                "Id (A-Z)", "Id (Z-A)",
 #endif
                 "Language (A-Z)", "Language (Z-A)"
 
@@ -104,17 +117,6 @@ namespace Learner
             }
         }
 #endif
-        protected override void OnAppearing()
-        {
-            base.OnAppearing();
-
-            if (App._words.Count == 0)
-                label.IsVisible = true;
-            else
-                label.IsVisible = false;
-
-            collectionView.SelectedItem = null;
-        }
 
         async void OnSearchClicked(object sender, EventArgs e)
         {
@@ -127,20 +129,20 @@ namespace Learner
 
             var result = await DisplayPromptAsync("Search", "Type the word to search", "Find", "Cancel", keyboard: Keyboard.Default);
 
-            if (result == "Cancel")
+            if (result == null)
                 return;
 
-            if (result == null || result == string.Empty)
+            if (result == string.Empty)
             {
                 await DisplayAlert("Alert!", "Word may not be empty!", "Ok");
                 return;
             }
-
-            var word = App._words.FirstOrDefault(x => x.Text.Contains(result));
+            result = result.ToLower();
+            var word = App._words.Find(x => x.Text.ToLower().Contains(result));
 
             //not sure about this
-            word ??= App._words.FirstOrDefault(x => x.Transcription.Contains(result));
-            word ??= App._words.FirstOrDefault(x => x.Translation.Contains(result));
+            word ??= App._words.Find(x => x.Transcription.ToLower().Contains(result));
+            word ??= App._words.Find(x => x.Translation.ToLower().Contains(result));
 
             if (word == null)
             {

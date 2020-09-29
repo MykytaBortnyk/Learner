@@ -28,8 +28,6 @@ namespace Learner
 
             _words = CollectionWordViewModel.CastCollection(App._words.OrderBy(t => t.Text));
 
-            _words[0].IsSelected = true;
-
             colView.ItemsSource = _words;
 
             InitializeCheckboxes();
@@ -39,9 +37,6 @@ namespace Learner
          * Короче, Меченый, я тебя спас и в благородство играть не буду: выполнишь для меня пару заданий — и мы в расчете. 
          * Заодно посмотрим, как быстро у тебя башка после амнезии прояснится. А по твоей теме постараюсь разузнать. 
          * Хрен его знает, на кой ляд тебе этот Чеклист сдался, но я в чужие дела не лезу, хочешь сделать, значит есть зачем...
-         * 
-         * Чекбоксы вместе с лейблами и биндами генерить циклом
-         * Потом можно по ClassId брать индекс и не ебать мозг
          */
 
         public CollectionEntryPage(Collection collection)
@@ -112,11 +107,12 @@ namespace Learner
                 _collection = new Collection
                 {
                     Id = Guid.NewGuid(),
-                    Name = collectionName.Text,
-                    Language = picker1.SelectedItem.ToString()
                 };
             }
 
+
+            _collection.Name = collectionName.Text;
+            _collection.Language = picker1.SelectedItem.ToString();
             _collection.Words = CollectionWordViewModel.CastCollection(_words.Where(x => x.IsSelected));
 
 
@@ -136,7 +132,7 @@ namespace Learner
 
         async void OnDeleteClicked(object sender, EventArgs e)
         {
-            var result = await DisplayAlert("Delete this item?", "This is permanent and cannot be undome.", "Delete", "Cancel");
+            var result = await DisplayAlert("Delete this item?", "This is permanent and cannot be undone.", "Delete", "Cancel");
 
             if (!result)
                 return;

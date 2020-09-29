@@ -15,6 +15,7 @@ namespace Learner
         protected override void OnAppearing()
         {
             base.OnAppearing();
+
             collectionView.ItemsSource = App._collections;
 
             if (App._collections.Count == 0)
@@ -40,11 +41,9 @@ namespace Learner
         {
             var result = await DisplayActionSheet(
                 "Sort by:", "Cancel", null,
-                "Word (A-Z)", "Word (Z-A)",
-                "Transcription (A-Z)", "Transcription (Z-A)",
-                "Translation (A-Z)", "Translation (Z-A)",
+                "Name (A-Z)", "Name (Z-A)",
 #if DEBUG
-                "Id (A-Z)", "Id (Z-A)"
+                "Id (A-Z)", "Id (Z-A)",
 #endif
                 "Language (A-Z)", "Language (Z-A)"
 );
@@ -55,7 +54,7 @@ namespace Learner
                     collectionView.ItemsSource = App._collections.OrderBy(x => x.Name);
                     break;
 
-                case "Word (Z-A)":
+                case "Name (Z-A)":
                     collectionView.ItemsSource = App._collections.OrderByDescending(x => x.Name);
                     break;
 
@@ -82,19 +81,21 @@ namespace Learner
         {
             var result = await DisplayPromptAsync("Search", "Type the word to search", "Find", "Cancel", keyboard: Keyboard.Default);
 
-            if (result == "Cancel")
+            if (result == null)
                 return;
 
-            if (result == null || result == string.Empty)
+            if (result == string.Empty)
             {
                 await DisplayAlert("Alert!", "Word may not be empty!", "Ok");
                 return;
             }
 
-            var collection = App._collections.FirstOrDefault(x => x.Name.Contains(result));
+            result = result.ToLower();
+
+            var collection = App._collections.Find(c => c.Name.ToLower().Contains(result)); //App._collections.FirstOrDefault(x => x.Name.Contains(result));
 
             //not sure about this
-            collection ??= App._collections.FirstOrDefault(x => x.Language.Contains(result));
+            collection ??= App._collections.Find(x => x.Language.ToLower().Contains(result));
 
             if (collection == null)
             {

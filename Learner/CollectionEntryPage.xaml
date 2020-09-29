@@ -37,7 +37,7 @@
             <CollectionView x:Name="colView"
                             Grid.ColumnSpan="2"
                             Grid.Row="2"
-                            SelectionMode="Multiple">
+                            SelectionMode="None">
                 <!--<CollectionView.ItemTemplate>
                     <DataTemplate>
                         <Grid x:FieldModifier="Public"

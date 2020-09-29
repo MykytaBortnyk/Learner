@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Learner.Models;
+using Microsoft.EntityFrameworkCore;
 using Xamarin.Forms;
 
 namespace Learner
@@ -54,37 +55,44 @@ namespace Learner
                 return;
             }
 
-
-            //looks strange 
-            var word = new Word
-            {
-                Id = isEditing == false ? Guid.NewGuid() : _word.Id,
-                Text = wordText.Text,
-                Transcription = transcription.Text,
-                Translation = translation.Text,
-                Language = picker1.SelectedItem.ToString()
-            };
-
             var picker = stackLayout.Children.FirstOrDefault(x => x.ClassId == "picker2") as Picker;
 
-            if (picker.SelectedIndex != -1)
+            if (_word == null)
             {
-                var col = App._collections.FirstOrDefault(x =>
-                    x.Name == picker.ItemsSource[picker.SelectedIndex].ToString());
-
-                col.Words.ToList()
-                         .Add(word);
-
-                var result = App.Context.Collections.Update(col);
+                _word = new Word
+                {
+                    Id = Guid.NewGuid(),
+                };
             }
+
+            _word.Text = wordText.Text;
+            _word.Transcription = transcription.Text;
+            _word.Translation = translation.Text;
+            _word.Language = picker1.SelectedItem.ToString();
 
             if (isEditing)
             {
-                App.Context.Words.Update(word);
+                App.Context.Words.Update(_word);
             }
             else
             {
-                App.Context.Add(word);
+                App.Context.Add(_word);
+            }
+
+            if (picker != null)
+            {
+                if (picker.SelectedIndex != -1)
+                {
+                    var col = await App.Context.Collections.FirstOrDefaultAsync(x =>
+                        x.Name == picker.ItemsSource[picker.SelectedIndex].ToString());
+
+                    if (col != null)
+                    {
+                        col.Words.Add(_word);
+
+                        var result = App.Context.Collections.Update(col);
+                    }
+                }
             }
 
             await App.Context.SaveChangesAsync();
@@ -99,7 +107,7 @@ namespace Learner
 
         async void OnDeleteClicked(object sender, EventArgs e)
         {
-            var result = await DisplayAlert("Delete this item?", "This is permanent and cannot be undome.", "Delete", "Cancel");
+            var result = await DisplayAlert("Delete this item?", "This is permanent and cannot be undone.", "Delete", "Cancel");
 
             if (!result)
                 return;
