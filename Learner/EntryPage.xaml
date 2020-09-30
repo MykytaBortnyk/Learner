@@ -17,34 +17,37 @@
         </Style>
     </ContentPage.Resources>
     <ContentPage.Content>
-        <StackLayout Margin="15">
-            <Entry IsSpellCheckEnabled="true"
+        <ScrollView>
+            <StackLayout Margin="15, 15, 15, 15"
+                     x:Name="stackLayout">
+                <Entry IsSpellCheckEnabled="true"
                    IsTextPredictionEnabled="true"
                    x:Name="wordText"
                    Placeholder="Word"/>
-            <Entry x:Name="transcription"
-                   Placeholder="Transcription"/>
-            <Entry IsSpellCheckEnabled="true"
+                <Entry x:Name="transcription"
+                   Placeholder="Transcription (optional)"/>
+                <Entry IsSpellCheckEnabled="true"
                    IsTextPredictionEnabled="true"
                    x:Name="translation"
                    Placeholder="Translation"/>
-            <Picker Title="Language"
+                <Picker Title="Language"
                     x:Name="picker1">
-                <Picker.ItemsSource>
-                    <x:Array Type="{x:Type x:String}">
-                        <x:String>English</x:String>
-                        <x:String>Japanese</x:String>
-                    </x:Array>
-                </Picker.ItemsSource>
-            </Picker>
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-                <Button Text="Save" Clicked="OnSaveButtonClicked"/>
-                <Button Grid.Column="1" Text="Cancel" Clicked="OnCancelButtonClicked"/>
-            </Grid>
-        </StackLayout>
+                    <Picker.ItemsSource>
+                        <x:Array Type="{x:Type x:String}">
+                            <x:String>English</x:String>
+                            <x:String>Japanese</x:String>
+                        </x:Array>
+                    </Picker.ItemsSource>
+                </Picker>
+                <Grid RowDefinitions="auto">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Button x:Name="button1" Text="Save" Clicked="OnSaveButtonClicked"/>
+                    <Button x:Name="button2" Grid.Column="1" Text="Cancel" Clicked="OnCancelButtonClicked"/>
+                </Grid>
+            </StackLayout>
+        </ScrollView>
     </ContentPage.Content>
 </ContentPage>

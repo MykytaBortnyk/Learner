@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Learner.CollectionEntryPage">
+    <ContentPage.Resources>
+        <Style TargetType="{x:Type Editor}">
+            <Setter Property="BackgroundColor"
+                    Value="{StaticResource AppBackgroundColor}" />
+        </Style>
+        <Style TargetType="Button"
+               ApplyToDerivedTypes="True"
+               CanCascade="True">
+            <Setter Property="FontSize" Value="Medium" />
+            <Setter Property="BackgroundColor" Value="#1976D2" />
+            <Setter Property="TextColor" Value="White" />
+            <Setter Property="CornerRadius" Value="5" />
+        </Style>
+    </ContentPage.Resources>
+    <ContentPage.Content>
+        <Grid Margin="15" RowDefinitions="auto,auto,*,auto">
+            <Entry IsSpellCheckEnabled="true"
+                   IsTextPredictionEnabled="true"
+                   x:Name="collectionName"
+                   Placeholder="Collection name"
+                   Grid.ColumnSpan="2"/>
+            <Picker Title="Language"
+                    x:Name="picker1"
+                    Grid.ColumnSpan="2"
+                    Grid.Row="1">
+                <Picker.ItemsSource>
+                    <x:Array Type="{x:Type x:String}">
+                        <x:String>English</x:String>
+                        <x:String>Japanese</x:String>
+                    </x:Array>
+                </Picker.ItemsSource>
+            </Picker>
+            <CollectionView x:Name="colView"
+                            Grid.ColumnSpan="2"
+                            Grid.Row="2"
+                            SelectionMode="None">
+            </CollectionView>
+            <Button Text="Save"
+                        Grid.Row="3"
+                        Clicked="OnSaveButtonClicked"/>
+            <Button Grid.Column="1"
+                        Grid.Row="3" Text="Cancel"
+                        Clicked="OnCancelButtonClicked" />
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

@@ -26,32 +26,10 @@ namespace Learner
             });
             masterPageItems.Add(new MasterPageItem
             {
-                Title = "Colections",
+                Title = "Collections",
                 IconSource = "baseline_style_black_18dp.png",
-                TargetType = typeof(MainPage)
+                TargetType = typeof(CollectionsPage)
             });
-
-            /*MenuItemsListView = new ListView
-            {
-                ItemsSource = masterPageItems,
-                ItemTemplate = new DataTemplate(() =>
-                {
-                    var grid = new Grid { Padding = new Thickness(5, 10) };
-                    grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(30) });
-                    grid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Star });
-
-                    var image = new Image();
-                    image.SetBinding(Image.SourceProperty, "IconSource");
-                    var label = new Label { VerticalOptions = LayoutOptions.FillAndExpand };
-                    label.SetBinding(Label.TextProperty, "Title");
-
-                    grid.Children.Add(image);
-                    grid.Children.Add(label, 1, 0);
-
-                    return new ViewCell { View = grid };
-                }),
-                SeparatorVisibility = SeparatorVisibility.None
-            };*/
 
             MenuItemsListView.ItemsSource = masterPageItems;
 

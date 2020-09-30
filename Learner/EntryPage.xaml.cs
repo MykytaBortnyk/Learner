@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
-using System.Collections.Generic;
 using Learner.Models;
+using Microsoft.EntityFrameworkCore;
 using Xamarin.Forms;
 
 namespace Learner
@@ -11,15 +11,33 @@ namespace Learner
         private Word _word;
 
         private bool isEditing = false;
+        private double width;
+        private double height;
 
         public EntryPage()
         {
             InitializeComponent();
+
+            Title = "Word adding";
+
+            if (App._collections != null && App._collections.Count > 0)
+            {
+                var control = new Picker
+                {
+                    Title = "Collection",
+                    ItemsSource = App._collections.Select(x => x.Name).ToList(),
+                    ClassId = "picker2"
+                };
+                stackLayout.Children.Insert(4, control);
+            }
         }
 
         public EntryPage(Word word)
         {
             InitializeComponent();
+
+            Title = "Word editing";
+
             _word = word;
             wordText.Text = word.Text;
             transcription.Text = word.Transcription;
@@ -39,27 +57,47 @@ namespace Learner
                 return;
             }
 
-            var word = new Word
-            {
-                Id = isEditing == false ? Guid.NewGuid() : _word.Id,
-                Text = wordText.Text,
-                Transcription = transcription.Text,
-                Translation = translation.Text,
-                Language = picker1.SelectedItem.ToString()
-            };
+            var picker = stackLayout.Children.FirstOrDefault(x => x.ClassId == "picker2") as Picker;
 
-            using var db = new Infrastruction.ApplicationContext(App._dbPath);
+            if (_word == null)
+            {
+                _word = new Word
+                {
+                    Id = Guid.NewGuid(),
+                };
+            }
+
+            _word.Text = wordText.Text;
+            _word.Transcription = transcription.Text;
+            _word.Translation = translation.Text;
+            _word.Language = picker1.SelectedItem.ToString();
 
             if (isEditing)
             {
-                db.Words.Update(word);
+                App.Context.Words.Update(_word);
             }
             else
             {
-                db.Add(word);
+                App.Context.Add(_word);
             }
 
-            await db.SaveChangesAsync();
+            if (picker != null)
+            {
+                if (picker.SelectedIndex != -1)
+                {
+                    var col = await App.Context.Collections.FirstOrDefaultAsync(x =>
+                        x.Name == picker.ItemsSource[picker.SelectedIndex].ToString());
+
+                    if (col != null)
+                    {
+                        col.Words.Add(_word);
+
+                        var result = App.Context.Collections.Update(col);
+                    }
+                }
+            }
+
+            await App.Context.SaveChangesAsync();
 
             await Navigation.PopAsync();
         }
@@ -71,11 +109,14 @@ namespace Learner
 
         async void OnDeleteClicked(object sender, EventArgs e)
         {
-            using var db = new Infrastruction.ApplicationContext(App._dbPath);
+            var result = await DisplayAlert("Delete this item?", "This is permanent and cannot be undone.", "Delete", "Cancel");
 
-            db.Words.Remove(_word);
+            if (!result)
+                return;
 
-            await db.SaveChangesAsync();
+            App.Context.Words.Remove(_word);
+
+            await App.Context.SaveChangesAsync();
 
             await Navigation.PopAsync();
         }
@@ -83,7 +124,36 @@ namespace Learner
         protected override void OnAppearing()
         {
             base.OnAppearing();
-            wordText.Focus();
+            if(!isEditing)
+                wordText.Focus();
+        }
+
+        protected override void OnSizeAllocated(double width, double height)
+        {
+            base.OnSizeAllocated(width, height);
+
+            if (width != this.width || height != this.height)
+            {
+                this.width = width;
+                this.height = height;
+
+                if (width > height) //horizontal
+                {
+                    Grid.SetRow(button2, 0);
+                    Grid.SetColumn(button2, 1);
+
+                    Grid.SetColumnSpan(button1, 1);
+                    Grid.SetColumnSpan(button2, 1);
+                }
+                else
+                {
+                    Grid.SetRow(button2, 1);
+                    Grid.SetColumn(button2, 0);
+
+                    Grid.SetColumnSpan(button1, 2);
+                    Grid.SetColumnSpan(button2, 2);
+                }
+            }
         }
     }
 }

@@ -13,11 +13,26 @@ namespace Learner
         public MainPage()
         {
             InitializeComponent();
+
 #if DEBUG
             ToolbarItem item = new ToolbarItem { Text = "Remove Db", Order = ToolbarItemOrder.Secondary };
             this.ToolbarItems.Add(item);
             item.Clicked += OnRemoveDbClicked;
 #endif
+        }
+
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+
+            if (App._words.Count == 0)
+                label.IsVisible = true;
+            else
+                label.IsVisible = false;
+
+            collectionView.ItemsSource = App._words.OrderBy(c => c.Text);
+
+            collectionView.SelectedItem = null;
         }
 
         async void OnWordAddClicked(object sender, EventArgs e)
@@ -33,7 +48,12 @@ namespace Learner
                 "Word (A-Z)", "Word (Z-A)",
                 "Transcription (A-Z)", "Transcription (Z-A)",
                 "Translation (A-Z)", "Translation (Z-A)",
-                "Language (A-Z)", "Language (Z-A)");
+#if DEBUG
+                "Id (A-Z)", "Id (Z-A)",
+#endif
+                "Language (A-Z)", "Language (Z-A)"
+
+);
 
             switch (result)
             {
@@ -46,19 +66,19 @@ namespace Learner
                     break;
 
                 case "Transcription (A-Z)":
-                    collectionView.ItemsSource = App._words.OrderBy(x => x.Transcription).ThenBy(x => x.Text);
+                    collectionView.ItemsSource = App._words.OrderBy(x => x.Transcription);
                     break;
 
                 case "Transcription (Z-A)":
-                    collectionView.ItemsSource = App._words.OrderByDescending(x => x.Transcription).ThenBy(x => x.Text);
+                    collectionView.ItemsSource = App._words.OrderByDescending(x => x.Transcription);
                     break;
 
                 case "Translation (A-Z)":
-                    collectionView.ItemsSource = App._words.OrderBy(x => x.Translation).ThenBy(x => x.Text);
+                    collectionView.ItemsSource = App._words.OrderBy(x => x.Translation);
                     break;
 
                 case "Translation (Z-A)":
-                    collectionView.ItemsSource = App._words.OrderByDescending(x => x.Translation).ThenBy(x => x.Text);
+                    collectionView.ItemsSource = App._words.OrderByDescending(x => x.Translation);
                     break;
 
                 case "Language (A-Z)":
@@ -68,6 +88,15 @@ namespace Learner
                 case "Language (Z-A)":
                     collectionView.ItemsSource = App._words.OrderByDescending(x => x.Language).ThenBy(x => x.Text);
                     break;
+#if DEBUG
+                case "Id (A-Z)":
+                    collectionView.ItemsSource = App._words.OrderBy(x => x.Id);
+                    break;
+
+                case "Id (Z-A)":
+                    collectionView.ItemsSource = App._words.OrderByDescending(x => x.Id).ThenBy(x => x.Text);
+                    break;
+#endif
             }
         }
 
@@ -76,16 +105,6 @@ namespace Learner
             var selectedItem = (Word)collectionView.SelectedItem;
             if (collectionView.SelectedItem != null) await Navigation.PushAsync(new EntryPage(selectedItem));
         }
-
-        /*async void ToolbarItemClicked(object sender, EventArgs e)
-        {
-            if (App._words.Count < 1)
-            {
-                await DisplayAlert("", "Add more than 10 words to activate the quiz!", "Ok"); //who stole the toast?
-                return;
-            }
-            await Navigation.PushAsync(new QuizPage());
-        }*/
 
 #if DEBUG
         async void OnRemoveDbClicked(object sender, EventArgs e)
@@ -98,25 +117,6 @@ namespace Learner
             }
         }
 #endif
-        protected override void OnAppearing()
-        {
-            base.OnAppearing();
-            collectionView.ItemsSource = App._words;
-
-            var label = new Label { Text = "The word list is empty!", HorizontalOptions = LayoutOptions.Center, ClassId = "zeroWordsLabel"};
-
-            if (App._words.Count == 0)
-                stackLayout.Children.Insert(0, label);
-            else
-            {
-                if (stackLayout.Children[0].ClassId == label.ClassId)
-                {
-                    stackLayout.Children.RemoveAt(0);
-                }
-            }
-
-            collectionView.SelectedItem = null;
-        }
 
         async void OnSearchClicked(object sender, EventArgs e)
         {
@@ -129,17 +129,20 @@ namespace Learner
 
             var result = await DisplayPromptAsync("Search", "Type the word to search", "Find", "Cancel", keyboard: Keyboard.Default);
 
-            if (result == null || result == string.Empty)
+            if (result == null)
+                return;
+
+            if (result == string.Empty)
             {
                 await DisplayAlert("Alert!", "Word may not be empty!", "Ok");
                 return;
             }
-
-            var word = App._words.FirstOrDefault(x => x.Text.Contains(result));
+            result = result.ToLower();
+            var word = App._words.Find(x => x.Text.ToLower().Contains(result));
 
             //not sure about this
-            word ??= App._words.FirstOrDefault(x => x.Transcription.Contains(result));
-            word ??= App._words.FirstOrDefault(x => x.Translation.Contains(result));
+            word ??= App._words.Find(x => x.Transcription.ToLower().Contains(result));
+            word ??= App._words.Find(x => x.Translation.ToLower().Contains(result));
 
             if (word == null)
             {

@@ -1,22 +1,18 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Learner.MainPage"
-             Title="Main page">
+             x:Class="Learner.CollectionsPage"
+             Title="Collections">
     <ContentPage.Resources>
-        <!-- Implicit styles -->
         <Style TargetType="{x:Type ListView}">
             <Setter Property="BackgroundColor"
                     Value="{StaticResource AppBackgroundColor}" />
         </Style>
     </ContentPage.Resources>
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Add new word"
-                     Clicked="OnWordAddClicked"
+        <ToolbarItem Text="Add new collection"
+                     Clicked="OnCollectionAddClicked"
                      Order="Secondary"/>
-        <!--ToolbarItem Text="Quiz"
-                     Clicked="ToolbarItemClicked"
-                     Order="Secondary"/-->
         <ToolbarItem Text="Search"
                      Clicked="OnSearchClicked"
                      Order="Secondary"/>
@@ -25,8 +21,7 @@
                      Order="Secondary"/>
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
-        <StackLayout Margin="15, 0, 0, 0"
-                     x:Name="stackLayout">
+        <StackLayout x:Name="stackLayout">
             <Label x:Name="label"
                    Text="The word list is empty!"
                    HorizontalOptions="Center"/>
@@ -40,20 +35,18 @@
                     <DataTemplate>
                         <Grid>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="0.33*"/>
-                                <ColumnDefinition Width="0.33*"/>
-                                <ColumnDefinition Width="0.33*"/>
+                                <ColumnDefinition Width="0.5*"/>
+                                <ColumnDefinition Width="0.5*"/>
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="35"/>
                             </Grid.RowDefinitions>
-                            <Label Text="{Binding Text}"
+                            <Label Text="{Binding Name}"
+                                   HorizontalTextAlignment="Center"
                                    VerticalOptions="Center"/>
                             <Label Grid.Column="1"
-                                   Text="{Binding Transcription}"
-                                   VerticalOptions="Center"/>
-                            <Label Grid.Column="2"
-                                   Text="{Binding Translation}"
+                                   Text="{Binding Language}"
+                                   HorizontalTextAlignment="Center"
                                    VerticalOptions="Center"/>
                         </Grid>
                     </DataTemplate>

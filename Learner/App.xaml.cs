@@ -14,45 +14,49 @@ namespace Learner
     {
         public static String _dbPath;
 
-        public static List<Word> _words;
+        public static List<Word> _words = new List<Word>();
+
+        public static List<Collection> _collections = new List<Collection>();
+
+        public static readonly ApplicationContext Context;
+
+        static App()
+        {
+            _dbPath = Path.Combine(Environment.GetFolderPath(
+                Environment.SpecialFolder.LocalApplicationData), "Words.db3");
+
+            Context = new ApplicationContext(_dbPath);
+        }
 
         public App() //shit code bellow, it's should be in some fabric, hard IO in ctor is bad practice, but i'll fix this later 
         {
             InitializeComponent();
 
-            _dbPath = Path.Combine(Environment.GetFolderPath(
-                        Environment.SpecialFolder.LocalApplicationData), "Words.db3");
-
-            using var db = new ApplicationContext(_dbPath);
-
-#if DEBUG
-            File.Delete(_dbPath);
-
-            Console.WriteLine(File.Exists(_dbPath));
-#endif
+//#if DEBUG
+            //File.Delete(_dbPath);
+            //Context.Database.EnsureDeleted();
+            //Console.WriteLine(File.Exists(_dbPath));
+//#endif
             // Ensure database is created
-            db.Database.EnsureCreated();
+            Context.Database.EnsureCreated();
 //#if DEBUG
 
-            if (!db.Words.Any())
+            if (!Context.Words.Any())
             {
                 // Insert Data
-                db.AddRange(addWords());
+                Context.AddRange(addWords());
 
-                db.Words.OrderBy(x => x.Text);
-
-                db.SaveChanges();
+                Context.SaveChanges();
             }
-            // Retreive Data
-//#endif
-            _words = db.Words.OrderBy(x => x.Text).ToList();
+            //#endif
 
-            //MainPage = new NavigationPage(new MainPage());
+            _words = Context.Words.ToList();
+            _collections = Context.Collections.ToList();
+
             MainPage = new MDPage();
         }
 
-
-        List<Word> addWords()
+        public static List<Word> addWords()
         {
             var list = new List<Word>();
 

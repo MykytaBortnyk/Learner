@@ -4,6 +4,8 @@
              x:Class="Learner.QuizPage"
              Title="Quiz">
     <ContentPage.ToolbarItems>
+        <ToolbarItem IconImageSource="baseline_music_note_white_18dp.png"
+                     Clicked="OnSpeachClicked"/>
         <ToolbarItem Text="❔"
                      Clicked="OnHelpClicked"/>
     </ContentPage.ToolbarItems>
@@ -24,20 +26,20 @@
         </Style>
     </ContentPage.Resources>
     <ContentPage.Content>
-        <StackLayout Margin="15">
-            <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
-                <Label Text="Points:"/>
-                <Label x:Name="answersLabel"/>
-            </StackLayout>
+        <Grid Margin="15" RowDefinitions="auto, auto, *, auto, auto, auto, auto" x:Name="grid1">
+            <Label Text="Points:" HorizontalOptions="End"/>
+            <Label x:Name="answersLabel" Grid.Column="1" HorizontalOptions="Start"/>
             <Label VerticalOptions="CenterAndExpand"
                    HorizontalOptions="Center"
                    Text="SomeText"
                    Scale="3"
-                   x:Name="label1"/>
-            <Button x:Name="button1"/>
-            <Button x:Name="button2"/>
-            <Button x:Name="button3"/>
-            <Button x:Name="button4"/>
-        </StackLayout>
+                   x:Name="label1"
+                   Grid.Row="2"
+                   Grid.ColumnSpan="2"/>
+            <Button x:Name="button1" Grid.Row="3" Grid.ColumnSpan="2"/>
+            <Button x:Name="button2" Grid.Row="4" Grid.ColumnSpan="2"/>
+            <Button x:Name="button3" Grid.Row="5" Grid.ColumnSpan="2"/>
+            <Button x:Name="button4" Grid.Row="6" Grid.ColumnSpan="2"/>
+        </Grid>
     </ContentPage.Content>
 </ContentPage>
