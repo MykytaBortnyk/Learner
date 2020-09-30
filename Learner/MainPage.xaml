@@ -47,9 +47,14 @@
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="35"/>
                             </Grid.RowDefinitions>
-                            <Label Text="{Binding Text}"/>
-                            <Label Grid.Column="1" Text="{Binding Transcription}"/>
-                            <Label Grid.Column="2"  Text="{Binding Translation}"/>
+                            <Label Text="{Binding Text}"
+                                   VerticalOptions="Center"/>
+                            <Label Grid.Column="1"
+                                   Text="{Binding Transcription}"
+                                   VerticalOptions="Center"/>
+                            <Label Grid.Column="2"
+                                   Text="{Binding Translation}"
+                                   VerticalOptions="Center"/>
                         </Grid>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>

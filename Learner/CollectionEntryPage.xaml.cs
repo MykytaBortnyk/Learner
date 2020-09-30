@@ -87,16 +87,23 @@ namespace Learner
             {
                 Grid grid = new Grid();
                 grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(10, GridUnitType.Star) });
-                grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(90, GridUnitType.Star) });
+                grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(45, GridUnitType.Star) });
+                grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(45, GridUnitType.Star) });
 
                 var c = new CheckBox { ClassId = "", Color = Color.FromHex("#1976D2") };
                 c.CheckedChanged += CheckBox_CheckedChanged;
                 c.SetBinding(CheckBox.IsCheckedProperty, "IsSelected");
                 c.SetBinding(CheckBox.ClassIdProperty, "Item.Id");
                 grid.Children.Add(c);
-                var l = new Label();
+
+                var l = new Label { VerticalOptions = LayoutOptions.Center};
+                var l1 = new Label { VerticalOptions = LayoutOptions.Center };
+
                 l.SetBinding(Label.TextProperty, "Item.Text");
                 grid.Children.Add(l, 1, 0);
+
+                l1.SetBinding(Label.TextProperty, "Item.Translation");
+                grid.Children.Add(l1, 2, 0);
 
                 return grid;
             });

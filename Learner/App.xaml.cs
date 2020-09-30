@@ -50,8 +50,8 @@ namespace Learner
             }
             //#endif
 
-            _words.AddRange(Context.Words);
-            _collections.AddRange(Context.Collections);
+            _words = Context.Words.ToList();
+            _collections = Context.Collections.ToList();
 
             MainPage = new MDPage();
         }

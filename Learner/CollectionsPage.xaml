@@ -42,9 +42,12 @@
                                 <RowDefinition Height="35"/>
                             </Grid.RowDefinitions>
                             <Label Text="{Binding Name}"
-                                   HorizontalTextAlignment="Center"/>
-                            <Label Grid.Column="1" Text="{Binding Language}"
-                                   HorizontalTextAlignment="Center"/>
+                                   HorizontalTextAlignment="Center"
+                                   VerticalOptions="Center"/>
+                            <Label Grid.Column="1"
+                                   Text="{Binding Language}"
+                                   HorizontalTextAlignment="Center"
+                                   VerticalOptions="Center"/>
                         </Grid>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
