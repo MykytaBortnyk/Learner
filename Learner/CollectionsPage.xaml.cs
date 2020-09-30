@@ -99,7 +99,7 @@ namespace Learner
 
             if (collection == null)
             {
-                await DisplayAlert("Alert!", "Word not found!", "Ok");
+                await DisplayAlert("Alert!", "Collection not found!", "Ok");
                 return;
             }
 

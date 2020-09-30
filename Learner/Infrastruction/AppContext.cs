@@ -15,8 +15,6 @@ namespace Learner.Infrastruction
 
         public DbSet<Collection> Collections { get; set; }
 
-        //public DbSet<ManyToMany> CollectionsWords { get; set; }
-
         public ApplicationContext(string databasePath)
         {
             _databasePath = databasePath;
@@ -25,6 +23,14 @@ namespace Learner.Infrastruction
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlite($"Data Source={_databasePath}");
+        }
+
+        public override int SaveChanges()
+        {
+            var result = base.SaveChanges();
+            App._words = Words.ToList();
+            App._collections = Collections.ToList();
+            return result;
         }
 
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)

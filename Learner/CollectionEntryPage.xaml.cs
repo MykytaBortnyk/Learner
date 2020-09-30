@@ -73,13 +73,21 @@ namespace Learner
             InitializeCheckboxes();
         }
 
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+
+            if (!isEditing)
+                collectionName.Focus();
+        }
+
         void InitializeCheckboxes()
         {
             colView.ItemTemplate = new DataTemplate(() =>
             {
                 Grid grid = new Grid();
-                grid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Star });
-                grid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Star });
+                grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(10, GridUnitType.Star) });
+                grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(90, GridUnitType.Star) });
 
                 var c = new CheckBox { ClassId = "", Color = Color.FromHex("#1976D2") };
                 c.CheckedChanged += CheckBox_CheckedChanged;

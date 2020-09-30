@@ -14,9 +14,9 @@ namespace Learner
     {
         public static String _dbPath;
 
-        public static List<Word> _words;
+        public static List<Word> _words = new List<Word>();
 
-        public static List<Collection> _collections;
+        public static List<Collection> _collections = new List<Collection>();
 
         public static readonly ApplicationContext Context;
 
@@ -32,11 +32,11 @@ namespace Learner
         {
             InitializeComponent();
 
-#if DEBUG
-            File.Delete(_dbPath);
-            Context.Database.EnsureDeleted();
-            Console.WriteLine(File.Exists(_dbPath));
-#endif
+//#if DEBUG
+            //File.Delete(_dbPath);
+            //Context.Database.EnsureDeleted();
+            //Console.WriteLine(File.Exists(_dbPath));
+//#endif
             // Ensure database is created
             Context.Database.EnsureCreated();
 //#if DEBUG
@@ -48,9 +48,10 @@ namespace Learner
 
                 Context.SaveChanges();
             }
-//#endif
-            _collections ??= new List<Collection>();
-            _words = Context.Words.ToList();
+            //#endif
+
+            _words.AddRange(Context.Words);
+            _collections.AddRange(Context.Collections);
 
             MainPage = new MDPage();
         }
