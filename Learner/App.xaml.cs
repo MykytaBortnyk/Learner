@@ -12,7 +12,11 @@ namespace Learner
 {
     public partial class App : Application
     {
+        int scores { get; set; }
+
         public static String _dbPath;
+
+        public static int Scores;
 
         public static List<Word> _words = new List<Word>();
 
@@ -48,12 +52,28 @@ namespace Learner
 
                 Context.SaveChanges();
             }
-            //#endif
+//#endif
 
             _words = Context.Words.ToList();
             _collections = Context.Collections.ToList();
 
             MainPage = new MDPage();
+        }
+
+        protected override void OnStart()
+        {
+            base.OnStart();
+
+            if(Properties.ContainsKey(nameof(scores)))
+            {
+                Scores = (int)Properties[nameof(scores)];
+            }
+        }
+
+        protected override void OnSleep()
+        {
+            base.OnSleep();
+            Properties[nameof(scores)] = Scores;
         }
 
         public static List<Word> addWords()

@@ -12,8 +12,6 @@ namespace Learner
     {
         Guid rightButtonId;
 
-        int scores = 10;
-
         String hint;
 
         String answerLocale;
@@ -35,7 +33,7 @@ namespace Learner
 
         void StartQuiz()
         {
-            answersLabel.Text = scores.ToString();
+            answersLabel.Text = App.Scores.ToString();
 
             Button[] buttons = { button1, button2, button3, button4 };
 
@@ -67,7 +65,7 @@ namespace Learner
             if (((Button)sender).Id == rightButtonId)
             {
                 label1.Text = "Success!";
-                scores++;
+                App.Scores++;
             }
             else
                 label1.Text = "Not success";
@@ -119,11 +117,11 @@ namespace Learner
             var answer = await DisplayAlert("", "Use 10 points to show hint?", "Use", "Cancel");
             if (answer)
             {
-                if (scores >= 10)
+                if (App.Scores >= 10)
                 {
-                    scores -= 10;
+                    App.Scores -= 10;
                     await DisplayAlert("", hint, "Close");
-                    answersLabel.Text = scores.ToString();
+                    answersLabel.Text = App.Scores.ToString();
                 }
                 else
                     await DisplayAlert("", "Not enough points!", "Close");
