@@ -25,7 +25,7 @@
                      Order="Secondary"/>
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
-        <StackLayout Margin="15, 0, 0, 0"
+        <StackLayout Padding="15, 0, 15, 0"
                      x:Name="stackLayout">
             <Label x:Name="label"
                    Text="The word list is empty!"

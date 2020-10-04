@@ -29,7 +29,7 @@ namespace Learner
         async void OnCollectionViewSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var selectedItem = (Collection)collectionView.SelectedItem;
-            if (collectionView.SelectedItem != null) await Navigation.PushAsync(new CollectionEntryPage(selectedItem));
+            if (collectionView.SelectedItem != null) await Navigation.PushAsync(new MainPage(selectedItem));
         }
 
         async void OnCollectionAddClicked(object sender, EventArgs e)

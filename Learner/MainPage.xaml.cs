@@ -1,18 +1,21 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Learner.Models;
+using Microsoft.EntityFrameworkCore;
 using Xamarin.Forms;
 
 namespace Learner
 {
     public partial class MainPage : ContentPage
     {
-        bool SortByText = true;
+        Guid collectionId;
 
         public MainPage()
         {
             InitializeComponent();
+            toolbarItem.Clicked += OnWordAddClicked;
 
 #if DEBUG
             ToolbarItem item = new ToolbarItem { Text = "Remove Db", Order = ToolbarItemOrder.Secondary };
@@ -21,16 +24,48 @@ namespace Learner
 #endif
         }
 
-        protected override void OnAppearing()
+        public MainPage(Collection collection)
+        {
+            InitializeComponent();
+
+            collectionView.ItemsSource = collection.Words;
+
+            collectionId = collection.Id;
+
+            Title = collection.Name;
+            
+            toolbarItem.Clicked += async (sender, e) =>
+            {
+                await Navigation.PushAsync(new CollectionEntryPage(collection));
+            };
+
+            toolbarItem.Text = "Edit collection";
+        }
+
+        protected override async void OnAppearing()
         {
             base.OnAppearing();
 
-            if (App._words.Count == 0)
-                label.IsVisible = true;
-            else
-                label.IsVisible = false;
+            var coll = await App.Context.Collections.FirstOrDefaultAsync(c => c.Id == collectionId);
 
-            collectionView.ItemsSource = App._words.OrderBy(c => c.Text);
+            if (coll == null)
+            {
+                if (App._words.Count == 0)
+                    label.IsVisible = true;
+                else
+                    label.IsVisible = false;
+
+                collectionView.ItemsSource = App._words.OrderBy(c => c.Text);
+            }
+            else
+            {
+                if (coll.Words.Count == 0)
+                    label.IsVisible = true;
+                else
+                    label.IsVisible = false;
+
+                collectionView.ItemsSource = coll.Words;
+            }
 
             collectionView.SelectedItem = null;
         }
@@ -51,9 +86,7 @@ namespace Learner
 #if DEBUG
                 "Id (A-Z)", "Id (Z-A)",
 #endif
-                "Language (A-Z)", "Language (Z-A)"
-
-);
+                "Language (A-Z)", "Language (Z-A)");
 
             switch (result)
             {

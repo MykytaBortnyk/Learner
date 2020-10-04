@@ -127,33 +127,5 @@ namespace Learner
             if(!isEditing)
                 wordText.Focus();
         }
-
-        protected override void OnSizeAllocated(double width, double height)
-        {
-            base.OnSizeAllocated(width, height);
-
-            if (width != this.width || height != this.height)
-            {
-                this.width = width;
-                this.height = height;
-
-                if (width > height) //horizontal
-                {
-                    Grid.SetRow(button2, 0);
-                    Grid.SetColumn(button2, 1);
-
-                    Grid.SetColumnSpan(button1, 1);
-                    Grid.SetColumnSpan(button2, 1);
-                }
-                else
-                {
-                    Grid.SetRow(button2, 1);
-                    Grid.SetColumn(button2, 0);
-
-                    Grid.SetColumnSpan(button1, 2);
-                    Grid.SetColumnSpan(button2, 2);
-                }
-            }
-        }
     }
 }
