@@ -13,7 +13,10 @@ namespace Learner
         public MainPage()
         {
             InitializeComponent();
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
 #if DEBUG
             ToolbarItem item = new ToolbarItem { Text = "Remove Db", Order = ToolbarItemOrder.Secondary };
             this.ToolbarItems.Add(item);
@@ -21,7 +24,30 @@ namespace Learner
 #endif
         }
 
+<<<<<<< Updated upstream
         protected override void OnAppearing()
+=======
+        public MainPage(Collection collection)
+        {
+            InitializeComponent();
+
+            collectionView.ItemsSource = collection.Words;
+
+            collectionId = collection.Id;
+
+            Title = collection.Name;
+
+            toolbarItem.Clicked += async (sender, e) =>
+            {
+                await Navigation.PushAsync(new CollectionEntryPage(collection));
+            };
+            toolbarItem.Clicked -= OnWordAddClicked;
+
+            toolbarItem.Text = "Edit collection";
+        }
+
+        protected override async void OnAppearing()
+>>>>>>> Stashed changes
         {
             base.OnAppearing();
 
@@ -33,6 +59,7 @@ namespace Learner
             collectionView.ItemsSource = App._words.OrderBy(c => c.Text);
 
             collectionView.SelectedItem = null;
+            searchBar.Text = string.Empty;
         }
 
         async void OnWordAddClicked(object sender, EventArgs e)
@@ -43,6 +70,8 @@ namespace Learner
         //rework this tomorrow 
         async void OnSortClicked(object sender, EventArgs e)
         {
+            searchBar.Text = string.Empty;
+
             var result = await DisplayActionSheet(
                 "Sort by:", "Cancel", null,
                 "Word (A-Z)", "Word (Z-A)",
@@ -103,7 +132,8 @@ namespace Learner
         async void OnCollectionViewSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var selectedItem = (Word)collectionView.SelectedItem;
-            if (collectionView.SelectedItem != null) await Navigation.PushAsync(new EntryPage(selectedItem));
+            if (selectedItem != null) await Navigation.PushAsync(new EntryPage(selectedItem));
+            searchBar.Text = string.Empty;
         }
 
 #if DEBUG
@@ -118,45 +148,16 @@ namespace Learner
         }
 #endif
 
-        async void OnSearchClicked(object sender, EventArgs e)
+        void searchBar_TextChanged(object sender, EventArgs e)
         {
-            /*
-             * TODO:
-             * 1) Add some anim to show finded item
-             * 2) Extend search by adding more options to search
-             * 3) I'm not sure about search, it wasn't tested
-             */
+            var key = searchBar.Text;
 
-            var result = await DisplayPromptAsync("Search", "Type the word to search", "Find", "Cancel", keyboard: Keyboard.Default);
+            var suggestions =
+                App._collections.FirstOrDefault(c => c.Id == collectionId)?
+                .Words.Where(x => x.Text.ToLower().Contains(key.ToLower())) ??
+                App._words.Where(x => x.Text.ToLower().Contains(key.ToLower()));
 
-            if (result == null)
-                return;
-
-            if (result == string.Empty)
-            {
-                await DisplayAlert("Alert!", "Word may not be empty!", "Ok");
-                return;
-            }
-            result = result.ToLower();
-            var word = App._words.Find(x => x.Text.ToLower().Contains(result));
-
-            //not sure about this
-            word ??= App._words.Find(x => x.Transcription.ToLower().Contains(result));
-            word ??= App._words.Find(x => x.Translation.ToLower().Contains(result));
-
-            if (word == null)
-            {
-                await DisplayAlert("Alert!", "Word not found!", "Ok");
-                return;
-            }
-
-            /*
-            There should be animation here
-            Alert is temporary solution
-            */
-
-            await DisplayAlert("", "Found!", "Ok");
-            collectionView.ScrollTo(word);
+            collectionView.ItemsSource = suggestions.OrderBy(x => x.Text);
         }
     }
 }

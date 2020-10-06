@@ -13,10 +13,8 @@
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="Add new word"
                      Clicked="OnWordAddClicked"
-                     Order="Secondary"/>
-        <!--ToolbarItem Text="Quiz"
-                     Clicked="ToolbarItemClicked"
-                     Order="Secondary"/-->
+                     Order="Secondary"
+                     x:Name="toolbarItem"/>
         <ToolbarItem Text="Search"
                      Clicked="OnSearchClicked"
                      Order="Secondary"/>
@@ -27,6 +25,9 @@
     <ContentPage.Content>
         <StackLayout Margin="15, 0, 0, 0"
                      x:Name="stackLayout">
+            <SearchBar x:Name="searchBar"
+                       Placeholder="Enter the text"
+                       TextChanged="searchBar_TextChanged"/>
             <Label x:Name="label"
                    Text="The word list is empty!"
                    HorizontalOptions="Center"/>

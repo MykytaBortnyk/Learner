@@ -11,8 +11,6 @@ namespace Learner
         private Word _word;
 
         private bool isEditing = false;
-        private double width;
-        private double height;
 
         public EntryPage()
         {
