@@ -16,7 +16,7 @@ namespace Learner
     {
         private Collection _collection;
 
-        private bool isEditing = false;
+        private bool isEditing;
 
         private List<CollectionWordViewModel> _words = new List<CollectionWordViewModel>();
 
@@ -61,9 +61,9 @@ namespace Learner
 
             collectionName.Text = collection.Name;
 
-            foreach (var i in collection.Words)
+            foreach (Word word in collection.Words)
             {
-                _words.Add(new CollectionWordViewModel { IsSelected = true, Item = i });
+                _words.Add(new CollectionWordViewModel { IsSelected = true, Item = word });
             }
 
             _words.AddRange(CollectionWordViewModel.CastCollection(App._words.Except(collection.Words)));
@@ -81,9 +81,7 @@ namespace Learner
                 collectionName.Focus();
         }
 
-        void InitializeCheckboxes()
-        {
-            colView.ItemTemplate = new DataTemplate(() =>
+        void InitializeCheckboxes() => colView.ItemTemplate = new DataTemplate(() =>
             {
                 Grid grid = new Grid();
                 grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(10, GridUnitType.Star) });
@@ -96,7 +94,7 @@ namespace Learner
                 c.SetBinding(CheckBox.ClassIdProperty, "Item.Id");
                 grid.Children.Add(c);
 
-                var l = new Label { VerticalOptions = LayoutOptions.Center};
+                var l = new Label { VerticalOptions = LayoutOptions.Center };
                 var l1 = new Label { VerticalOptions = LayoutOptions.Center };
 
                 l.SetBinding(Label.TextProperty, "Item.Text");
@@ -107,7 +105,6 @@ namespace Learner
 
                 return grid;
             });
-        }
 
         async void OnSaveButtonClicked(object sender, EventArgs e)
         {

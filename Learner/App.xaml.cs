@@ -14,6 +14,8 @@ namespace Learner
     {
         public static String _dbPath;
 
+        public static int Scores;
+
         public static List<Word> _words = new List<Word>();
 
         public static List<Collection> _collections = new List<Collection>();
@@ -48,12 +50,26 @@ namespace Learner
 
                 Context.SaveChanges();
             }
-            //#endif
+//#endif
 
             _words = Context.Words.ToList();
             _collections = Context.Collections.ToList();
 
             MainPage = new MDPage();
+        }
+
+        protected override void OnStart()
+        {
+            base.OnStart();
+            if (!Properties.ContainsKey("scores"))
+                return;
+            Scores = (int)Properties["scores"];
+        }
+
+        protected override void OnSleep()
+        {
+            base.OnSleep();
+            Properties["scores"] = Scores;
         }
 
         public static List<Word> addWords()

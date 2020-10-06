@@ -30,18 +30,12 @@ namespace Learner
         async void OnCollectionViewSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var selectedItem = (Collection)collectionView.SelectedItem;
-<<<<<<< Updated upstream
-            if (collectionView.SelectedItem != null) await Navigation.PushAsync(new CollectionEntryPage(selectedItem));
-=======
+
             if (selectedItem != null) await Navigation.PushAsync(new MainPage(selectedItem));
             searchBar.Text = string.Empty;
->>>>>>> Stashed changes
         }
 
-        async void OnCollectionAddClicked(object sender, EventArgs e)
-        {
-            await Navigation.PushAsync(new CollectionEntryPage());
-        }
+        async void OnCollectionAddClicked(object sender, EventArgs e) => await Navigation.PushAsync(new CollectionEntryPage());
 
         async void OnSortClicked(object sender, EventArgs e)
         {

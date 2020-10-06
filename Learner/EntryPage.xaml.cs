@@ -10,7 +10,7 @@ namespace Learner
     {
         private Word _word;
 
-        private bool isEditing = false;
+        private bool isEditing;
 
         public EntryPage()
         {
@@ -18,16 +18,17 @@ namespace Learner
 
             Title = "Word adding";
 
-            if (App._collections != null && App._collections.Count > 0)
+            if (App._collections == null && App._collections.Count <= 0)
             {
-                var control = new Picker
-                {
-                    Title = "Collection",
-                    ItemsSource = App._collections.Select(x => x.Name).ToList(),
-                    ClassId = "picker2"
-                };
-                stackLayout.Children.Insert(4, control);
+                return;
             }
+            Picker control = new Picker
+            {
+                Title = "Collection",
+                ItemsSource = App._collections.Select(x => x.Name).ToList(),
+                ClassId = "picker2"
+            };
+            stackLayout.Children.Insert(4, control);
         }
 
         public EntryPage(Word word)
@@ -58,12 +59,10 @@ namespace Learner
             var picker = stackLayout.Children.FirstOrDefault(x => x.ClassId == "picker2") as Picker;
 
             if (_word == null)
-            {
-                _word = new Word
+                _word = new Word()
                 {
                     Id = Guid.NewGuid(),
                 };
-            }
 
             _word.Text = wordText.Text;
             _word.Transcription = transcription.Text;
@@ -79,19 +78,16 @@ namespace Learner
                 App.Context.Add(_word);
             }
 
-            if (picker != null)
+            if (picker != null && picker.SelectedIndex != -1)
             {
-                if (picker.SelectedIndex != -1)
+                Collection collection = await App.Context.Collections.FirstOrDefaultAsync(x =>
+                    x.Name == picker.ItemsSource[picker.SelectedIndex].ToString());
+
+                if (collection != null)
                 {
-                    var col = await App.Context.Collections.FirstOrDefaultAsync(x =>
-                        x.Name == picker.ItemsSource[picker.SelectedIndex].ToString());
+                    collection.Words.Add(_word);
 
-                    if (col != null)
-                    {
-                        col.Words.Add(_word);
-
-                        var result = App.Context.Collections.Update(col);
-                    }
+                    App.Context.Collections.Update(collection);
                 }
             }
 
@@ -100,10 +96,7 @@ namespace Learner
             await Navigation.PopAsync();
         }
 
-        async void OnCancelButtonClicked(object sender, EventArgs e)
-        {
-            await Navigation.PopAsync();
-        }
+        async void OnCancelButtonClicked(object sender, EventArgs e) => await Navigation.PopAsync();
 
         async void OnDeleteClicked(object sender, EventArgs e)
         {
@@ -122,36 +115,9 @@ namespace Learner
         protected override void OnAppearing()
         {
             base.OnAppearing();
-            if(!isEditing)
-                wordText.Focus();
-        }
-
-        protected override void OnSizeAllocated(double width, double height)
-        {
-            base.OnSizeAllocated(width, height);
-
-            if (width != this.width || height != this.height)
-            {
-                this.width = width;
-                this.height = height;
-
-                if (width > height) //horizontal
-                {
-                    Grid.SetRow(button2, 0);
-                    Grid.SetColumn(button2, 1);
-
-                    Grid.SetColumnSpan(button1, 1);
-                    Grid.SetColumnSpan(button2, 1);
-                }
-                else
-                {
-                    Grid.SetRow(button2, 1);
-                    Grid.SetColumn(button2, 0);
-
-                    Grid.SetColumnSpan(button1, 2);
-                    Grid.SetColumnSpan(button2, 2);
-                }
-            }
+            if (isEditing)
+                return;
+            wordText.Focus();
         }
     }
 }

@@ -15,15 +15,12 @@
                      Clicked="OnWordAddClicked"
                      Order="Secondary"
                      x:Name="toolbarItem"/>
-        <ToolbarItem Text="Search"
-                     Clicked="OnSearchClicked"
-                     Order="Secondary"/>
         <ToolbarItem Text="Sort By"
                      Clicked="OnSortClicked"
                      Order="Secondary"/>
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
-        <StackLayout Margin="15, 0, 0, 0"
+        <StackLayout Padding="15, 0, 15, 0"
                      x:Name="stackLayout">
             <SearchBar x:Name="searchBar"
                        Placeholder="Enter the text"

@@ -2,21 +2,18 @@
 using System.IO;
 using System.Linq;
 using Learner.Models;
+using Microsoft.EntityFrameworkCore;
 using Xamarin.Forms;
 
 namespace Learner
 {
     public partial class MainPage : ContentPage
     {
-        bool SortByText = true;
+        Guid collectionId;
 
         public MainPage()
         {
             InitializeComponent();
-<<<<<<< Updated upstream
-
-=======
->>>>>>> Stashed changes
 #if DEBUG
             ToolbarItem item = new ToolbarItem { Text = "Remove Db", Order = ToolbarItemOrder.Secondary };
             this.ToolbarItems.Add(item);
@@ -24,9 +21,6 @@ namespace Learner
 #endif
         }
 
-<<<<<<< Updated upstream
-        protected override void OnAppearing()
-=======
         public MainPage(Collection collection)
         {
             InitializeComponent();
@@ -41,33 +35,41 @@ namespace Learner
             {
                 await Navigation.PushAsync(new CollectionEntryPage(collection));
             };
+
             toolbarItem.Clicked -= OnWordAddClicked;
 
             toolbarItem.Text = "Edit collection";
         }
 
         protected override async void OnAppearing()
->>>>>>> Stashed changes
         {
             base.OnAppearing();
 
-            if (App._words.Count == 0)
-                label.IsVisible = true;
-            else
-                label.IsVisible = false;
+            Collection collection = await App.Context.Collections.FirstOrDefaultAsync(c => c.Id == collectionId);
 
-            collectionView.ItemsSource = App._words.OrderBy(c => c.Text);
+            if (collection == null)
+            {
+                if (App._words.Count == 0)
+                    label.IsVisible = true;
+                else
+                    label.IsVisible = false;
+                collectionView.ItemsSource = App._words.OrderBy(c => c.Text);
+            }
+            else
+            {
+                if (collection.Words.Count == 0)
+                    label.IsVisible = true;
+                else
+                    label.IsVisible = false;
+                collectionView.ItemsSource = collection.Words;
+            }
 
             collectionView.SelectedItem = null;
             searchBar.Text = string.Empty;
         }
 
-        async void OnWordAddClicked(object sender, EventArgs e)
-        {
-            await Navigation.PushAsync(new EntryPage());
-        }
+        async void OnWordAddClicked(object sender, EventArgs e) => await Navigation.PushAsync(new EntryPage());
 
-        //rework this tomorrow 
         async void OnSortClicked(object sender, EventArgs e)
         {
             searchBar.Text = string.Empty;
@@ -131,9 +133,21 @@ namespace Learner
 
         async void OnCollectionViewSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var selectedItem = (Word)collectionView.SelectedItem;
+            Word selectedItem = (Word)collectionView.SelectedItem;
             if (selectedItem != null) await Navigation.PushAsync(new EntryPage(selectedItem));
             searchBar.Text = string.Empty;
+        }
+
+        void searchBar_TextChanged(object sender, EventArgs e)
+        {
+            var key = searchBar.Text;
+
+            System.Collections.Generic.IEnumerable<Word> suggestions =
+                App._collections.FirstOrDefault(c => c.Id == collectionId)?
+                .Words.Where(x => x.Text.ToLower().Contains(key.ToLower())) ??
+                App._words.Where(x => x.Text.ToLower().Contains(key.ToLower()));
+
+            collectionView.ItemsSource = suggestions.OrderBy(x => x.Text);
         }
 
 #if DEBUG
@@ -147,17 +161,5 @@ namespace Learner
             }
         }
 #endif
-
-        void searchBar_TextChanged(object sender, EventArgs e)
-        {
-            var key = searchBar.Text;
-
-            var suggestions =
-                App._collections.FirstOrDefault(c => c.Id == collectionId)?
-                .Words.Where(x => x.Text.ToLower().Contains(key.ToLower())) ??
-                App._words.Where(x => x.Text.ToLower().Contains(key.ToLower()));
-
-            collectionView.ItemsSource = suggestions.OrderBy(x => x.Text);
-        }
     }
 }
