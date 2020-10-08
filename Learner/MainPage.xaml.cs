@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -15,8 +15,6 @@ namespace Learner
         public MainPage()
         {
             InitializeComponent();
-            toolbarItem.Clicked += OnWordAddClicked;
-
 #if DEBUG
             ToolbarItem item = new ToolbarItem { Text = "Remove Db", Order = ToolbarItemOrder.Secondary };
             this.ToolbarItems.Add(item);
@@ -33,11 +31,13 @@ namespace Learner
             collectionId = collection.Id;
 
             Title = collection.Name;
-            
+
             toolbarItem.Clicked += async (sender, e) =>
             {
                 await Navigation.PushAsync(new CollectionEntryPage(collection));
             };
+
+            toolbarItem.Clicked -= OnWordAddClicked;
 
             toolbarItem.Text = "Edit collection";
         }
@@ -46,38 +46,35 @@ namespace Learner
         {
             base.OnAppearing();
 
-            var coll = await App.Context.Collections.FirstOrDefaultAsync(c => c.Id == collectionId);
+            Collection collection = await App.Context.Collections.FirstOrDefaultAsync(c => c.Id == collectionId);
 
-            if (coll == null)
+            if (collection == null)
             {
                 if (App._words.Count == 0)
                     label.IsVisible = true;
                 else
                     label.IsVisible = false;
-
                 collectionView.ItemsSource = App._words.OrderBy(c => c.Text);
             }
             else
             {
-                if (coll.Words.Count == 0)
+                if (collection.Words.Count == 0)
                     label.IsVisible = true;
                 else
                     label.IsVisible = false;
-
-                collectionView.ItemsSource = coll.Words;
+                collectionView.ItemsSource = collection.Words;
             }
 
             collectionView.SelectedItem = null;
+            searchBar.Text = string.Empty;
         }
 
-        async void OnWordAddClicked(object sender, EventArgs e)
-        {
-            await Navigation.PushAsync(new EntryPage());
-        }
+        async void OnWordAddClicked(object sender, EventArgs e) => await Navigation.PushAsync(new EntryPage());
 
-        //rework this tomorrow 
         async void OnSortClicked(object sender, EventArgs e)
         {
+            searchBar.Text = string.Empty;
+
             var result = await DisplayActionSheet(
                 "Sort by:", "Cancel", null,
                 "Word (A-Z)", "Word (Z-A)",
@@ -86,7 +83,9 @@ namespace Learner
 #if DEBUG
                 "Id (A-Z)", "Id (Z-A)",
 #endif
-                "Language (A-Z)", "Language (Z-A)");
+                "Language (A-Z)", "Language (Z-A)"
+
+);
 
             switch (result)
             {
@@ -135,8 +134,25 @@ namespace Learner
 
         async void OnCollectionViewSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var selectedItem = (Word)collectionView.SelectedItem;
-            if (collectionView.SelectedItem != null) await Navigation.PushAsync(new EntryPage(selectedItem));
+            Word selectedItem = (Word)collectionView.SelectedItem;
+            if (selectedItem != null) await Navigation.PushAsync(new EntryPage(selectedItem));
+            searchBar.Text = string.Empty;
+        }
+
+        void searchBar_TextChanged(object sender, EventArgs e)
+        {
+            var key = searchBar.Text;
+
+            IEnumerable<Word> suggestions =
+                App._collections.FirstOrDefault(c => c.Id == collectionId)? //first collection with our id, call next step if != null
+                    .Words.Where(x => x.Text.ToLower().Contains(key.ToLower()) //looking for words
+                    || x.Transcription != null && x.Transcription.ToLower().Contains(key.ToLower()) // ?. doesn't works here, so i have to use this nullcheck 
+                    || x.Translation.ToLower().Contains(key.ToLower())) ?? //?? is very helpful, Cap(C)
+                App._words.Where(x => x.Text.ToLower().Contains(key.ToLower()) //this part is only needed for collId == null when we don't looking for words from some collection
+                    || x.Transcription != null && x.Transcription.ToLower().Contains(key.ToLower()) //same as for collection words
+                    || x.Translation.ToLower().Contains(key.ToLower()));
+
+            collectionView.ItemsSource = suggestions.OrderBy(x => x.Text);
         }
 
 #if DEBUG
@@ -150,46 +166,5 @@ namespace Learner
             }
         }
 #endif
-
-        async void OnSearchClicked(object sender, EventArgs e)
-        {
-            /*
-             * TODO:
-             * 1) Add some anim to show finded item
-             * 2) Extend search by adding more options to search
-             * 3) I'm not sure about search, it wasn't tested
-             */
-
-            var result = await DisplayPromptAsync("Search", "Type the word to search", "Find", "Cancel", keyboard: Keyboard.Default);
-
-            if (result == null)
-                return;
-
-            if (result == string.Empty)
-            {
-                await DisplayAlert("Alert!", "Word may not be empty!", "Ok");
-                return;
-            }
-            result = result.ToLower();
-            var word = App._words.Find(x => x.Text.ToLower().Contains(result));
-
-            //not sure about this
-            word ??= App._words.Find(x => x.Transcription.ToLower().Contains(result));
-            word ??= App._words.Find(x => x.Translation.ToLower().Contains(result));
-
-            if (word == null)
-            {
-                await DisplayAlert("Alert!", "Word not found!", "Ok");
-                return;
-            }
-
-            /*
-            There should be animation here
-            Alert is temporary solution
-            */
-
-            await DisplayAlert("", "Found!", "Ok");
-            collectionView.ScrollTo(word);
-        }
     }
 }

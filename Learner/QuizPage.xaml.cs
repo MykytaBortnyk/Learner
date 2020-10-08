@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -12,9 +12,9 @@ namespace Learner
     {
         Guid rightButtonId;
 
-        String hint;
+        string hint;
 
-        String answerLocale;
+        string answerLocale;
 
         private double width;
         private double height;
@@ -35,28 +35,28 @@ namespace Learner
         {
             answersLabel.Text = App.Scores.ToString();
 
-            Button[] buttons = { button1, button2, button3, button4 };
+            Button[] buttonArray = { button1, button2, button3, button4 };
 
             Random rnd = new Random();
-            List<Word> words = new List<Word>();
+            List<Word> wordList = new List<Word>();
 
             //while instead normal roll
-            while (words.Count < 4)
+            while (wordList.Count < 4)
             {
-                var temp = App._words[rnd.Next(App._words.Count)];
+                var word = App._words[rnd.Next(App._words.Count)];
 
-                if (!words.Contains(temp))
+                if (!wordList.Contains(word))
                 {
-                    buttons[words.Count].Text = temp.Translation;
-                    words.Add(temp);
+                    buttonArray[wordList.Count].Text = word.Translation;
+                    wordList.Add(word);
                 }
             }
 
-            var luckyButton = rnd.Next(buttons.Length);
-            rightButtonId = buttons[luckyButton].Id;
-            label1.Text = words[luckyButton].Text;
-            hint = words[luckyButton].Transcription;
-            answerLocale = words[luckyButton].Language;
+            int index = rnd.Next(buttonArray.Length);
+            rightButtonId = buttonArray[index].Id;
+            label1.Text = wordList[index].Text;
+            hint = wordList[index].Transcription;
+            answerLocale = wordList[index].Language;
         }
 
         //cast sender to button and compare the Id property with Id of "right" button
@@ -65,11 +65,10 @@ namespace Learner
             if (((Button)sender).Id == rightButtonId)
             {
                 label1.Text = "Success!";
-                App.Scores++;
+                ++App.Scores;
             }
             else
                 label1.Text = "Not success";
-
             StartQuiz();
         }
 
@@ -114,8 +113,7 @@ namespace Learner
 
         async void OnHelpClicked(object sender, EventArgs e)
         {
-            var answer = await DisplayAlert("", "Use 10 points to show hint?", "Use", "Cancel");
-            if (answer)
+            if (await DisplayAlert("", "Use 10 points to show hint?", "Use", "Cancel")) //check the ! condition
             {
                 if (App.Scores >= 10)
                 {
@@ -128,14 +126,14 @@ namespace Learner
             }
         }
 
-        async void OnSpeachClicked(System.Object sender, System.EventArgs e)
+        async void OnSpeachClicked(object sender, EventArgs e)
         {
             var locales = await TextToSpeech.GetLocalesAsync();
 
             // Grab the first locale
             var locale = locales.FirstOrDefault(x => x.Name.ToLower().Contains(answerLocale.ToLower()));
 
-            var settings = new SpeechOptions()
+            var settings = new SpeechOptions
             {
                 Volume = 1
             };
@@ -143,7 +141,7 @@ namespace Learner
             if (locale != null)
                 settings.Locale = locale;
             
-            await TextToSpeech.SpeakAsync(hint, settings);
+            await TextToSpeech.SpeakAsync(label1.Text, settings);
         }
     }
 }
