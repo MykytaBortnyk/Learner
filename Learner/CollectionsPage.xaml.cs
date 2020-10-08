@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq;
 using Learner.Models;
 using Xamarin.Forms;
@@ -24,23 +24,21 @@ namespace Learner
                 label.IsVisible = false;
 
             collectionView.SelectedItem = null;
-            searchBar.Text = string.Empty;
         }
 
         async void OnCollectionViewSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var selectedItem = (Collection)collectionView.SelectedItem;
-
-            if (selectedItem != null) await Navigation.PushAsync(new MainPage(selectedItem));
-            searchBar.Text = string.Empty;
+            if (collectionView.SelectedItem != null) await Navigation.PushAsync(new MainPage(selectedItem));
         }
 
-        async void OnCollectionAddClicked(object sender, EventArgs e) => await Navigation.PushAsync(new CollectionEntryPage());
+        async void OnCollectionAddClicked(object sender, EventArgs e)
+        {
+            await Navigation.PushAsync(new CollectionEntryPage());
+        }
 
         async void OnSortClicked(object sender, EventArgs e)
         {
-            searchBar.Text = string.Empty;
-
             var result = await DisplayActionSheet(
                 "Sort by:", "Cancel", null,
                 "Name (A-Z)", "Name (Z-A)",
@@ -79,15 +77,39 @@ namespace Learner
             }
         }
 
-        void searchBar_TextChanged(object sender, System.EventArgs e)
+        async void OnSearchClicked(object sender, EventArgs e)
         {
-            var key = searchBar.Text;
+            var result = await DisplayPromptAsync("Search", "Type the word to search", "Find", "Cancel", keyboard: Keyboard.Default);
 
-            var suggestions = App._collections
-                .Where(x => x.Name.ToLower()
-                .Contains(key.ToLower()));
+            if (result == null)
+                return;
 
-            collectionView.ItemsSource = suggestions.OrderBy(x => x.Name);
+            if (result == string.Empty)
+            {
+                await DisplayAlert("Alert!", "Word may not be empty!", "Ok");
+                return;
+            }
+
+            result = result.ToLower();
+
+            var collection = App._collections.Find(c => c.Name.ToLower().Contains(result)); //App._collections.FirstOrDefault(x => x.Name.Contains(result));
+
+            //not sure about this
+            collection ??= App._collections.Find(x => x.Language.ToLower().Contains(result));
+
+            if (collection == null)
+            {
+                await DisplayAlert("Alert!", "Collection not found!", "Ok");
+                return;
+            }
+
+            /*
+            There should be animation here
+            Alert is temporary solution
+            */
+
+            await DisplayAlert("", "Found!", "Ok");
+            collectionView.ScrollTo(collection);
         }
     }
 }
