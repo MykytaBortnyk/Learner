@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
@@ -12,6 +12,8 @@ namespace Learner
 {
     public partial class App : Application
     {
+        int scores { get; set; }
+
         public static String _dbPath;
 
         public static int Scores;
@@ -61,15 +63,17 @@ namespace Learner
         protected override void OnStart()
         {
             base.OnStart();
-            if (!Properties.ContainsKey("scores"))
-                return;
-            Scores = (int)Properties["scores"];
+
+            if(Properties.ContainsKey(nameof(scores)))
+            {
+                Scores = (int)Properties[nameof(scores)];
+            }
         }
 
         protected override void OnSleep()
         {
             base.OnSleep();
-            Properties["scores"] = Scores;
+            Properties[nameof(scores)] = Scores;
         }
 
         public static List<Word> addWords()
