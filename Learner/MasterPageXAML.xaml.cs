@@ -30,11 +30,6 @@ namespace Learner
                 IconSource = "baseline_style_black_18dp.png",
                 TargetType = typeof(CollectionsPage)
             });
-            //masterPageItems.Add(new MasterPageItem
-            //{
-            //    Title = "Settings",
-            //    TargetType = typeof(SettingsPage)
-            //});
 
             MenuItemsListView.ItemsSource = masterPageItems;
 
