@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Learner.Models;
@@ -142,10 +143,14 @@ namespace Learner
         {
             var key = searchBar.Text;
 
-            System.Collections.Generic.IEnumerable<Word> suggestions =
-                App._collections.FirstOrDefault(c => c.Id == collectionId)?
-                .Words.Where(x => x.Text.ToLower().Contains(key.ToLower())) ??
-                App._words.Where(x => x.Text.ToLower().Contains(key.ToLower()));
+            IEnumerable<Word> suggestions =
+                App._collections.FirstOrDefault(c => c.Id == collectionId)? //first collection with our id, call next step if != null
+                    .Words.Where(x => x.Text.ToLower().Contains(key.ToLower()) //looking for words
+                    || x.Transcription != null && x.Transcription.ToLower().Contains(key.ToLower()) // ?. doesn't works here, so i have to use this nullcheck 
+                    || x.Translation.ToLower().Contains(key.ToLower())) ?? //?? is very helpful, Cap(C)
+                App._words.Where(x => x.Text.ToLower().Contains(key.ToLower()) //this part is only needed for collId == null when we don't looking for words from some collection
+                    || x.Transcription != null && x.Transcription.ToLower().Contains(key.ToLower()) //same as for collection words
+                    || x.Translation.ToLower().Contains(key.ToLower()));
 
             collectionView.ItemsSource = suggestions.OrderBy(x => x.Text);
         }

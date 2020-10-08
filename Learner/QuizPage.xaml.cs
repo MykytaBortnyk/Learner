@@ -141,7 +141,7 @@ namespace Learner
             if (locale != null)
                 settings.Locale = locale;
             
-            await TextToSpeech.SpeakAsync(hint, settings);
+            await TextToSpeech.SpeakAsync(label1.Text, settings);
         }
     }
 }

@@ -2,6 +2,7 @@
 using System.Linq;
 using Learner.Models;
 using Microsoft.EntityFrameworkCore;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace Learner
@@ -45,7 +46,18 @@ namespace Learner
             var item = new ToolbarItem { Text = "🗑" };
             item.Clicked += OnDeleteClicked;
             ToolbarItems.Add(item);
+            var item1 = new ToolbarItem { IconImageSource = "baseline_music_note_white_18dp.png" };
+            item1.Clicked += OnSpeachClicked;
+            ToolbarItems.Add(item1);
             picker1.SelectedItem = picker1.Items.FirstOrDefault(x => x == word.Language);
+        }
+
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+            if (isEditing)
+                return;
+            wordText.Focus();
         }
 
         async void OnSaveButtonClicked(object sender, EventArgs e)
@@ -112,12 +124,22 @@ namespace Learner
             await Navigation.PopAsync();
         }
 
-        protected override void OnAppearing()
+        async void OnSpeachClicked(object sender, EventArgs e)
         {
-            base.OnAppearing();
-            if (isEditing)
-                return;
-            wordText.Focus();
+            var locales = await TextToSpeech.GetLocalesAsync();
+
+            // Grab the first locale
+            var locale = locales.FirstOrDefault(x => x.Name.ToLower().Contains(_word.Language.ToLower()));
+
+            var settings = new SpeechOptions
+            {
+                Volume = 1
+            };
+
+            if (locale != null)
+                settings.Locale = locale;
+
+            await TextToSpeech.SpeakAsync(_word.Text, settings);
         }
     }
 }
