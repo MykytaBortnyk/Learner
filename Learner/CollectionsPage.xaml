@@ -13,15 +13,15 @@
         <ToolbarItem Text="Add new collection"
                      Clicked="OnCollectionAddClicked"
                      Order="Secondary"/>
-        <ToolbarItem Text="Search"
-                     Clicked="OnSearchClicked"
-                     Order="Secondary"/>
         <ToolbarItem Text="Sort By"
                      Clicked="OnSortClicked"
                      Order="Secondary"/>
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <StackLayout x:Name="stackLayout">
+            <SearchBar x:Name="searchBar"
+                       Placeholder="Enter the text"
+                       TextChanged="searchBar_TextChanged"/>
             <Label x:Name="label"
                    Text="The word list is empty!"
                    HorizontalOptions="Center"/>
