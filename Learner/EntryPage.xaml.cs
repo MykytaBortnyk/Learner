@@ -1,7 +1,8 @@
-﻿using System;
+using System;
 using System.Linq;
 using Learner.Models;
 using Microsoft.EntityFrameworkCore;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace Learner
@@ -10,9 +11,7 @@ namespace Learner
     {
         private Word _word;
 
-        private bool isEditing = false;
-        private double width;
-        private double height;
+        private bool isEditing;
 
         public EntryPage()
         {
@@ -20,16 +19,17 @@ namespace Learner
 
             Title = "Word adding";
 
-            if (App._collections != null && App._collections.Count > 0)
+            if (App._collections == null && App._collections.Count <= 0)
             {
-                var control = new Picker
-                {
-                    Title = "Collection",
-                    ItemsSource = App._collections.Select(x => x.Name).ToList(),
-                    ClassId = "picker2"
-                };
-                stackLayout.Children.Insert(4, control);
+                return;
             }
+            Picker control = new Picker
+            {
+                Title = "Collection",
+                ItemsSource = App._collections.Select(x => x.Name).ToList(),
+                ClassId = "picker2"
+            };
+            stackLayout.Children.Insert(4, control);
         }
 
         public EntryPage(Word word)
@@ -45,8 +45,19 @@ namespace Learner
             isEditing = true;
             var item = new ToolbarItem { Text = "🗑" };
             item.Clicked += OnDeleteClicked;
+            var item1 = new ToolbarItem { IconImageSource = "baseline_music_note_white_18dp.png" };
+            item1.Clicked += OnSpeachClicked;
+            ToolbarItems.Add(item1);
             ToolbarItems.Add(item);
             picker1.SelectedItem = picker1.Items.FirstOrDefault(x => x == word.Language);
+        }
+
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+            if (isEditing)
+                return;
+            wordText.Focus();
         }
 
         async void OnSaveButtonClicked(object sender, EventArgs e)
@@ -60,12 +71,10 @@ namespace Learner
             var picker = stackLayout.Children.FirstOrDefault(x => x.ClassId == "picker2") as Picker;
 
             if (_word == null)
-            {
-                _word = new Word
+                _word = new Word()
                 {
                     Id = Guid.NewGuid(),
                 };
-            }
 
             _word.Text = wordText.Text;
             _word.Transcription = transcription.Text;
@@ -81,19 +90,16 @@ namespace Learner
                 App.Context.Add(_word);
             }
 
-            if (picker != null)
+            if (picker != null && picker.SelectedIndex != -1)
             {
-                if (picker.SelectedIndex != -1)
+                Collection collection = await App.Context.Collections.FirstOrDefaultAsync(x =>
+                    x.Name == picker.ItemsSource[picker.SelectedIndex].ToString());
+
+                if (collection != null)
                 {
-                    var col = await App.Context.Collections.FirstOrDefaultAsync(x =>
-                        x.Name == picker.ItemsSource[picker.SelectedIndex].ToString());
+                    collection.Words.Add(_word);
 
-                    if (col != null)
-                    {
-                        col.Words.Add(_word);
-
-                        var result = App.Context.Collections.Update(col);
-                    }
+                    App.Context.Collections.Update(collection);
                 }
             }
 
@@ -102,10 +108,7 @@ namespace Learner
             await Navigation.PopAsync();
         }
 
-        async void OnCancelButtonClicked(object sender, EventArgs e)
-        {
-            await Navigation.PopAsync();
-        }
+        async void OnCancelButtonClicked(object sender, EventArgs e) => await Navigation.PopAsync();
 
         async void OnDeleteClicked(object sender, EventArgs e)
         {
@@ -121,11 +124,22 @@ namespace Learner
             await Navigation.PopAsync();
         }
 
-        protected override void OnAppearing()
+        async void OnSpeachClicked(object sender, EventArgs e)
         {
-            base.OnAppearing();
-            if(!isEditing)
-                wordText.Focus();
+            var locales = await TextToSpeech.GetLocalesAsync();
+
+            // Grab the first locale
+            var locale = locales.FirstOrDefault(x => x.Name.ToLower().Contains(_word.Language.ToLower()));
+
+            var settings = new SpeechOptions
+            {
+                Volume = 1
+            };
+
+            if (locale != null)
+                settings.Locale = locale;
+
+            await TextToSpeech.SpeakAsync(_word.Text, settings);
         }
     }
 }
