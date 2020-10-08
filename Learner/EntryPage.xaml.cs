@@ -1,145 +1,93 @@
-﻿using System;
+using System;
 using System.Linq;
 using Learner.Models;
-using Microsoft.EntityFrameworkCore;
-using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace Learner
 {
-    public partial class EntryPage : ContentPage
+    public partial class CollectionsPage : ContentPage
     {
-        private Word _word;
-
-        private bool isEditing;
-
-        public EntryPage()
+        public CollectionsPage()
         {
             InitializeComponent();
-
-            Title = "Word adding";
-
-            if (App._collections == null && App._collections.Count <= 0)
-            {
-                return;
-            }
-            Picker control = new Picker
-            {
-                Title = "Collection",
-                ItemsSource = App._collections.Select(x => x.Name).ToList(),
-                ClassId = "picker2"
-            };
-            stackLayout.Children.Insert(4, control);
-        }
-
-        public EntryPage(Word word)
-        {
-            InitializeComponent();
-
-            Title = "Word editing";
-
-            _word = word;
-            wordText.Text = word.Text;
-            transcription.Text = word.Transcription;
-            translation.Text = word.Translation;
-            isEditing = true;
-            var item = new ToolbarItem { Text = "🗑" };
-            item.Clicked += OnDeleteClicked;
-            ToolbarItems.Add(item);
-            var item1 = new ToolbarItem { IconImageSource = "baseline_music_note_white_18dp.png" };
-            item1.Clicked += OnSpeachClicked;
-            ToolbarItems.Add(item1);
-            picker1.SelectedItem = picker1.Items.FirstOrDefault(x => x == word.Language);
         }
 
         protected override void OnAppearing()
         {
             base.OnAppearing();
-            if (isEditing)
-                return;
-            wordText.Focus();
-        }
 
-        async void OnSaveButtonClicked(object sender, EventArgs e)
-        {
-            if (wordText.Text == null || translation.Text == null || picker1.SelectedIndex == -1)
-            {
-                await DisplayAlert("Alert!", "Fill all the fields!", "Ok");
-                return;
-            }
+            collectionView.ItemsSource = App._collections;
 
-            var picker = stackLayout.Children.FirstOrDefault(x => x.ClassId == "picker2") as Picker;
-
-            if (_word == null)
-                _word = new Word()
-                {
-                    Id = Guid.NewGuid(),
-                };
-
-            _word.Text = wordText.Text;
-            _word.Transcription = transcription.Text;
-            _word.Translation = translation.Text;
-            _word.Language = picker1.SelectedItem.ToString();
-
-            if (isEditing)
-            {
-                App.Context.Words.Update(_word);
-            }
+            if (App._collections.Count == 0)
+                label.IsVisible = true;
             else
-            {
-                App.Context.Add(_word);
-            }
+                label.IsVisible = false;
 
-            if (picker != null && picker.SelectedIndex != -1)
-            {
-                Collection collection = await App.Context.Collections.FirstOrDefaultAsync(x =>
-                    x.Name == picker.ItemsSource[picker.SelectedIndex].ToString());
-
-                if (collection != null)
-                {
-                    collection.Words.Add(_word);
-
-                    App.Context.Collections.Update(collection);
-                }
-            }
-
-            await App.Context.SaveChangesAsync();
-
-            await Navigation.PopAsync();
+            collectionView.SelectedItem = null;
+            searchBar.Text = string.Empty;
         }
 
-        async void OnCancelButtonClicked(object sender, EventArgs e) => await Navigation.PopAsync();
-
-        async void OnDeleteClicked(object sender, EventArgs e)
+        async void OnCollectionViewSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var result = await DisplayAlert("Delete this item?", "This is permanent and cannot be undone.", "Delete", "Cancel");
+            var selectedItem = (Collection)collectionView.SelectedItem;
 
-            if (!result)
-                return;
-
-            App.Context.Words.Remove(_word);
-
-            await App.Context.SaveChangesAsync();
-
-            await Navigation.PopAsync();
+            if (selectedItem != null) await Navigation.PushAsync(new MainPage(selectedItem));
+            searchBar.Text = string.Empty;
         }
 
-        async void OnSpeachClicked(object sender, EventArgs e)
+        async void OnCollectionAddClicked(object sender, EventArgs e) => await Navigation.PushAsync(new CollectionEntryPage());
+
+        async void OnSortClicked(object sender, EventArgs e)
         {
-            var locales = await TextToSpeech.GetLocalesAsync();
+            searchBar.Text = string.Empty;
 
-            // Grab the first locale
-            var locale = locales.FirstOrDefault(x => x.Name.ToLower().Contains(_word.Language.ToLower()));
+            var result = await DisplayActionSheet(
+                "Sort by:", "Cancel", null,
+                "Name (A-Z)", "Name (Z-A)",
+#if DEBUG
+                "Id (A-Z)", "Id (Z-A)",
+#endif
+                "Language (A-Z)", "Language (Z-A)"
+);
 
-            var settings = new SpeechOptions
+            switch (result)
             {
-                Volume = 1
-            };
+                default:
+                    collectionView.ItemsSource = App._collections.OrderBy(x => x.Name);
+                    break;
 
-            if (locale != null)
-                settings.Locale = locale;
+                case "Name (Z-A)":
+                    collectionView.ItemsSource = App._collections.OrderByDescending(x => x.Name);
+                    break;
 
-            await TextToSpeech.SpeakAsync(_word.Text, settings);
+                case "Language (A-Z)":
+                    collectionView.ItemsSource = App._collections.OrderBy(x => x.Language).ThenBy(x => x.Name);
+                    break;
+
+                case "Language (Z-A)":
+                    collectionView.ItemsSource = App._collections.OrderByDescending(x => x.Language).ThenBy(x => x.Name);
+                    break;
+#if DEBUG
+                case "Id (A-Z)":
+                    collectionView.ItemsSource = App._collections.OrderBy(x => x.Id);
+                    break;
+
+                case "Id (Z-A)":
+                    collectionView.ItemsSource = App._collections.OrderByDescending(x => x.Id);
+                    break;
+#endif
+            }
+        }
+
+        void searchBar_TextChanged(object sender, System.EventArgs e)
+        {
+            var key = searchBar.Text;
+
+            var suggestions = App._collections
+                .Where(x => x.Name.ToLower()
+                .Contains(key.ToLower()));
+
+            collectionView.ItemsSource = suggestions.OrderBy(x => x.Name);
         }
     }
 }
