@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using Learner.Models;
 using Microsoft.EntityFrameworkCore;
@@ -45,10 +45,10 @@ namespace Learner
             isEditing = true;
             var item = new ToolbarItem { Text = "🗑" };
             item.Clicked += OnDeleteClicked;
-            ToolbarItems.Add(item);
             var item1 = new ToolbarItem { IconImageSource = "baseline_music_note_white_18dp.png" };
             item1.Clicked += OnSpeachClicked;
             ToolbarItems.Add(item1);
+            ToolbarItems.Add(item);
             picker1.SelectedItem = picker1.Items.FirstOrDefault(x => x == word.Language);
         }
 

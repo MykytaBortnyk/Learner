@@ -18,7 +18,8 @@
     </ContentPage.Resources>
     <ContentPage.Content>
         <ScrollView>
-            <StackLayout Margin="15, 15, 15, 15"
+            <StackLayout Margin="15, 15, 15, 0"
+                         Padding="0,0,0,15"
                      x:Name="stackLayout">
                 <Entry IsSpellCheckEnabled="true"
                    IsTextPredictionEnabled="true"
@@ -40,12 +41,14 @@
                     </Picker.ItemsSource>
                 </Picker>
                 <Grid RowDefinitions="auto">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-                    <Button x:Name="button1" Text="Save" Clicked="OnSaveButtonClicked"/>
-                    <Button x:Name="button2" Grid.Column="1" Text="Cancel" Clicked="OnCancelButtonClicked"/>
+                    <Button x:Name="button1"
+                            Text="Save"
+                            Clicked="OnSaveButtonClicked"/>
+                    <Button x:Name="button2"
+                            Grid.Column="1"
+                            Grid.Row="0"
+                            Text="Cancel"
+                            Clicked="OnCancelButtonClicked"/>
                 </Grid>
             </StackLayout>
         </ScrollView>

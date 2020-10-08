@@ -88,7 +88,7 @@ namespace Learner
                 grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(45, GridUnitType.Star) });
                 grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(45, GridUnitType.Star) });
 
-                var c = new CheckBox { ClassId = "", Color = Color.FromHex("#1976D2") };
+                var c = new CheckBox { Color = Color.FromHex("#1976D2") };
                 c.CheckedChanged += CheckBox_CheckedChanged;
                 c.SetBinding(CheckBox.IsCheckedProperty, "IsSelected");
                 c.SetBinding(CheckBox.ClassIdProperty, "Item.Id");
