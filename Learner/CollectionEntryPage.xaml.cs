@@ -88,11 +88,11 @@ namespace Learner
                 grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(45, GridUnitType.Star) });
                 grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(45, GridUnitType.Star) });
 
-                var c = new CheckBox { Color = Color.FromHex("#1976D2") };
+                var c = new CheckBox { ClassId = "", Color = Color.FromHex("#1976D2") }; //да тут нужен пустой айди
                 c.CheckedChanged += CheckBox_CheckedChanged;
                 c.SetBinding(CheckBox.IsCheckedProperty, "IsSelected");
-                c.SetBinding(CheckBox.ClassIdProperty, "Item.Id");
-                grid.Children.Add(c);
+                c.SetBinding(CheckBox.ClassIdProperty, "Item.Id"); //даже когда он будет задан здесь
+                grid.Children.Add(c); //потому что здесь он будет == null
 
                 var l = new Label { VerticalOptions = LayoutOptions.Center };
                 var l1 = new Label { VerticalOptions = LayoutOptions.Center };
