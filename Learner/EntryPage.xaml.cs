@@ -7,6 +7,13 @@ using Xamarin.Forms;
 
 namespace Learner
 {
+
+    enum Languages
+    {
+        Eng,
+        Jap
+    }
+
     public partial class EntryPage : ContentPage
     {
         private Word _word;
