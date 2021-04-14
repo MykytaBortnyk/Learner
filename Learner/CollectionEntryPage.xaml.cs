@@ -108,7 +108,7 @@ namespace Learner
 
         async void OnSaveButtonClicked(object sender, EventArgs e)
         {
-            if (collectionName.Text == null || picker1.SelectedIndex == -1) //TODO: collection size checking //ok, which one? 
+            if (collectionName.Text == null || picker1.SelectedIndex == -1)
             {
                 await DisplayAlert("Alert!", "Fill all the fields!", "Ok");
                 return;

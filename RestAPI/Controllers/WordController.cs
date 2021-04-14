@@ -20,9 +20,6 @@ namespace RestAPI.Controllers
         private readonly AppDbContext _context;
         private readonly UserManager<AppUser> _userManager;
 
-
-        //TODO:проверить принадлежность слова
-        //TODO:расширить правки на коллекции
         public WordController(AppDbContext context, UserManager<AppUser> userManager)
         {
             _context = context;
