@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using RestAPI.ViewModels;
 
 namespace RestAPI.Models
 {
@@ -12,6 +14,14 @@ namespace RestAPI.Models
         public Collection()
         {
             Words = new List<Word>();
+        }
+
+        public Collection(CollectionViewModel value, string userId)
+        {
+            Name = value.Name;
+            Language = value.Language;
+            AppUserId = userId;
+            Words = value.Words;
         }
 
         public Guid Id { get; set; }
@@ -29,11 +39,12 @@ namespace RestAPI.Models
         /// <summary>
         /// Навигационное свойство
         /// </summary>
-        public Guid UserId { get; set; }
+        public string AppUserId { get; set; }
 
         /// <summary>
         /// Навигационное свойство
         /// </summary>
+        [ForeignKey("AppUserId")]
         public AppUser AppUser { get; set; }
 
         /// <summary>

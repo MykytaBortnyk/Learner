@@ -404,5 +404,6 @@ ASALocalRun/
 # Local History for Visual Studio
 .localhistory/
 
+[Mm]igrations/
 RestAPI/appsettings.json
-RestAPI.zip
+RestAPI/Migrations/

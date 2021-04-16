@@ -9,6 +9,7 @@ using RestAPI.Data;
 using RestAPI.Interfaces;
 using RestAPI.Models;
 using RestAPI.Services;
+using RestAPI.ViewModels;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -28,15 +29,9 @@ namespace RestAPI.Controllers
 
         // GET: api/values
         [HttpGet]
-        public async Task<IActionResult> Get() =>
-            Ok(
-                   await Task.Run(() =>
-                   {
-                       return (from word in _context.Words
-                               where word.UserId.ToString() == _userManager.GetUserId(User)
-                               select word);
-                   })
-               );
+        public IActionResult Get() =>
+            Ok(_context.Words
+                .Where(w => w.AppUserId == _userManager.GetUserId(User)));
 
         // GET api/values/5
         [HttpGet("{id}")]
@@ -47,37 +42,32 @@ namespace RestAPI.Controllers
                 return BadRequest("Id is null;");
             }
 
-            return Ok(
-                await Task.Run(() =>
-                {
-                    return (from word in _context.Words
-                            where word.UserId.ToString() == _userManager.GetUserId(User)
-                            && word.Id == id
-                            select word);
-                })
-            );
+            return Ok(await Task.Run(() =>
+                _context.Words.Where(x =>
+                x.AppUserId == _userManager.GetUserId(User) &&
+                x.Id == id)
+            ));
         }
 
         // POST api/values
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] Word word)
+        public async Task<IActionResult> Post([FromBody] WordViewModel value)
         {
-            if (ModelState.IsValid && word != null)
+            if (ModelState.IsValid && value != null)
             {
-                var user = _context.Users
+                var user = await _context.Users
                     .Where(u => u.Id == _userManager.GetUserId(User))
                     .Include(w => w.Words)
                     .Include(c => c.Collections)
-                    .First();
+                    .FirstAsync();
 
-                word.UserId = new Guid(_userManager.GetUserId(User));
-                user.Words.Add(word);
+                user.Words.Add(new Word(value, _userManager.GetUserId(User)));
 
                 var result = await _userManager.UpdateAsync(user);
                 //_context.Users.Update(user);
                 if (result.Succeeded)
-                    //await _context.SaveChangesAsync();
-                    return Ok();
+                    await _context.SaveChangesAsync();
+                return Ok();
             }
             return BadRequest();
         }
@@ -86,24 +76,29 @@ namespace RestAPI.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> Put(Guid id, [FromBody] Word value)
         {
-            var word = await _context.Words
-                .FirstOrDefaultAsync(w => w.Id == id &&
-                w.UserId.ToString() == _userManager.GetUserId(User));
-
-            if (word != null)
+            if (ModelState.IsValid && id == value.Id)
             {
-                word = value;
-                _context.Update(word);
-                await _context.SaveChangesAsync();
+                if (await _context.Words.AnyAsync(w => w.Id == id))
+                {
+                    _context.Words.Update(value);
+                    await _context.SaveChangesAsync();
+                    return NoContent();
+                }
+                return BadRequest($"Entity with Id {id} not found;");
             }
-            return BadRequest($"The variable of a {value.GetType()} type is a null;");
+            return BadRequest("Id mismatch or model error;");            
         }
+
 
         // DELETE api/values/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {
-            var word = await _context.Words.FirstOrDefaultAsync(w => w.Id == id);
+            var word = await _context.Words
+                .FirstOrDefaultAsync(w => w.Id == id &&
+                w.AppUserId == _userManager.GetUserId(User)
+            );
+
             if (word != null)
             {
                 _context.Remove(word);

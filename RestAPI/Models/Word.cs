@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using RestAPI.ViewModels;
 
 namespace RestAPI.Models
 {
@@ -10,6 +11,16 @@ namespace RestAPI.Models
     /// </summary>
     public class Word
     {
+        public Word() { }
+        public Word(WordViewModel word, string userId)
+        {
+            Text = word.Text;
+            Transcription = word.Transcription;
+            Translation = word.Transcription;
+            Language = word.Language;
+            AppUserId = userId;
+        }
+
         public Guid Id { get; set; }
 
         /// <summary>
@@ -35,11 +46,12 @@ namespace RestAPI.Models
         /// <summary>
         /// Навигационное свойство
         /// </summary>
-        public Guid UserId { get; set; }
+        public String AppUserId { get; set; }
 
         /// <summary>
         /// Навигационное свойство
         /// </summary>
+        [ForeignKey("AppUserId")]
         public AppUser AppUser { get; set; }
     }
 }

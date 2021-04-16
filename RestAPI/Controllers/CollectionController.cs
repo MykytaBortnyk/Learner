@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RestAPI.Data;
 using RestAPI.Models;
+using RestAPI.ViewModels;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -26,15 +27,9 @@ namespace RestAPI.Controllers
 
         // GET: api/values
         [HttpGet]
-        public async Task<IActionResult> Get() =>
-            Ok(
-                   await Task.Run(() =>
-                   {
-                       return (from collection in _context.Collections
-                               where collection.UserId.ToString() == _userManager.GetUserId(User)
-                               select collection);
-                   })
-               );
+        public IActionResult Get() =>
+            Ok(_context.Collections
+                .Where(w => w.AppUserId == _userManager.GetUserId(User)));
 
         // GET api/values/5
         [HttpGet("{id}")]
@@ -45,36 +40,31 @@ namespace RestAPI.Controllers
                 return BadRequest("Id is null;");
             }
 
-            return Ok(
-                await Task.Run(() =>
-                {
-                    return (from collection in _context.Collections
-                            where collection.UserId.ToString() == _userManager.GetUserId(User)
-                            && collection.Id == id
-                            select collection);
-                })
-            );
+            return Ok(await Task.Run(() =>
+                _context.Collections.Where(x =>
+                x.AppUserId == _userManager.GetUserId(User) &&
+                x.Id == id)
+            ));
         }
 
         // POST api/values
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] Collection collection)
+        public async Task<IActionResult> Post([FromBody] CollectionViewModel value)
         {
-            if (ModelState.IsValid && collection != null)
+            if (ModelState.IsValid && value != null)
             {
-                var user = _context.Users
+                var user = await _context.Users
                     .Where(u => u.Id == _userManager.GetUserId(User))
                     .Include(w => w.Words)
                     .Include(c => c.Collections)
-                    .First();
+                    .FirstAsync();
 
-                collection.UserId = new Guid(_userManager.GetUserId(User));
-                user.Collections.Add(collection);
+                user.Collections.Add(new Collection(value, _userManager.GetUserId(User)));
 
                 var result = await _userManager.UpdateAsync(user);
-                //_context.Users.Update(user);
+
                 if (result.Succeeded)
-                    //await _context.SaveChangesAsync();
+                    await _context.SaveChangesAsync();
                     return Ok();
             }
             return BadRequest();
@@ -84,24 +74,28 @@ namespace RestAPI.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> Put(Guid id, [FromBody] Collection value)
         {
-            var collection = await _context.Collections
-                .FirstOrDefaultAsync(c => c.Id == id &&
-                c.UserId.ToString() == _userManager.GetUserId(User));
-
-            if (collection != null)
+            if (ModelState.IsValid && id == value.Id)
             {
-                collection = value;
-                _context.Update(collection);
-                await _context.SaveChangesAsync();
+                if (await _context.Collections.AnyAsync(w => w.Id == id))
+                {
+                    _context.Collections.Update(value);
+                    await _context.SaveChangesAsync();
+                    return NoContent();
+                }
+                return BadRequest($"The entity with Id {id} not found;");
             }
-            return BadRequest($"The variable of a {value.GetType()} type is a null;");
+            return BadRequest("Id mismatch or model error;");
         }
 
         // DELETE api/values/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {
-            var collection = await _context.Collections.FirstOrDefaultAsync(c => c.Id == id);
+            var collection = await _context.Collections
+                .FirstOrDefaultAsync(w => w.Id == id &&
+                w.AppUserId == _userManager.GetUserId(User)
+                );
+
             if (collection != null)
             {
                 _context.Remove(collection);
