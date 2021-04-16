@@ -407,3 +407,5 @@ ASALocalRun/
 [Mm]igrations/
 RestAPI/appsettings.json
 RestAPI/Migrations/
+RestAPI/Controllers/MicrosoftWebApiControllerExample.txt
+RestAPI/Migrations/AppDbContextModelSnapshot.cs

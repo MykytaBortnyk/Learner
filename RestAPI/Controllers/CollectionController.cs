@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -13,6 +14,7 @@ using RestAPI.ViewModels;
 
 namespace RestAPI.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     public class CollectionController : Controller
     {
@@ -78,7 +80,7 @@ namespace RestAPI.Controllers
             {
                 if (await _context.Collections.AnyAsync(w => w.Id == id))
                 {
-                    _context.Collections.Update(value);
+                    _context.Collections.Update(value); //TODO:check the result
                     await _context.SaveChangesAsync();
                     return NoContent();
                 }
