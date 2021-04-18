@@ -57,18 +57,12 @@ namespace RestAPI.Controllers
         {
             if (ModelState.IsValid && value != null)
             {
-                var user = await _context.Users
-                    .Where(u => u.Id == _userManager.GetUserId(User))
-                    .Include(w => w.Words)
-                    .Include(c => c.Collections)
-                    .FirstAsync();
+                //бля, и нахуя тут юзер был? icq -3 программист даун
+                var newCollection = new Word(value, _userManager.GetUserId(User));
 
-                user.Words.Add(new Word(value, _userManager.GetUserId(User)));
+                await _context.Words.AddAsync(newCollection);
 
-                var result = await _userManager.UpdateAsync(user);
-                //_context.Users.Update(user);
-                if (result.Succeeded)
-                    await _context.SaveChangesAsync();
+                await _context.SaveChangesAsync();
                 return Ok();
             }
             return BadRequest();
@@ -80,17 +74,19 @@ namespace RestAPI.Controllers
         {
             if (ModelState.IsValid && id == value.Id)
             {
-                if (await _context.Words.AnyAsync(w => w.Id == id))
+                var isItemExists = await _context.Words.AnyAsync(w =>
+                                         w.Id == id &&
+                                         w.AppUserId == _userManager.GetUserId(User));
+                if (isItemExists)
                 {
                     _context.Words.Update(value);
                     await _context.SaveChangesAsync();
                     return NoContent();
                 }
-                return BadRequest($"Entity with Id {id} not found;");
+                return BadRequest($"The entity with Id {id} not found;");
             }
             return BadRequest("Id mismatch or model error;");            
         }
-
 
         // DELETE api/values/5
         [HttpDelete("{id}")]

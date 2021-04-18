@@ -11,14 +11,16 @@ namespace RestAPI.Models
     /// </summary>
     public class Word
     {
-        public Word() { }
-        public Word(WordViewModel word, string userId)
+        public Word() { Collections = new List<Collection>(); }
+        public Word(WordViewModel value, string userId)
         {
-            Text = word.Text;
-            Transcription = word.Transcription;
-            Translation = word.Transcription;
-            Language = word.Language;
+            Id = Guid.NewGuid();
+            Text = value.Text;
+            Transcription = value.Transcription;
+            Translation = value.Transcription;
+            Language = value.Language;
             AppUserId = userId;
+            Collections = /*value.Collections ?? */new List<Collection>();
         }
 
         public Guid Id { get; set; }
@@ -53,5 +55,9 @@ namespace RestAPI.Models
         /// </summary>
         [ForeignKey("AppUserId")]
         public AppUser AppUser { get; set; }
+
+        //[ForeignKey("CollectionId")]
+        //public List<Collection> Collections { get; set; }
+        public ICollection<Collection> Collections { get; set; }
     }
 }

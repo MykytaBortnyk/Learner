@@ -19,6 +19,21 @@ namespace RestAPI.Migrations
                 .HasAnnotation("ProductVersion", "5.0.5")
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
+            modelBuilder.Entity("CollectionWord", b =>
+                {
+                    b.Property<Guid>("CollectionsId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("WordsId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("CollectionsId", "WordsId");
+
+                    b.HasIndex("WordsId");
+
+                    b.ToTable("CollectionWord");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")
@@ -228,9 +243,6 @@ namespace RestAPI.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("text");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uuid");
-
                     b.HasKey("Id");
 
                     b.HasIndex("AppUserId");
@@ -247,9 +259,6 @@ namespace RestAPI.Migrations
                     b.Property<string>("AppUserId")
                         .HasColumnType("text");
 
-                    b.Property<Guid?>("CollectionId")
-                        .HasColumnType("uuid");
-
                     b.Property<string>("Language")
                         .HasColumnType("text");
 
@@ -262,16 +271,26 @@ namespace RestAPI.Migrations
                     b.Property<string>("Translation")
                         .HasColumnType("text");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uuid");
-
                     b.HasKey("Id");
 
                     b.HasIndex("AppUserId");
 
-                    b.HasIndex("CollectionId");
-
                     b.ToTable("Words");
+                });
+
+            modelBuilder.Entity("CollectionWord", b =>
+                {
+                    b.HasOne("RestAPI.Models.Collection", null)
+                        .WithMany()
+                        .HasForeignKey("CollectionsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("RestAPI.Models.Word", null)
+                        .WithMany()
+                        .HasForeignKey("WordsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -340,10 +359,6 @@ namespace RestAPI.Migrations
                         .WithMany("Words")
                         .HasForeignKey("AppUserId");
 
-                    b.HasOne("RestAPI.Models.Collection", null)
-                        .WithMany("Words")
-                        .HasForeignKey("CollectionId");
-
                     b.Navigation("AppUser");
                 });
 
@@ -351,11 +366,6 @@ namespace RestAPI.Migrations
                 {
                     b.Navigation("Collections");
 
-                    b.Navigation("Words");
-                });
-
-            modelBuilder.Entity("RestAPI.Models.Collection", b =>
-                {
                     b.Navigation("Words");
                 });
 #pragma warning restore 612, 618

@@ -31,7 +31,7 @@ namespace RestAPI.Controllers
         [HttpGet]
         public IActionResult Get() =>
             Ok(_context.Collections
-                .Where(w => w.AppUserId == _userManager.GetUserId(User)));
+                .Where(w => w.AppUserId == _userManager.GetUserId(User)).Include(e => e.Words));
 
         // GET api/values/5
         [HttpGet("{id}")]
@@ -45,7 +45,7 @@ namespace RestAPI.Controllers
             return Ok(await Task.Run(() =>
                 _context.Collections.Where(x =>
                 x.AppUserId == _userManager.GetUserId(User) &&
-                x.Id == id)
+                x.Id == id).Include(e => e.Words)
             ));
         }
 
@@ -55,19 +55,13 @@ namespace RestAPI.Controllers
         {
             if (ModelState.IsValid && value != null)
             {
-                var user = await _context.Users
-                    .Where(u => u.Id == _userManager.GetUserId(User))
-                    .Include(w => w.Words)
-                    .Include(c => c.Collections)
-                    .FirstAsync();
+                //бля, и нахуя тут юзер был? icq -3 программист даун
+                var newCollection = new Collection(value, _userManager.GetUserId(User));
 
-                user.Collections.Add(new Collection(value, _userManager.GetUserId(User)));
-
-                var result = await _userManager.UpdateAsync(user);
-
-                if (result.Succeeded)
-                    await _context.SaveChangesAsync();
-                    return Ok();
+                await _context.Collections.AddAsync(newCollection);
+                newCollection.Words = value.Words;
+                await _context.SaveChangesAsync();
+                return Ok();
             }
             return BadRequest();
         }
@@ -78,9 +72,19 @@ namespace RestAPI.Controllers
         {
             if (ModelState.IsValid && id == value.Id)
             {
-                if (await _context.Collections.AnyAsync(w => w.Id == id))
+                var isItemExists = await _context.Collections.AnyAsync(w =>
+                                         w.Id == id &&
+                                         w.AppUserId == _userManager.GetUserId(User));
+                if (isItemExists)
                 {
-                    _context.Collections.Update(value); //TODO:check the result
+                    try
+                    {
+                        _context.Collections.Update(value);
+                    }
+                    catch (InvalidOperationException e)
+                    {
+                        return BadRequest($"{e.Message}\nMore then one entity with the same key;");
+                    }
                     await _context.SaveChangesAsync();
                     return NoContent();
                 }
@@ -96,7 +100,7 @@ namespace RestAPI.Controllers
             var collection = await _context.Collections
                 .FirstOrDefaultAsync(w => w.Id == id &&
                 w.AppUserId == _userManager.GetUserId(User)
-                );
+            );
 
             if (collection != null)
             {

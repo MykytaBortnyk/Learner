@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using RestAPI.Models;
+
 namespace RestAPI.ViewModels
 {
     public class WordViewModel
@@ -22,5 +25,10 @@ namespace RestAPI.ViewModels
         /// Временный вариант записи языка, в будущем будет реализован отдельной моделью
         /// </summary>
         public String Language { get; set; }
+
+        /// <summary>
+        /// Навигационное свойство
+        /// </summary>
+        public List<Collection> Collections { get; set; }
     }
 }

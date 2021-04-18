@@ -11,17 +11,15 @@ namespace RestAPI.Models
     /// </summary>
     public class Collection
     {
-        public Collection()
-        {
-            Words = new List<Word>();
-        }
+        public Collection() { Words = new List<Word>(); }
 
         public Collection(CollectionViewModel value, string userId)
         {
+            Id = Guid.NewGuid();
             Name = value.Name;
             Language = value.Language;
             AppUserId = userId;
-            Words = value.Words;
+            Words = /*value.Words ?? */new List<Word>();
         }
 
         public Guid Id { get; set; }
@@ -50,6 +48,8 @@ namespace RestAPI.Models
         /// <summary>
         /// Навигационное свойство
         /// </summary>
-        public List<Word> Words { get; set; }
+        //[ForeignKey("WordId")]
+        //public List<Word> Words { get; set; }
+        public ICollection<Word> Words { get; set; }
     }
 }
