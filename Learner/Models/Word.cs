@@ -17,9 +17,6 @@ namespace Learner.Models
 
         public String Language { get; set; }
 
-        //public Guid CollectionId { get; set; }
-
-        //[ForeignKey("CollectionId")]
-        //public List<Collection> Collections { get; set; }
+        public ICollection<Collection> Collections { get; set; }
     }
 }

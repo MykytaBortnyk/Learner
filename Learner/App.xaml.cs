@@ -1,12 +1,13 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using Learner.Infrastruction;
 using Learner.Models;
+using Learner.Services;
+using Xamarin.Essentials;
 using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
 
 namespace Learner
 {
@@ -22,10 +23,16 @@ namespace Learner
 
         public static readonly ApplicationContext Context;
 
+        public static readonly HttpClient httpClient;
+
+        public static String Uri = "https://493000d702c5.ngrok.io/api/";
+
         static App()
         {
             _dbPath = Path.Combine(Environment.GetFolderPath(
                 Environment.SpecialFolder.LocalApplicationData), "Words.db3");
+
+            httpClient = new HttpClient();
 
             Context = new ApplicationContext(_dbPath);
         }

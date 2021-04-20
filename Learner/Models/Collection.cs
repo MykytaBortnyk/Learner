@@ -17,6 +17,6 @@ namespace Learner.Models
 
         public String Language { get; set; }
 
-        public List<Word> Words { get; set; }
+        public ICollection<Word> Words { get; set; }
     }
 }
