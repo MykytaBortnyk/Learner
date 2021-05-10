@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using Learner.Infrastruction;
 using Learner.Models;
 using Xamarin.Forms;
@@ -22,10 +23,16 @@ namespace Learner
 
         public static readonly ApplicationContext Context;
 
+        public static readonly HttpClient httpClient;
+
+        public static Uri Uri = new Uri("https://ngrok.io/api/");
+
         static App()
         {
             _dbPath = Path.Combine(Environment.GetFolderPath(
                 Environment.SpecialFolder.LocalApplicationData), "Words.db3");
+
+            httpClient = new HttpClient();
 
             Context = new ApplicationContext(_dbPath);
         }
@@ -34,14 +41,14 @@ namespace Learner
         {
             InitializeComponent();
 
-//#if DEBUG
-            //File.Delete(_dbPath);
-            //Context.Database.EnsureDeleted();
-            //Console.WriteLine(File.Exists(_dbPath));
-//#endif
+#if DEBUG
+            File.Delete(_dbPath);
+            Context.Database.EnsureDeleted();
+            Console.WriteLine(File.Exists(_dbPath));
+#endif
             // Ensure database is created
             Context.Database.EnsureCreated();
-//#if DEBUG
+#if DEBUG
 
             if (!Context.Words.Any())
             {
@@ -50,7 +57,7 @@ namespace Learner
 
                 Context.SaveChanges();
             }
-//#endif
+#endif
 
             _words = Context.Words.ToList();
             _collections = Context.Collections.ToList();

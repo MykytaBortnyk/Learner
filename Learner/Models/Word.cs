@@ -19,7 +19,9 @@ namespace Learner.Models
 
         //public Guid CollectionId { get; set; }
 
-        //[ForeignKey("CollectionId")]
-        //public List<Collection> Collections { get; set; }
+        [NotMapped]
+        public ICollection<Collection> Collections { get; set; }
+
+        public List<WordCollection> WordCollections { get; set; }
     }
 }

@@ -15,7 +15,7 @@ namespace Learner.Infrastruction
 
         public DbSet<Collection> Collections { get; set; }
 
-        public ApplicationContext(string databasePath)
+        public ApplicationContext(string databasePath) : base()
         {
             _databasePath = databasePath;
         }
@@ -23,6 +23,22 @@ namespace Learner.Infrastruction
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlite($"Data Source={_databasePath}");
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<WordCollection>()
+                .HasKey(t => new { t.WordId, t.CollectionId });
+
+            modelBuilder.Entity<WordCollection>()
+                .HasOne(pt => pt.Word)
+                .WithMany(p => p.WordCollections)
+                .HasForeignKey(pt => pt.WordId);
+
+            modelBuilder.Entity<WordCollection>()
+                .HasOne(pt => pt.Collection)
+                .WithMany(p => p.WordCollections)
+                .HasForeignKey(pt => pt.CollectionId);
         }
 
         public override int SaveChanges()

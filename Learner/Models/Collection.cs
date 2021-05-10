@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Learner.Models
 {
@@ -17,6 +18,9 @@ namespace Learner.Models
 
         public String Language { get; set; }
 
-        public List<Word> Words { get; set; }
+        [NotMapped]
+        public ICollection<Word> Words { get; set; }
+
+        public List<WordCollection> WordCollections { get; set; }
     }
 }
