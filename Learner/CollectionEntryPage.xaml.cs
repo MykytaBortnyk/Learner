@@ -153,7 +153,7 @@ namespace Learner
 
             await App.Context.SaveChangesAsync();
 
-            await Navigation.PopAsync();
+            await Navigation.PopToRootAsync();
         }
 
         async void OnCancelButtonClicked(object sender, EventArgs e)
