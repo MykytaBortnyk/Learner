@@ -71,6 +71,8 @@ namespace Learner
 
         async void OnWordAddClicked(object sender, EventArgs e) => await Navigation.PushAsync(new EntryPage());
 
+
+        //отета мусор, потом на енам перенести, сравнение по строкам временный костыль
         async void OnSortClicked(object sender, EventArgs e)
         {
             searchBar.Text = string.Empty;
