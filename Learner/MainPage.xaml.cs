@@ -12,9 +12,21 @@ namespace Learner
     {
         Guid collectionId;
 
+        private readonly List<Word> source;
+
         public MainPage()
         {
             InitializeComponent();
+
+            if (App._words.Count == 0)
+                label.IsVisible = true;
+            else
+                label.IsVisible = false;
+
+            source = App._words.OrderBy(c => c.Text).ToList();
+
+            collectionView.ItemsSource = source;
+
 #if DEBUG
             ToolbarItem item = new ToolbarItem { Text = "Remove Db", Order = ToolbarItemOrder.Secondary };
             this.ToolbarItems.Add(item);
@@ -26,7 +38,14 @@ namespace Learner
         {
             InitializeComponent();
 
-            collectionView.ItemsSource = collection.Words;
+            source = collection.Words.ToList();
+
+            if (collection.Words.Count == 0)
+                label.IsVisible = true;
+            else
+                label.IsVisible = false;
+
+            collectionView.ItemsSource = source;
 
             collectionId = collection.Id;
 
@@ -42,28 +61,9 @@ namespace Learner
             toolbarItem.Text = "Edit collection";
         }
 
-        protected override async void OnAppearing()
+        protected override void OnAppearing()
         {
             base.OnAppearing();
-
-            Collection collection = await App.Context.Collections.FirstOrDefaultAsync(c => c.Id == collectionId);
-
-            if (collection == null)
-            {
-                if (App._words.Count == 0)
-                    label.IsVisible = true;
-                else
-                    label.IsVisible = false;
-                collectionView.ItemsSource = App._words.OrderBy(c => c.Text);
-            }
-            else
-            {
-                if (collection.Words.Count == 0)
-                    label.IsVisible = true;
-                else
-                    label.IsVisible = false;
-                collectionView.ItemsSource = collection.Words;
-            }
 
             collectionView.SelectedItem = null;
             searchBar.Text = string.Empty;
@@ -85,48 +85,48 @@ namespace Learner
 #endif
                 "Language (A-Z)", "Language (Z-A)"
 
-);
+                );
 
             switch (result)
             {
                 default:
-                    collectionView.ItemsSource = App._words.OrderBy(x => x.Text);
+                    collectionView.ItemsSource = source.OrderBy(x => x.Text);
                     break;
 
                 case "Word (Z-A)":
-                    collectionView.ItemsSource = App._words.OrderByDescending(x => x.Text);
+                    collectionView.ItemsSource = source.OrderByDescending(x => x.Text);
                     break;
 
                 case "Transcription (A-Z)":
-                    collectionView.ItemsSource = App._words.OrderBy(x => x.Transcription);
+                    collectionView.ItemsSource = source.OrderBy(x => x.Transcription);
                     break;
 
                 case "Transcription (Z-A)":
-                    collectionView.ItemsSource = App._words.OrderByDescending(x => x.Transcription);
+                    collectionView.ItemsSource = source.OrderByDescending(x => x.Transcription);
                     break;
 
                 case "Translation (A-Z)":
-                    collectionView.ItemsSource = App._words.OrderBy(x => x.Translation);
+                    collectionView.ItemsSource = source.OrderBy(x => x.Translation);
                     break;
 
                 case "Translation (Z-A)":
-                    collectionView.ItemsSource = App._words.OrderByDescending(x => x.Translation);
+                    collectionView.ItemsSource = source.OrderByDescending(x => x.Translation);
                     break;
 
                 case "Language (A-Z)":
-                    collectionView.ItemsSource = App._words.OrderBy(x => x.Language).ThenBy(x => x.Text);
+                    collectionView.ItemsSource = source.OrderBy(x => x.Language).ThenBy(x => x.Text);
                     break;
 
                 case "Language (Z-A)":
-                    collectionView.ItemsSource = App._words.OrderByDescending(x => x.Language).ThenBy(x => x.Text);
+                    collectionView.ItemsSource = source.OrderByDescending(x => x.Language).ThenBy(x => x.Text);
                     break;
 #if DEBUG
                 case "Id (A-Z)":
-                    collectionView.ItemsSource = App._words.OrderBy(x => x.Id);
+                    collectionView.ItemsSource = source.OrderBy(x => x.Id);
                     break;
 
                 case "Id (Z-A)":
-                    collectionView.ItemsSource = App._words.OrderByDescending(x => x.Id).ThenBy(x => x.Text);
+                    collectionView.ItemsSource = source.OrderByDescending(x => x.Id).ThenBy(x => x.Text);
                     break;
 #endif
             }
@@ -144,11 +144,7 @@ namespace Learner
             var key = searchBar.Text;
 
             IEnumerable<Word> suggestions =
-                App._collections.FirstOrDefault(c => c.Id == collectionId)? //first collection with our id, call next step if != null
-                    .Words.Where(x => x.Text.ToLower().Contains(key.ToLower()) //looking for words
-                    || x.Transcription != null && x.Transcription.ToLower().Contains(key.ToLower()) // ?. doesn't works here, so i have to use this nullcheck 
-                    || x.Translation.ToLower().Contains(key.ToLower())) ?? //?? is very helpful, Cap(C)
-                App._words.Where(x => x.Text.ToLower().Contains(key.ToLower()) //this part is only needed for collId == null when we don't looking for words from some collection
+                source.Where(x => x.Text.ToLower().Contains(key.ToLower()) //this part is only needed for collId == null when we don't looking for words from some collection
                     || x.Transcription != null && x.Transcription.ToLower().Contains(key.ToLower()) //same as for collection words
                     || x.Translation.ToLower().Contains(key.ToLower()));
 
