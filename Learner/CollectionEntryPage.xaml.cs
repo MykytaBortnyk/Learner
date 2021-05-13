@@ -161,7 +161,7 @@ namespace Learner
             await Navigation.PopAsync();
         }
 
-        void CheckBox_CheckedChanged(System.Object sender, Xamarin.Forms.CheckedChangedEventArgs e)
+        void CheckBox_CheckedChanged(object sender, CheckedChangedEventArgs e)
         {
             var id = (sender as CheckBox).ClassId;
 

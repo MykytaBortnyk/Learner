@@ -10,13 +10,12 @@ namespace Learner
         public CollectionsPage()
         {
             InitializeComponent();
+            collectionView.ItemsSource = App._collections;
         }
 
         protected override void OnAppearing()
         {
             base.OnAppearing();
-
-            collectionView.ItemsSource = App._collections;
 
             if (App._collections.Count == 0)
                 label.IsVisible = true;
