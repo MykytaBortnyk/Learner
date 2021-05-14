@@ -32,7 +32,6 @@ Profit!
 
 
 <h3>Screenshot'ы</h3>
-Безнадёжно устарели, когда-нибудь обновлю.
 
 <p>
     <img src="https://github.com/NikitaBortnik/Learner/blob/master/Screenshots/Screenshot_20210514-224148.png" widht="270" height="585"/>
