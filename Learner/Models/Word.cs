@@ -7,6 +7,8 @@ namespace Learner.Models
 {
     public class Word
     {
+        public Word() => Collections = new List<Collection>();
+
         public Guid Id { get; set; }
 
         public String Text { get; set; }
@@ -17,11 +19,6 @@ namespace Learner.Models
 
         public String Language { get; set; }
 
-        //public Guid CollectionId { get; set; }
-
-        [NotMapped]
         public ICollection<Collection> Collections { get; set; }
-
-        public List<WordCollection> WordCollections { get; set; }
     }
 }

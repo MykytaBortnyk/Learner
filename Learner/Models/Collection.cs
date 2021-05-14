@@ -18,9 +18,6 @@ namespace Learner.Models
 
         public String Language { get; set; }
 
-        [NotMapped]
         public ICollection<Word> Words { get; set; }
-
-        public List<WordCollection> WordCollections { get; set; }
     }
 }

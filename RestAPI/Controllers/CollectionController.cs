@@ -55,7 +55,6 @@ namespace RestAPI.Controllers
         {
             if (ModelState.IsValid && value != null)
             {
-                //бля, и нахуя тут юзер был? icq -3 программист даун
                 var newCollection = new Collection(value, _userManager.GetUserId(User));
 
                 await _context.Collections.AddAsync(newCollection);

@@ -53,7 +53,7 @@ namespace Learner
             if (!Context.Words.Any())
             {
                 // Insert Data
-                Context.AddRange(addWords());
+                Context.Words.AddRange(addWords());
 
                 Context.SaveChanges();
             }
@@ -83,7 +83,7 @@ namespace Learner
         {
             var list = new List<Word>();
 
-            list.Add(new Word() { Id = Guid.NewGuid(), Text = "ありがとう", Transcription = "arigato", Translation = "Thank you", Language="Japanese"});
+            list.Add(new Word() { Id = Guid.NewGuid(), Text = "ありがとう", Transcription = "arigato", Translation = "Thank you", Language = "Japanese" });
             list.Add(new Word() { Id = Guid.NewGuid(), Text = "こんにちは", Transcription = "konnichiwa", Translation = "Hello", Language = "Japanese" });
             list.Add(new Word() { Id = Guid.NewGuid(), Text = "おはよう", Transcription = "ohayou", Translation = "Good morning", Language = "Japanese" });
             list.Add(new Word() { Id = Guid.NewGuid(), Text = "おやすみなさい", Transcription = "oyasuminasai", Translation = "Good night", Language = "Japanese" });

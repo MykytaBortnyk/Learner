@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -27,18 +28,7 @@ namespace Learner.Infrastruction
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<WordCollection>()
-                .HasKey(t => new { t.WordId, t.CollectionId });
-
-            modelBuilder.Entity<WordCollection>()
-                .HasOne(pt => pt.Word)
-                .WithMany(p => p.WordCollections)
-                .HasForeignKey(pt => pt.WordId);
-
-            modelBuilder.Entity<WordCollection>()
-                .HasOne(pt => pt.Collection)
-                .WithMany(p => p.WordCollections)
-                .HasForeignKey(pt => pt.CollectionId);
+            base.OnModelCreating(modelBuilder);
         }
 
         public override int SaveChanges()

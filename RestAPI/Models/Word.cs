@@ -20,7 +20,7 @@ namespace RestAPI.Models
             Translation = value.Transcription;
             Language = value.Language;
             AppUserId = userId;
-            Collections = /*value.Collections ?? */new List<Collection>();
+            Collections = value.Collections ?? new List<Collection>();
         }
 
         public Guid Id { get; set; }

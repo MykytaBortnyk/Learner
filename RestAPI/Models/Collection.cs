@@ -19,7 +19,7 @@ namespace RestAPI.Models
             Name = value.Name;
             Language = value.Language;
             AppUserId = userId;
-            Words = /*value.Words ?? */new List<Word>();
+            Words = value.Words ?? new List<Word>();
         }
 
         public Guid Id { get; set; }
