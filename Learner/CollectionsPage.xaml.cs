@@ -30,7 +30,7 @@ namespace Learner
         {
             var selectedItem = (Collection)collectionView.SelectedItem;
 
-            if (selectedItem != null) await Navigation.PushAsync(new MainPage(selectedItem));
+            if (selectedItem != null) await Navigation.PushAsync(new CollectionMainPage(selectedItem));
             searchBar.Text = string.Empty;
         }
 

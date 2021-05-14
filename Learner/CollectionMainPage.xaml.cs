@@ -1,31 +1,41 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using Learner.Models;
 using Xamarin.Forms;
 
 namespace Learner
 {
-    public partial class MainPage : ContentPage
+    public partial class CollectionMainPage : ContentPage
     {
-        private List<Word> source;
+        private Collection source;
 
-        public MainPage()
+        public CollectionMainPage(Collection collection)
         {
             InitializeComponent();
 
-            source = App._words;
+            source = collection;
+
+            //collectionView.ItemsSource = source.Words;
+
+            Title = collection.Name;
+
+            toolbarItem.Clicked += async (sender, e) =>
+            {
+                await Navigation.PushAsync(new CollectionEntryPage(collection));
+            };
         }
 
         protected override void OnAppearing()
         {
             base.OnAppearing();
 
-            collectionView.ItemsSource = App._words.OrderBy(c => c.Text);
+            collectionView.ItemsSource = App._collections.FirstOrDefault(c => c.Id == source.Id).Words;
 
-            if (source.Count == 0)
+            if (source.Words.Count == 0)
                 label.IsVisible = true;
             else
                 label.IsVisible = false;
@@ -35,6 +45,14 @@ namespace Learner
         }
 
         async void OnWordAddClicked(object sender, EventArgs e) => await Navigation.PushAsync(new EntryPage());
+
+        async Task RefreshItemsAsync()
+        {
+            await Task.Factory.StartNew(() =>
+            {
+                collectionView.ItemsSource = App._collections.FirstOrDefault(c => c.Id == source.Id).Words;
+            });         
+        }
 
         //отета мусор, потом на енам перенести, сравнение по строкам временный костыль
         async void OnSortClicked(object sender, EventArgs e)
@@ -56,43 +74,43 @@ namespace Learner
             switch (result)
             {
                 default:
-                    collectionView.ItemsSource = source.OrderBy(x => x.Text);
+                    collectionView.ItemsSource = source.Words.OrderBy(x => x.Text);
                     break;
 
                 case "Word (Z-A)":
-                    collectionView.ItemsSource = source.OrderByDescending(x => x.Text);
+                    collectionView.ItemsSource = source.Words.OrderByDescending(x => x.Text);
                     break;
 
                 case "Transcription (A-Z)":
-                    collectionView.ItemsSource = source.OrderBy(x => x.Transcription);
+                    collectionView.ItemsSource = source.Words.OrderBy(x => x.Transcription);
                     break;
 
                 case "Transcription (Z-A)":
-                    collectionView.ItemsSource = source.OrderByDescending(x => x.Transcription);
+                    collectionView.ItemsSource = source.Words.OrderByDescending(x => x.Transcription);
                     break;
 
                 case "Translation (A-Z)":
-                    collectionView.ItemsSource = source.OrderBy(x => x.Translation);
+                    collectionView.ItemsSource = source.Words.OrderBy(x => x.Translation);
                     break;
 
                 case "Translation (Z-A)":
-                    collectionView.ItemsSource = source.OrderByDescending(x => x.Translation);
+                    collectionView.ItemsSource = source.Words.OrderByDescending(x => x.Translation);
                     break;
 
                 case "Language (A-Z)":
-                    collectionView.ItemsSource = source.OrderBy(x => x.Language).ThenBy(x => x.Text);
+                    collectionView.ItemsSource = source.Words.OrderBy(x => x.Language).ThenBy(x => x.Text);
                     break;
 
                 case "Language (Z-A)":
-                    collectionView.ItemsSource = source.OrderByDescending(x => x.Language).ThenBy(x => x.Text);
+                    collectionView.ItemsSource = source.Words.OrderByDescending(x => x.Language).ThenBy(x => x.Text);
                     break;
 #if DEBUG
                 case "Id (A-Z)":
-                    collectionView.ItemsSource = source.OrderBy(x => x.Id);
+                    collectionView.ItemsSource = source.Words.OrderBy(x => x.Id);
                     break;
 
                 case "Id (Z-A)":
-                    collectionView.ItemsSource = source.OrderByDescending(x => x.Id).ThenBy(x => x.Text);
+                    collectionView.ItemsSource = source.Words.OrderByDescending(x => x.Id).ThenBy(x => x.Text);
                     break;
 #endif
             }
@@ -110,7 +128,7 @@ namespace Learner
             var key = searchBar.Text;
 
             IEnumerable<Word> suggestions =
-                source.Where(x => x.Text.ToLower().Contains(key.ToLower())
+                source.Words.Where(x => x.Text.ToLower().Contains(key.ToLower())
                     || x.Transcription != null && x.Transcription.ToLower().Contains(key.ToLower())
                     || x.Translation.ToLower().Contains(key.ToLower()));
 
