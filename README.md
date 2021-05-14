@@ -35,19 +35,19 @@ Profit!
 Безнадёжно устарели, когда-нибудь обновлю.
 
 <p>
-    <img src="https://github.com/NikitaBortnik/Learner/blob/master/Screenshots/Screenshot_20210514-224148.jpg" widht="270" height="585"/>
+    <img src="https://github.com/NikitaBortnik/Learner/blob/master/Screenshots/Screenshot_20210514-224148.png" widht="270" height="585"/>
   <hr/>
-      <img src="https://github.com/NikitaBortnik/Learner/blob/master/Screenshots/Screenshot_20210514-224753.jpg" widht="270" height="585"/>
+      <img src="https://github.com/NikitaBortnik/Learner/blob/master/Screenshots/Screenshot_20210514-224753.png" widht="270" height="585"/>
   <hr/>
-      <img src="https://github.com/NikitaBortnik/Learner/blob/master/Screenshots/Screenshot_20210514-224225.jpg" widht="270" height="585"/>
+      <img src="https://github.com/NikitaBortnik/Learner/blob/master/Screenshots/Screenshot_20210514-224225.png" widht="270" height="585"/>
   <hr/>
-      <img src="https://github.com/NikitaBortnik/Learner/blob/master/Screenshots/Screenshot_20210514-224214.jpg" widht="270" height="585"/>
+      <img src="https://github.com/NikitaBortnik/Learner/blob/master/Screenshots/Screenshot_20210514-224214.png" widht="270" height="585"/>
   <hr/>
-      <img src="https://github.com/NikitaBortnik/Learner/blob/master/Screenshots/Screenshot_20210514-225315.jpg" widht="270" height="585"/>
+      <img src="https://github.com/NikitaBortnik/Learner/blob/master/Screenshots/Screenshot_20210514-225315.png" widht="270" height="585"/>
   <hr/>
-    <img src="https://github.com/NikitaBortnik/Learner/blob/master/Screenshots/Screenshot_20210514-224252.jpg" widht="270" height="585"/>
+    <img src="https://github.com/NikitaBortnik/Learner/blob/master/Screenshots/Screenshot_20210514-224252.png" widht="270" height="585"/>
   <hr/>
-    <img src="https://github.com/NikitaBortnik/Learner/blob/master/Screenshots/Screenshot_20210514-224401.jpg" widht="270" height="585"/>
+    <img src="https://github.com/NikitaBortnik/Learner/blob/master/Screenshots/Screenshot_20210514-224401.png" widht="270" height="585"/>
   <hr/>
-    <img src="https://github.com/NikitaBortnik/Learner/blob/master/Screenshots/Screenshot_20210514-224424.jpg" widht="270" height="585"/>
+    <img src="https://github.com/NikitaBortnik/Learner/blob/master/Screenshots/Screenshot_20210514-224424.png" widht="270" height="585"/>
 </p>
