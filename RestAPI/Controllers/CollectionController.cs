@@ -37,7 +37,7 @@ namespace RestAPI.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(Guid id)
         {
-            if (id == null)
+            if (id == Guid.Empty)
             {
                 return BadRequest("Id is null;");
             }

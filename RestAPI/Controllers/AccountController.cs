@@ -57,7 +57,7 @@ namespace RestAPI.Controllers
         }
 
         [HttpGet, Route("SignOut")]
-        public async Task<IActionResult> SignOut()
+        public async Task<IActionResult> LogOut()
         {
             await _signInManager.SignOutAsync();
             return Ok();
