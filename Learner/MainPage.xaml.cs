@@ -23,7 +23,9 @@ namespace Learner
         {
             base.OnAppearing();
 
-            collectionView.ItemsSource = App._words.OrderBy(c => c.Text);
+            source = App._words.OrderBy(c => c.Text).ToList();
+
+            collectionView.ItemsSource = source;
 
             if (source.Count == 0)
                 label.IsVisible = true;

@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
-using System.Windows.Input;
 using Learner.Models;
 using Xamarin.Forms;
 
@@ -18,41 +15,28 @@ namespace Learner
             InitializeComponent();
 
             source = collection;
-
-            //collectionView.ItemsSource = source.Words;
-
-            Title = collection.Name;
-
-            toolbarItem.Clicked += async (sender, e) =>
-            {
-                await Navigation.PushAsync(new CollectionEntryPage(collection));
-            };
         }
-
         protected override void OnAppearing()
         {
             base.OnAppearing();
 
-            collectionView.ItemsSource = App._collections.FirstOrDefault(c => c.Id == source.Id).Words;
+            source = App.Context.Collections.FirstOrDefault(c => c.Id == source.Id);
+
+            Title = source.Name;
 
             if (source.Words.Count == 0)
                 label.IsVisible = true;
             else
                 label.IsVisible = false;
 
+            collectionView.ItemsSource = source.Words;
+
             collectionView.SelectedItem = null;
             searchBar.Text = string.Empty;
         }
 
-        async void OnWordAddClicked(object sender, EventArgs e) => await Navigation.PushAsync(new EntryPage());
-
-        async Task RefreshItemsAsync()
-        {
-            await Task.Factory.StartNew(() =>
-            {
-                collectionView.ItemsSource = App._collections.FirstOrDefault(c => c.Id == source.Id).Words;
-            });         
-        }
+        async void OnCollectionEditClicked(object sender, EventArgs e) =>
+            await Navigation.PushAsync(new CollectionEntryPage(source));
 
         //отета мусор, потом на енам перенести, сравнение по строкам временный костыль
         async void OnSortClicked(object sender, EventArgs e)

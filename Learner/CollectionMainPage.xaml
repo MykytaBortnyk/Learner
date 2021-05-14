@@ -13,6 +13,7 @@
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="Edit collection"
                      Order="Secondary"
+                     Clicked="OnCollectionEditClicked"
                      x:Name="toolbarItem"/>
         <ToolbarItem Text="Sort By"
                      Clicked="OnSortClicked"

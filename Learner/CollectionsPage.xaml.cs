@@ -10,7 +10,6 @@ namespace Learner
         public CollectionsPage()
         {
             InitializeComponent();
-            collectionView.ItemsSource = App._collections;
         }
 
         protected override void OnAppearing()
@@ -21,6 +20,8 @@ namespace Learner
                 label.IsVisible = true;
             else
                 label.IsVisible = false;
+
+            collectionView.ItemsSource = App._collections;
 
             collectionView.SelectedItem = null;
             searchBar.Text = string.Empty;
