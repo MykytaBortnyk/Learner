@@ -2,29 +2,13 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Learner.QuizPage"
-             Title="Quiz">
+             Title="Quiz" Visual="Material">
     <ContentPage.ToolbarItems>
         <ToolbarItem IconImageSource="baseline_music_note_white_18dp.png"
                      Clicked="OnSpeachClicked"/>
         <ToolbarItem Text="❔"
                      Clicked="OnHelpClicked"/>
     </ContentPage.ToolbarItems>
-    <ContentPage.Resources>
-        <!-- Implicit styles -->
-        <Style TargetType="{x:Type Editor}">
-            <Setter Property="BackgroundColor"
-                    Value="{StaticResource AppBackgroundColor}" />
-        </Style>
-
-        <Style TargetType="Button"
-               ApplyToDerivedTypes="True"
-               CanCascade="True">
-            <Setter Property="FontSize" Value="Medium" />
-            <Setter Property="BackgroundColor" Value="#1976D2" />
-            <Setter Property="TextColor" Value="White" />
-            <Setter Property="CornerRadius" Value="5" />
-        </Style>
-    </ContentPage.Resources>
     <ContentPage.Content>
         <Grid Margin="15" RowDefinitions="auto, auto, *, auto, auto, auto, auto" x:Name="grid1">
             <Label Text="Points:" HorizontalOptions="End"/>

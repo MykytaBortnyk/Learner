@@ -34,4 +34,10 @@
       <HintPath>..\..\..\..\..\Library\Frameworks\Xamarin.Android.framework\Versions\11.0.99.34\lib\xamarin.android\xbuild-frameworks\MonoAndroid\v9.0\Mono.Android.dll</HintPath>
     </Reference>
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Remove="MasterPageXAML.xaml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="MasterPageXAML.xaml.cs" />
+  </ItemGroup>
 </Project>

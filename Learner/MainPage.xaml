@@ -2,14 +2,8 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Learner.MainPage"
-             Title="Main page">
-    <ContentPage.Resources>
-        <!-- Implicit styles -->
-        <Style TargetType="{x:Type ListView}">
-            <Setter Property="BackgroundColor"
-                    Value="{StaticResource AppBackgroundColor}" />
-        </Style>
-    </ContentPage.Resources>
+             Title="Main page"
+             Visual="Material">
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="Add new word"
                      Clicked="OnWordAddClicked"

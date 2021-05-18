@@ -88,7 +88,7 @@ namespace Learner
                 grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(45, GridUnitType.Star) });
                 grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(45, GridUnitType.Star) });
 
-                var c = new CheckBox { ClassId = "", Color = Color.FromHex("#1976D2") };
+                var c = new CheckBox { ClassId = "", Color = Color.Black };
                 //фикс фикса с коммита d688eb0
                 //короче, если не переопределить классИд, то при скролле будет слетать чек
                 //хз почему я тогда снёс этот фикс, да и коммит был попыткой смержить ветки, а это всегда ломает проект

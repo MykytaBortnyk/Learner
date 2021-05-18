@@ -79,7 +79,7 @@ namespace Learner
             }
         }
 
-        void searchBar_TextChanged(object sender, System.EventArgs e)
+        void searchBar_TextChanged(object sender, EventArgs e)
         {
             var key = searchBar.Text;
 

@@ -4,27 +4,22 @@ using Xamarin.Forms;
 
 namespace Learner
 {
-    public class MDPage : MasterDetailPage
+    public class MDPage : FlyoutPage
     {
-        MasterPageXAML masterPage;
+        FlyoutMenuPage flyoutPage;
 
         public MDPage()
         {
-            masterPage = new MasterPageXAML();
-            Master = masterPage;
+            flyoutPage = new FlyoutMenuPage();
+            Flyout = flyoutPage;
             Detail = new NavigationPage(new MainPage());
 
-            masterPage.MenuItemsListView.ItemSelected += OnItemSelected;
-
-            if (Device.RuntimePlatform == Device.UWP)
-            {
-                MasterBehavior = MasterBehavior.Popover;
-            }
+            flyoutPage.MenuItemsListView.ItemSelected += OnItemSelected;
         }
 
         async void OnItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
-            var item = e.SelectedItem as MasterPageItem;
+            var item = e.SelectedItem as FlyoutPageItem;
             if (item != null)
             {
                 if (item.Title == "Quiz" && App._words.Count < 1)
@@ -32,7 +27,7 @@ namespace Learner
                 else
                     Detail = new NavigationPage((Page)Activator.CreateInstance(item.TargetType));
 
-                masterPage.MenuItemsListView.SelectedItem = null;
+                flyoutPage.MenuItemsListView.SelectedItem = null;
                 IsPresented = false;
             }
         }

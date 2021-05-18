@@ -7,7 +7,7 @@ namespace Learner
 {
     public partial class AuthPage : ContentPage
     {
-        private readonly IdentityService identity = new IdentityService();
+        //private readonly IdentityService identity = new IdentityService();
 
         public AuthPage()
         {

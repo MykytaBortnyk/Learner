@@ -5,26 +5,26 @@ using Xamarin.Forms;
 
 namespace Learner
 {
-    public partial class MasterPageXAML : ContentPage
+    public partial class FlyoutMenuPage : ContentPage
     {
-        public MasterPageXAML()
+        public FlyoutMenuPage()
         {
             InitializeComponent();
 
-            var masterPageItems = new List<MasterPageItem>();
-            masterPageItems.Add(new MasterPageItem
+            var masterPageItems = new List<FlyoutPageItem>();
+            masterPageItems.Add(new FlyoutPageItem
             {
                 Title = "Dictionary",
                 IconSource = "baseline_book_black_18dp.png",
                 TargetType = typeof(MainPage)
             });
-            masterPageItems.Add(new MasterPageItem
+            masterPageItems.Add(new FlyoutPageItem
             {
                 Title = "Quiz",
                 IconSource = "baseline_school_black_18dp.png",
                 TargetType = typeof(QuizPage)
             });
-            masterPageItems.Add(new MasterPageItem
+            masterPageItems.Add(new FlyoutPageItem
             {
                 Title = "Collections",
                 IconSource = "baseline_style_black_18dp.png",
@@ -40,6 +40,11 @@ namespace Learner
 
             IconImageSource = "baseline_menu_white_18dp.png";
             Title = "Learner";
+        }
+
+        async void Button_Clicked(System.Object sender, System.EventArgs e)
+        {
+            await Navigation.PushAsync(new AuthPage());
         }
     }
 }

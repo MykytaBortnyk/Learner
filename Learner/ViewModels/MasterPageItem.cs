@@ -1,7 +1,7 @@
 ﻿using System;
 namespace Learner.ViewModels
 {
-    public class MasterPageItem
+    public class FlyoutPageItem
     {
         public string Title { get; set; }
 
