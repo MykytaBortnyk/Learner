@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:data="clr-namespace:Learner"
+    x:Class="Learner.AppShell"
+    Shell.NavBarHasShadow="true"
+    Visual="Material">
+    <TabBar>
+        <ShellContent Route="MainPage"
+                      Title="Words"
+                      Icon="baseline_book_black_18dp.png"
+                      ContentTemplate="{DataTemplate data:MainPage}" />
+        <ShellContent Route="CollectionsPage"
+                      Title="Collections"
+                      Icon="baseline_style_black_18dp.png"
+                      ContentTemplate="{DataTemplate data:CollectionsPage}" />
+        <ShellContent Route="QuizPage"
+                      Title="Quiz"
+                      Icon="baseline_school_black_18dp.png"
+                      ContentTemplate="{DataTemplate data:QuizPage}" />
+    </TabBar>
+</Shell>

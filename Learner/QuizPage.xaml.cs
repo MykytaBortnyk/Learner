@@ -106,7 +106,6 @@ namespace Learner
                     Grid.SetColumnSpan(button2, 2);
                     Grid.SetColumnSpan(button3, 2);
                     Grid.SetColumnSpan(button4, 2);
-
                 }
             }
         }

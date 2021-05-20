@@ -76,6 +76,7 @@ namespace Learner
         protected override void OnAppearing()
         {
             base.OnAppearing();
+            Shell.SetTabBarIsVisible(this, false);
 
             if (!isEditing)
                 collectionName.Focus();

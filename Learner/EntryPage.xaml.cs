@@ -7,7 +7,6 @@ using Xamarin.Forms;
 
 namespace Learner
 {
-
     enum Languages
     {
         Eng,
@@ -62,6 +61,7 @@ namespace Learner
         protected override void OnAppearing()
         {
             base.OnAppearing();
+            Shell.SetTabBarIsVisible(this, false);
             if (isEditing)
                 return;
             wordText.Focus();

@@ -1,12 +1,12 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Learner.EntryPage" Visual="Material">
+             x:Class="Learner.EntryPage">
     <ContentPage.Content>
         <ScrollView>
             <StackLayout Margin="15, 15, 15, 0"
                          Padding="0,0,0,15"
-                     x:Name="stackLayout">
+                         x:Name="stackLayout">
                 <Entry IsSpellCheckEnabled="true"
                    IsTextPredictionEnabled="true"
                    x:Name="wordText"
@@ -19,12 +19,6 @@
                    Placeholder="Translation"/>
                 <Picker Title="Language"
                     x:Name="picker1">
-                    <Picker.ItemsSource>
-                        <x:Array Type="{x:Type x:String}">
-                            <x:String>English</x:String>
-                            <x:String>Japanese</x:String>
-                        </x:Array>
-                    </Picker.ItemsSource>
                 </Picker>
                 <Grid RowDefinitions="auto">
                     <Button x:Name="button1"

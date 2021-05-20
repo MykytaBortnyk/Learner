@@ -48,7 +48,7 @@ namespace Learner
 #endif
             // Ensure database is created
             Context.Database.EnsureCreated();
-#if DEBUG
+//#if DEBUG
 
             if (!Context.Words.Any())
             {
@@ -57,12 +57,13 @@ namespace Learner
 
                 Context.SaveChanges();
             }
-#endif
+//#endif
 
             _words = Context.Words.ToList();
             _collections = Context.Collections.ToList();
 
-            MainPage = new MDPage();
+            //MainPage = new MDPage();
+            MainPage = new AppShell();
         }
 
         protected override void OnStart()
