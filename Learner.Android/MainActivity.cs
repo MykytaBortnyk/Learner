@@ -6,6 +6,7 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Android.OS;
+using AndroidX.AppCompat.App;
 
 namespace Learner.Droid
 {
@@ -22,6 +23,8 @@ namespace Learner.Droid
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
             global::Xamarin.Forms.FormsMaterial.Init(this, savedInstanceState);
+
+            AppCompatDelegate.DefaultNightMode = AppCompatDelegate.ModeNightNo; //нет даркмода, нет проблем
             LoadApplication(new App());
         }
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)

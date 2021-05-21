@@ -1,9 +1,8 @@
 ﻿<?xml version="1.0" encoding="UTF-8" ?>
-<Shell
+<Shell x:Class="Learner.AppShell"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:data="clr-namespace:Learner"
-    x:Class="Learner.AppShell"
     Shell.NavBarHasShadow="true"
     Visual="Material">
     <TabBar>
@@ -19,5 +18,9 @@
                       Title="Quiz"
                       Icon="baseline_school_black_18dp.png"
                       ContentTemplate="{DataTemplate data:QuizPage}" />
+        <ShellContent Route="SettingsPage"
+                      Title="Settings"
+                      Icon="baseline_settings_black_18.png"
+                      ContentTemplate="{DataTemplate data:SettingsPage}"/>
     </TabBar>
 </Shell>

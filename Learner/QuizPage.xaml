@@ -6,7 +6,7 @@
     <ContentPage.ToolbarItems>
         <ToolbarItem IconImageSource="baseline_music_note_white_18dp.png"
                      Clicked="OnSpeachClicked"/>
-        <ToolbarItem Text="❔"
+        <ToolbarItem IconImageSource="baseline_help_outline_white_18.png"
                      Clicked="OnHelpClicked"/>
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
