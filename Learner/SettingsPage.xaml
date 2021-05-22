@@ -3,5 +3,17 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Learner.SettingsPage">
     <ContentPage.Content>
+        <ScrollView Margin="15, 15, 15, 0"
+                    Padding="0,0,0,15"
+                    x:Name="scrollView">
+            <StackLayout>
+                <Label Text="Auth status"/>
+                <Button Text="Register"
+                        Clicked="Button_Clicked"/>
+                <Label x:Name="sync"
+                       Text="Sync status"/>
+                <Label x:Name="EthStatus"/>
+            </StackLayout>
+        </ScrollView>
     </ContentPage.Content>
 </ContentPage>

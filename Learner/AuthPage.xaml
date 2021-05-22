@@ -2,11 +2,56 @@
 <ContentPage
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    x:Class="Learner.AuthPage">
+    x:Class="Learner.AuthPage"
+    Title="Settings">
     <ContentPage.Content>
-        <StackLayout Margin="15, 15, 15, 0"
-                     Padding="0,0,0,15"
-                     x:Name="stackLayout">
-        </StackLayout>
+        <ScrollView>
+            <StackLayout Margin="15, 15, 15, 0"
+                         Padding="0,0,0,15"
+                         x:Name="stackLayout">
+                <Entry x:Name="name"
+                   Placeholder="Name"/>
+                <Entry x:Name="mail"
+                   Placeholder="Mail"/>
+                <Entry x:Name="password"
+                   IsPassword="True"
+                   Placeholder="Password">
+                    <Entry.Triggers>
+                        <DataTrigger TargetType="Entry" Binding="{Binding Source={x:Reference checkBox}, Path=IsChecked}" Value="true">
+                            <Setter Property="IsPassword" Value="True"/>
+                            <Setter Property="IsPassword" Value="False"/>
+                        </DataTrigger>
+                    </Entry.Triggers>
+                </Entry>
+                <Entry x:Name="passwordC"
+                   IsPassword="True"
+                   Placeholder="Password confirmation">
+                    <Entry.Triggers>
+                        <DataTrigger TargetType="Entry" Binding="{Binding Source={x:Reference checkBox}, Path=IsChecked}" Value="true">
+                            <Setter Property="IsPassword" Value="True"/>
+                            <Setter Property="IsPassword" Value="False"/>
+                        </DataTrigger>
+                    </Entry.Triggers>
+                </Entry>
+                <Grid RowDefinitions="auto">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="10*"/>
+                        <ColumnDefinition Width="90*"/>
+                    </Grid.ColumnDefinitions>
+                    <CheckBox x:Name="checkBox" />
+                    <Label Text="Stay logged in?" Grid.Column="1" Grid.Row="0"  VerticalOptions="Center" HorizontalOptions="Start"/>
+                </Grid>
+                <Grid RowDefinitions="auto">
+                    <Button x:Name="button1"
+                            Text="Register"
+                            Clicked="Register"/>
+                    <Button x:Name="button2"
+                            Grid.Column="1"
+                            Grid.Row="0"
+                            Text="Cancel"
+                            Clicked="OnCancelButtonClicked"/>
+                </Grid>
+            </StackLayout>
+        </ScrollView>
     </ContentPage.Content>
 </ContentPage>

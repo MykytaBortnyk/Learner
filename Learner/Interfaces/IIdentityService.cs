@@ -6,8 +6,8 @@ namespace Learner.Interfaces
 {
     public interface IIdentityService
     {
-        Task SignIn(SignInViewModel model);
+        Task<bool> SignIn(SignInViewModel model);
         Task LogOut();
-        Task SignUp(SignUpViewModel model);
+        Task<bool> SignUp(SignUpViewModel model);
     }
 }

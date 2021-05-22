@@ -10,12 +10,12 @@ namespace Learner.Services
     public class IdentityService : IIdentityService
     {
         private readonly HttpClient httpClient;
-        Uri uri;
+        string uri;
 
         public IdentityService()
         {
             httpClient = App.httpClient;
-            uri = new Uri(App.Uri, "Account");
+            uri = App.Uri + "Account/";
         }
 
         public async Task LogOut()
@@ -35,38 +35,42 @@ namespace Learner.Services
             }
         }
         //TODO: SignIn and SignUp 
-        public async Task SignIn(SignInViewModel model)
+        public async Task<bool> SignIn(SignInViewModel model)
         {
             try
             {
-                var response = await httpClient.PostAsJsonAsync(new Uri(uri, "SignIn"), model);
+                var response = await httpClient.PostAsJsonAsync(uri + "SignIn", model);
 
                 if (response.IsSuccessStatusCode)
                 {
                     Console.WriteLine("Success");
+                    return true;
                 }
             }
             catch (Exception e)
             {
                 Console.WriteLine($"{e.Message}");
             }
+            return false;
         }
 
-        public async Task SignUp(SignUpViewModel model)
+        public async Task<bool> SignUp(SignUpViewModel model)
         {
             try
             {
-                var response = await httpClient.PostAsJsonAsync(new Uri(uri, "SignUp"), model);
+                var response = await httpClient.PostAsJsonAsync(uri + "SignUp", model);
 
                 if (response.IsSuccessStatusCode)
                 {
                     Console.WriteLine("Success");
+                    return true;
                 }
             }
             catch (Exception e)
             {
                 Console.WriteLine($"{e.Message}");
             }
+            return false;
         }
     }
 }

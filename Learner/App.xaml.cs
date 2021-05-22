@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net.Http;
 using Learner.Infrastruction;
 using Learner.Models;
+using Learner.Services;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -25,7 +26,7 @@ namespace Learner
 
         public static readonly HttpClient httpClient;
 
-        public static Uri Uri = new Uri("https://ngrok.io/api/");
+        public static string Uri = "https://6c970093bbf6.ngrok.io/api/";
 
         static App()
         {
@@ -37,9 +38,14 @@ namespace Learner
             Context = new ApplicationContext(_dbPath);
         }
 
+
+        /// 
+        /// TODO:TinyIoC
+        /// 
         public App() //shit code bellow, it's should be in some fabric, hard IO in ctor is bad practice, but i'll fix this later 
         {
             InitializeComponent();
+            DependencyService.Register<IdentityService>();
 
 #if DEBUG
             File.Delete(_dbPath);

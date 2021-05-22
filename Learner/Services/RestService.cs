@@ -10,12 +10,12 @@ namespace Learner.Services
     public class RestService<T> : IRestService<T> where T : class
     {
         private readonly HttpClient httpClient;
-        Uri uri;
+        string uri;
 
         public RestService(string route)
         {
             httpClient = App.httpClient;
-            uri = new Uri(App.Uri, route);
+            uri = App.Uri + route;
         }
 
         public async Task<List<T>> GetAsync()
