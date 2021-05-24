@@ -54,14 +54,14 @@ namespace RestAPI
 
             //services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
-            //services.AddSession(options =>
-            //{
-            //    options.Cookie.Name = ".RestAPI.Session";
-            //    options.IdleTimeout = TimeSpan.FromDays(5);
-            //    options.Cookie.IsEssential = true;
-            //    options.Cookie.HttpOnly = false;
-            //    options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
-            //});
+            services.AddSession(options =>
+            {
+                options.Cookie.Name = ".RestAPI.Session";
+                options.IdleTimeout = TimeSpan.FromDays(5);
+                options.Cookie.IsEssential = true;
+                options.Cookie.HttpOnly = false;
+                options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+            });
 
             services.AddControllers()
                     .AddNewtonsoftJson(options =>
@@ -72,7 +72,7 @@ namespace RestAPI
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "LearnerAPI", Version = "v1" });
             });
 
-            //services.AddMvc();
+            services.AddMvc();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -92,7 +92,7 @@ namespace RestAPI
             app.UseAuthentication();
             app.UseAuthorization();
 
-            //app.UseSession();
+            app.UseSession();
             app.UseCookiePolicy();
 
             app.UseEndpoints(endpoints =>
