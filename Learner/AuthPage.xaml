@@ -39,6 +39,14 @@
                         <ColumnDefinition Width="90*"/>
                     </Grid.ColumnDefinitions>
                     <CheckBox x:Name="checkBox" />
+                    <Label Text="Show password" Grid.Column="1" Grid.Row="0"  VerticalOptions="Center" HorizontalOptions="Start"/>
+                </Grid>
+                <Grid RowDefinitions="auto">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="10*"/>
+                        <ColumnDefinition Width="90*"/>
+                    </Grid.ColumnDefinitions>
+                    <CheckBox x:Name="checkBox1" />
                     <Label Text="Stay logged in?" Grid.Column="1" Grid.Row="0"  VerticalOptions="Center" HorizontalOptions="Start"/>
                 </Grid>
                 <Grid RowDefinitions="auto">

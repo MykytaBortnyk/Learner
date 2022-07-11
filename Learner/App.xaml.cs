@@ -24,9 +24,11 @@ namespace Learner
 
         public static readonly ApplicationContext Context;
 
+        public static bool IsAuthenticated;
+
         public static readonly HttpClient httpClient;
 
-        public static string Uri = "https://6c970093bbf6.ngrok.io/api/";
+        public static string Uri = "https://4e50689810eb.ngrok.io/api/";
 
         static App()
         {
@@ -46,7 +48,7 @@ namespace Learner
         {
             InitializeComponent();
             DependencyService.Register<IdentityService>();
-
+            DependencyService.Register<RestService<Word>>();
 #if DEBUG
             File.Delete(_dbPath);
             Context.Database.EnsureDeleted();
@@ -75,15 +77,21 @@ namespace Learner
         protected override void OnStart()
         {
             base.OnStart();
+
             if (!Properties.ContainsKey("scores"))
                 return;
             Scores = (int)Properties["scores"];
+
+            if (!Properties.ContainsKey("IsAuthenticated"))
+                return;
+            IsAuthenticated = (bool)Properties["IsAuthenticated"];
         }
 
         protected override void OnSleep()
         {
             base.OnSleep();
             Properties["scores"] = Scores;
+            Properties["IsAuthenticated"] = IsAuthenticated;
         }
 
         public static List<Word> addWords()

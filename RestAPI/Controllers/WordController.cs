@@ -16,8 +16,7 @@ using RestAPI.ViewModels;
 
 namespace RestAPI.Controllers
 {
-    [Authorize]
-    [Route("api/[controller]")]
+    [Route("api/[controller]"), Authorize]
     public class WordController : Controller
     {
         private readonly AppDbContext _context;
@@ -85,7 +84,34 @@ namespace RestAPI.Controllers
                 }
                 return BadRequest($"The entity with Id {id} not found;");
             }
-            return BadRequest("Id mismatch or model error;");            
+            return BadRequest("Id mismatch or model error;");
+        }
+
+
+        [HttpPut, Route("Sync")]
+        public async Task<IActionResult> SyncAsync([FromBody] List<Word> words)
+        {
+            if (ModelState.IsValid && words != null)
+            {
+                foreach (var item in words)
+                {
+                    var isItemExists = await _context.Words.AnyAsync(w =>
+                                          w.Id == item.Id &&
+                                          w.AppUserId == _userManager.GetUserId(User));
+
+                    if (isItemExists)
+                    {
+                        _context.Words.Update(item);
+                    }
+                    else
+                    {
+                        _context.Words.Add(item);
+                    }
+                    await _context.SaveChangesAsync();
+                }
+                return NoContent();
+            }
+            return BadRequest();
         }
 
         // DELETE api/values/5

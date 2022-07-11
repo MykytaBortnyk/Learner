@@ -7,12 +7,25 @@
                     Padding="0,0,0,15"
                     x:Name="scrollView">
             <StackLayout>
-                <Label Text="Auth status"/>
-                <Button Text="Register"
-                        Clicked="Button_Clicked"/>
+                <Label x:Name="AuthStatus"
+                       Text="Auth status"/>
                 <Label x:Name="sync"
                        Text="Sync status"/>
                 <Label x:Name="EthStatus"/>
+                <Grid>
+                    <Button Text="Register"
+                            Clicked="Button_Clicked"
+                            x:Name="register"/>
+                    <Button Grid.Column="1"
+                            Text="Log In"
+                            Clicked="Button1_Clicked"
+                            x:Name="logIn"/>
+                </Grid>
+                <Button Text="Sync"
+                        Clicked="OnSyncClicked"/>
+                <Button Text="Log out"
+                        x:Name="logOut"
+                        Clicked="OnLogOutClicked"/>
             </StackLayout>
         </ScrollView>
     </ContentPage.Content>

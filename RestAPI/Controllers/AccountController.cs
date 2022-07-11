@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using RestAPI.Data;
@@ -17,15 +18,12 @@ namespace RestAPI.Controllers
     {
         private readonly SignInManager<AppUser> _signInManager;
         private readonly UserManager<AppUser> _userManager;
-        private readonly AppDbContext _context;
 
         public AccountController(SignInManager<AppUser> signInManager,
-            UserManager<AppUser> userManager,
-            AppDbContext context)
+            UserManager<AppUser> userManager)
         {
             _signInManager = signInManager;
             _userManager = userManager;
-            _context = context;
         }
 
         //TODO: add auth notification
@@ -44,7 +42,6 @@ namespace RestAPI.Controllers
 
                         if (result.Succeeded)
                         {
-                            await _userManager.AddToRoleAsync(user, "User");
                             return Ok();
                         }
                     }
@@ -56,7 +53,7 @@ namespace RestAPI.Controllers
             return BadRequest();
         }
 
-        [HttpGet, Route("SignOut")]
+        [HttpGet, Route("SignOut"), Authorize]
         public async Task<IActionResult> LogOut()
         {
             await _signInManager.SignOutAsync();
@@ -65,9 +62,7 @@ namespace RestAPI.Controllers
 
         //TODO: confirmation reg. by email with SendGrid
         [HttpPost, Route("SignUp")]
-        public async Task<IActionResult> SignUpAsync(
-            [FromBody] SignUpViewModel model
-            )
+        public async Task<IActionResult> SignUpAsync([FromBody] SignUpViewModel model)
         {
             if (ModelState.IsValid && model != null && model.Password == model.ConfirmPassword)
             {
@@ -78,6 +73,7 @@ namespace RestAPI.Controllers
                 };
 
                 var result = await _userManager.CreateAsync(user, model.Password);
+                //await _userManager.AddToRoleAsync(user, "User"); nahuya? 
 
                 if (result.Succeeded)
                 {
@@ -92,6 +88,12 @@ namespace RestAPI.Controllers
             ModelState.AddModelError(string.Empty, "Unsuccessful registration attempt");
 
             return BadRequest();
+        }
+
+        [HttpGet, Route("IsAuthenticated")]
+        public IActionResult IsAuthenticated()
+        {
+            return Ok(User.Identity.IsAuthenticated);
         }
     }
 }

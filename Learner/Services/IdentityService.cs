@@ -34,7 +34,8 @@ namespace Learner.Services
                 Console.WriteLine($"{e.Message}");
             }
         }
-        //TODO: SignIn and SignUp 
+        //TODO: SignIn and SignUp
+        //чё? 
         public async Task<bool> SignIn(SignInViewModel model)
         {
             try
@@ -64,6 +65,27 @@ namespace Learner.Services
                 {
                     Console.WriteLine("Success");
                     return true;
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"{e.Message}");
+            }
+            return false;
+        }
+
+        public async Task<bool> IsAuthenticated()
+        {
+            try
+            {
+                var response = await httpClient.GetAsync(uri + "IsAuthenticated");
+
+                if (response.IsSuccessStatusCode)
+                {
+                    Console.WriteLine("Success");
+                    var str = await response.Content.ReadAsStringAsync();
+                    bool.TryParse(str, out bool result);
+                    return result;
                 }
             }
             catch (Exception e)

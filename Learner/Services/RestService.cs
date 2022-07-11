@@ -4,18 +4,21 @@ using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 using Learner.Interfaces;
+using Xamarin.Essentials;
 
 namespace Learner.Services
 {
     public class RestService<T> : IRestService<T> where T : class
     {
         private readonly HttpClient httpClient;
+        bool IsConnected => Connectivity.NetworkAccess == NetworkAccess.Internet;
         string uri;
 
-        public RestService(string route)
+        public RestService()
         {
             httpClient = App.httpClient;
-            uri = App.Uri + route;
+            //httpClient.BaseAddress = new Uri(App.Uri);
+            uri = App.Uri + typeof(T).Name;
         }
 
         public async Task<List<T>> GetAsync()
@@ -63,6 +66,23 @@ namespace Learner.Services
                 if (response.IsSuccessStatusCode)
                 {
                     Console.WriteLine("Post sent successfully");
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"{e.Message}");
+            }
+        }
+
+        public async Task PutMany(List<T> items)
+        {
+            try
+            {
+                var response = await httpClient.PutAsJsonAsync(uri + "/Sync", items);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    Console.WriteLine("Put sent successfully");
                 }
             }
             catch (Exception e)

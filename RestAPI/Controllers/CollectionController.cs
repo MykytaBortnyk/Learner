@@ -16,6 +16,7 @@ namespace RestAPI.Controllers
 {
     [Authorize]
     [Route("api/[controller]")]
+    [ValidateAntiForgeryToken]
     public class CollectionController : Controller
     {
         private readonly AppDbContext _context;
